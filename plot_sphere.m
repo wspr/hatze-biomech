@@ -1,5 +1,13 @@
 function plot_sphere(O,r,varargin)
-%%
+%% plot_sphere( [x0 y0 z0], R, <opts> )
+%
+% - plots a sphere at [x0,y0,z0] of radius R.
+% - optional arguments <opt> can be any combination of:
+%
+%   <'N',n>            - number of segments to use
+%   <'colour',[r g b]> - colour of faces
+%   <'opacity',T>      - opacity of faces, T \in [0,1]
+%   <'edgeopacity',T>  - same for edges
 
 p = inputParser;
 p.addRequired('O');
@@ -7,29 +15,20 @@ p.addRequired('r');
 p.addParamValue('N',15);
 p.addParamValue('colour',[0.5 0 0.5]);
 p.addParamValue('opacity',1);
-
 p.addParamValue('edgeopacity',1);
 p.parse(O,r,varargin{:})
 
 col = p.Results.colour;
 opac = p.Results.opacity;
 eopac = p.Results.edgeopacity;
-n = p.Results.N;
+N = p.Results.N;
 
-% -pi <= theta <= pi is a row vector.
-% -pi/2 <= phi <= pi/2 is a column vector.
-theta = (-n:2:n)/n*pi;
-phi = (-n:2:n)'/n*pi/2;
-cosphi = cos(phi); cosphi(1) = 0; cosphi(n+1) = 0;
-sintheta = sin(theta); sintheta(1) = 0; sintheta(n+1) = 0;
+theta = linspace(-pi,pi,N);      % row
+phi   = linspace(-pi/2,pi/2,N)'; % column
 
-x0 = cosphi*cos(theta);
-y0 = cosphi*sintheta;
-z0 = sin(phi)*ones(1,n+1);
-
-x1 = x0*r+O(1);
-y1 = y0*r+O(2);
-z1 = z0*r+O(3);
+x1 = O(1) + r*cos(phi)*cos(theta);
+y1 = O(2) + r*cos(phi)*sin(theta);
+z1 = O(3) + r*sin(phi)*ones(1,N);
 
 surf(x1,y1,z1,'edgealpha',eopac,'facecolor',col,'facealpha',opac)
 
