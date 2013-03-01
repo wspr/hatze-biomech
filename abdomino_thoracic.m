@@ -22,25 +22,6 @@ w  = nan(1,N);
 a  = nan(1,N);
 b  = nan(1,N);
 c  = nan(1,Nt);
-a2 = nan(1,Nt);
-b2 = nan(1,Nt);
-
-% volumes of elements:
-v_1 = nan(1,N);
-v_2 = nan(1,N);
-v_e = nan(1,Nt);
-
-% masses of elements:
-m_1 = nan(1,N);
-m_2 = nan(1,N);
-m_e = nan(1,Nt);
-m_p = nan(1,Nt);
-
-% moments of inertia
-I_x = nan(1,Nt);
-I_y = nan(1,Nt);
-I_z = nan(1,Nt);
-I_yz = nan(1,Nt);
 
 % coefficients for lungs calcs:
 c(1:2) = 0.8333;
