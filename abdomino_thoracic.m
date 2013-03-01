@@ -2,11 +2,18 @@
 
 clear all
 
+O1 = [1;2;3]; % origin
+
+% For logical selection of gender:
+male   = 1;
+female = 0;
+
 N  = 10; % number of disks
 Nt =  7; % number of disks for thoracic region
 
-male   = 1;
-female = 0;
+% Indices for thoracic and abdominal (resp.) groups of disks:
+indt = 1:Nt;
+inda = (Nt+1):N;
 
 % Measurements and variables:
 Y1 = nan(1,N);
@@ -45,10 +52,6 @@ gamma_t = @(i_m) 1080+60*i_m; % thoracic wall
 gamma_a = @(i_m) 1000+30*i_m; % abdomen
 gamma_l = 300; % lungs
 gamma_b = 1200; % breasts (? see A2.94)
-
-% Indices for thoracic and abdominal (resp.) groups of disks:
-indt = 1:Nt;
-inda = (Nt+1):N;
 
 %% Measurements
 %
@@ -108,6 +111,8 @@ Y1(10) = hatze1(AP+9);
 
 %% Implicit measurements
 
+O2 = O1+[0;0;l];
+
 g = (1+0.3*i_m)*d_11;
 jj = round(h/(l/N));
 
@@ -151,14 +156,14 @@ fprintf('Mass:   %2.3f kg\n',M)
 fprintf('Volume: %1.4f m^3\n',V)
 
 % Mass centroid:
-xc = 0;
-yc = ( ...
-  sum( (m_1(inda)+m_2(inda))*0.424.*(b(inda).^2+w(inda).^2)./Y1(inda) ) ...
+xc = O1(1);
+yc = O1(2)+( ...
+  sum( (m_1+m_2)*0.424.*(b(inda).^2+w(inda).^2)./Y1(inda) ) ...
   + m_f*(b(jj)+3/8*r) ...
   )/M;
-zc = ( ...
-    sum( (m_e(indt)-m_p(indt)).*(21-2*indt)*l/20 ) ...
-  + sum( (m_1(inda)+m_2(inda)).*(21-2*inda)*l/20 ) ...
+zc = O1(3)+( ...
+    sum( (m_t+m_lu).*(21-2*indt)*l/20 ) ...
+  + sum( (m_1+m_2).*(21-2*inda)*l/20 ) ...
   + m_f*(l-h) ...
   )/M;
 
@@ -169,6 +174,9 @@ s = l^2/1200;
 hfig = figure(1); clf; hold on
 set(hfig,'color','white')
 
+plot_coord(O1,'index','1');
+plot_coord(O2,'index','2');
+
 opt  = {'opacity',0.1,'edgeopacity',0.1};
 optl = {'opacity',0.2,'edgeopacity',0.1};
 
@@ -176,29 +184,30 @@ optl = {'opacity',0.2,'edgeopacity',0.1};
 for ii = indt
   ph = l-ii*l/N; % plate height
   
-  plot_elliptic_plate([0,0,ph],[a(ii) w(ii)],l/N,opt{:});
+  plot_elliptic_plate(O1+[0;0;ph],[a(ii) w(ii)],l/N,opt{:});
   
   % lungs:
-  plot_parabolic_plate([ c(ii)*a(ii),0,ph],[ a2(ii) b2(ii)],l/N,optl{:});
-  plot_parabolic_plate([-c(ii)*a(ii),0,ph],[-a2(ii) b2(ii)],l/N,optl{:});
+  plot_parabolic_plate(O1+[ c(ii)*a(ii);0;ph],[ a2(ii) b2(ii)],l/N,optl{:});
+  plot_parabolic_plate(O1+[-c(ii)*a(ii);0;ph],[-a2(ii) b2(ii)],l/N,optl{:});
 end
 
 % abdomen:
 for ii = inda
   ph = l-ii*l/N; % plate height
-  plot_elliptic_plate([0,0,ph],[a(ii) -w(ii)],l/N,'segment',[0 0.5],opt{:})
-  plot_elliptic_plate([0,0,ph],[a(ii)  b(ii)],l/N,'segment',[0 0.5],opt{:})
+  plot_elliptic_plate(O1+[0;0;ph],[a(ii) -w(ii)],l/N,'segment',[0 0.5],opt{:})
+  plot_elliptic_plate(O1+[0;0;ph],[a(ii)  b(ii)],l/N,'segment',[0 0.5],opt{:})
 end
 
 % breasts:
 if i_m == female
-  plot_sphere([+d/2, b(jj), l-h],r,opt{:})
-  plot_sphere([-d/2, b(jj), l-h],r,opt{:})
+  plot_sphere(O1+[+d/2; b(jj); l-h],r,opt{:})
+  plot_sphere(O1+[-d/2; b(jj); l-h],r,opt{:})
 end
 
 plot3(xc,yc,zc,'.k', 'markersize',40)
 
 axis equal
-view(170,15)
+view(153,23)
 axis off
-zoom(1.7)
+zoom(3)
+% matlabfrag('fig/hatze-abthor','renderer','opengl')
