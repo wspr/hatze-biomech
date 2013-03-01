@@ -1,6 +1,5 @@
 function plot_parabolic_plate(O,ab,h,varargin)
 
-
 p = inputParser;
 p.addRequired('O');
 p.addRequired('ab');
@@ -9,7 +8,6 @@ p.addParamValue('N',15);
 p.addParamValue('colour',[0 0.5 0.5]);
 p.addParamValue('opacity',1);
 p.addParamValue('edgeopacity',1);
-
 p.parse(O,ab,h,varargin{:})
 
 col = p.Results.colour;
