@@ -1,14 +1,34 @@
-function plot_elliptic_paraboloid(O,h,h2,a,b,n)
+function plot_elliptic_paraboloid(origin,a,b,h,varargin)
 
-if nargin < 4
-n = 20;
-end
+p = inputParser;
+p.addRequired('origin');
+p.addRequired('a');
+p.addRequired('b');
+p.addRequired('h');
+p.addParamValue('rotate',[0 0 0]);
+p.addParamValue('colour',[1 0 0]);
+p.addParamValue('opacity',0.5);
+p.addParamValue('N',20);
+p.parse(origin,a,b,h,varargin{:})
 
-nu = linspace(0,2*pi,n); % row
-u = linspace(0,h,n)';    % column
+O     = p.Results.origin;
+a     = p.Results.a;
+b     = p.Results.b;
+h     = p.Results.h;
+
+R = p.Results.rotate;
+N = p.Results.N;
+
+nu = linspace(0,2*pi,N); % row
+u = linspace(0,h,N)';    % column
  
-x = O(1)+a*sqrt(u/h)*cos(nu);
-y = O(2)+b*sqrt(u/h)*sin(nu);
-z = O(3)-h-h2+u*ones(1,n); %%h2 is the distance from origin of the paraboloid to the O12 or O15;
+x = a*sqrt(u/h)*cos(nu);
+y = b*sqrt(u/h)*sin(nu);
+z = h-u*ones(1,N);
 
-surf(x,y,z)
+pos = rotation_matrix_zyx(R)*[x(:) y(:) z(:)]';
+xx = reshape(pos(1,:),size(x,1),size(x,2));
+yy = reshape(pos(2,:),size(y,1),size(y,2));
+zz = reshape(pos(3,:),size(z,1),size(z,2));
+
+surf(O(1)+xx,O(2)+yy,O(3)+zz)
