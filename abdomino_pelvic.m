@@ -1,111 +1,141 @@
-function abdomino_pelvic(O11)
+function [calcs,O12,O15] = abdomino_pelvic(O11,i_m,h_l,h_r,...
+   left_thigh_diameters, left_thigh_perimeters,...
+  right_thigh_diameters,right_thigh_perimeters)
 
 %% Abdomino pelvic
- 
-clear all
 
-O11 = [0;0;0]; % origin
-
-% For logical selection of gender:
-male   = 1;
-female = 0;
-i_m = male;
-N = 10; % number of disks
-indf = 1:N; 
+ind1 = 1:3;
+ind2 = 1:7;
+ind3 = 4:7;
+ind = 1:10;
 
 % Densities:
 gamma_o = 1000;
-v = wp/wt-1; % v is the subcutaneous fat indicator;
-gamma_ot = 1020 + 30/((1+2*v)^2)+20*i_m; 
+nu = 1;
+%v = wp/wt-1; % v is the subcutaneous fat indicator;
+gamma_ot = 1020 + 30/((1+2*nu)^2)+20*i_m; 
 gamma_1 = 1090 + 30*i_m;
 gamma_2 = 1020+30*i_m;
 gamma_3 = 1000 + 40*i_m;
 gamma_4 = 1020 + 30*i_m;
-gamma_5 = 960+30/(1+4*v)^3+60*i_m;
-
-h =l_t-l_1t;
+gamma_5 = 960+30/(1+4*nu)^3+60*i_m;
 
 %% Measurements
 
-hatze11 = [...
-  287 301 318 331 341 344 359 382 326 240  097 081 228 053];
+ap_data = [...
+  287 301 318 331 341 344 359 382 326 240 ...
+  767 797 844 887 940 954 975 ... 11:17 perimeters
+  097 081 228 053]/1000; % 18 19 20 21
 
-perimeters = [767 797 844 887 940 954 975];
+a = ap_data(1:10)/2; % half-widths
+u = ap_data(11:17);  % perimeters
 
-%a_h
-%l
-%u_i
-%B
-%a_i
-%a_1t
-%b_1t
-%d_11
+l    = ap_data(20);  % ? "height" of AP section
+C_11 = ap_data(18);  % ?
+d_11 = ap_data(18);  % ? NB also used in ab-thor
+e_11 = ap_data(20);  % ?
+a_h  = ap_data(20);  % ? half hip width (trochanter major bones)
+B    = ap_data(21);  % ? bum depth
+
+c = 0.44; % A2.76
+h = l/numel(ind);
+
+% thighs
+
+atl = left_thigh_diameters/2; 
+utl = left_thigh_perimeters; 
+btl = sqrt(((utl/pi).^2)/2-atl.^2);
+atr = right_thigh_diameters/2; 
+utr = right_thigh_perimeters; 
+btr = sqrt(((utr/pi).^2)/2-atr.^2);
+
+O12 = O11 + [-btl(1); 0; -l + h_l];
+O15 = O11 + [+btr(1); 0; -l + h_r];
 
 %% Calculations
-c = 0.44;
+
 g = (1+0.3*i_m)*d_11;
 
-f_1 = c*a_h*(1+(1-(0.88558-0-22883*(indf-4))^2)^0.5);
-r = (e11^2-(0.037*l)^2)^0.5-B-g;
-b_i = (2*(u_i/pi-(0.5*(a_i^2+g^2))^0.5)^2-a_i^2)^0.5; % i=1,2,3;
-b_i = (0.20264*(u_i-2*(c*a_h+s_p+s_l))^2-a_i^2)^0.5; % i=4,5,6,7;
-s_il = (g^2+(a_i-f_1)^2)^0.5;
-s_ip = 0.5*a_i1((1+(2*b_i1/a_i1)^2)^0.5+(a_i1/2*b_i1)*ln(2*b_i1/a_i1+(1+(2*b_i1/a_i1)^2)^0.5));
-% a_8 =
-a_i1 = c*a_h*(1-(0.88558-0.22883*(indf-4))^2)^0.5;
-b_i1 = B*(1-(0.88558-0-22883*(indf-4))^2);
+f_1(ind3) = c*a_h*(1+sqrt(1-(0.88558-0.22883*(ind3-4)).^2));
+r = sqrt(e_11^2-(0.037*l)^2)-B-g;
 
-% Mass
-m_p = gamma_5*pi/2*B*c*a_h*0.473*l; % two elliptic paraboloids;
-m_ei1 = gamma_1*pi/2*g*a_i*l/10; % i=1,2,3; three semi-elliptical plates;
-m_ti = gamma_2*g*l/10*(a_i+f_1); % i=4,5,6,7,8,9,10; seven trapezoidal plates on the posterior side of the segment;
-m_ei = gamma_3*pi/2*a_i*b_i*l/10; % i=1,2,3,4,5,6,7; seven semi-elliptical plates;
-m_l = gamma_4*0.3*l*(2*a_8*r-(2-pi/2)*a_1t*b_1t); % three special shape plates on the anterior side;
-m_otl = gamma_ot*2*pi*a*b*h/3; % the removed superior parts of left thigh;
-m_otr = gamma_ot*2*pi*a*b*h/3; % the removed superior parts of right thigh;
+aa(ind3) = c*a_h*sqrt(1-(0.88558-0.22883*(ind3-4)).^2)
+bb(ind3) = B*(1-(0.88558-0.22883*(ind3-4)).^2)
 
-m_o = 0.007*i_m; % when A is no lager than 12;
-m_o = gamma_o*i_m*2*pi*(0.005*A-0.045)^3/3; % when A is between 12 and 19;
-m_o = 0.26*i_m; % when A is lager than 19;
+s_l(ind3) = sqrt(g^2+(a(ind3)-f_1(ind3)).^2)
+rr = 2*bb(ind3)./aa(ind3);
+s_p(ind3) = 0.5*aa(ind3).*(...
+   sqrt(1+rr.^2) + 1./rr.*log(rr+sqrt(1+rr.^2))...
+  )
 
-v = m_p*2/gamma_5 + sum(m_ei1)/gamma_1 + sum(m_ti)/gamma_2 + sum(m_ei)/gamma_3 + m_l*3/gamma_4 + m_o - m_otl - m_otr;
-m = m_p*2 + sum(m_ei1) + sum(m_ti) + sum(m_ei) + m_l*3 + m_o - m_otl - m_otr;
+b(ind1) = sqrt( 2*(u(ind1)/pi-sqrt(0.5*(a(ind1).^2+g^2))).^2 - a(ind1).^2 );
+b(ind3) = sqrt(0.20264*(...
+  u(ind3) - 2*( c*a_h + s_p(ind3) + s_l(ind3) )...
+  ).^2-a(ind3).^2)
 
-% Mass centroid:
-xc = O11(0);
-y_p = -B/3-g;
-y_1 = -4*g/3/pi;
-y_2i = -(g/3)*(2*f_l+a_i)/(i_l+a_i);
-y_3i = 4*b_i/3/pi;
-y_4 = (2*(a_i(8)-a_lt)*b_lt*(r-b_lt/2)+a_i(8)*(r-b_lt)^2+1.571*a_lt*b_lt*(r-0.576*b_lt))/(2*a_i(8)*r-(2-pi/2)*a_lt*b_lt);
-y_ot = r-b_lt;
-z_p = -0.737*l;
-z_li = -l*(indf/10-0.05);
-z_4 = -0.85*l;
-z_ot = -0.7*l-0.6*(l_t-l_lt);
-yc = (2*m_p*y_p+y_1*sum(m_ei)+y_2i*sum(m_ti) + y_3i*sum(m_ei) + y_4*m_l*3 + m_o*(r+0.02) - m_otl*z_ot - m_otr*z_ot)/m;
-zc = (m_p*2*z_p + sum(m_ei1)*z_li + sum(m_ti)*z_li + sum(m_ei)*z_li + m_l*3*z_li + m_o - m_otl*z_ot - m_otr*z_ot)/m;
+% % a_8 =
+% 
+% % Mass
+% m_p = gamma_5*pi/2*B*c*a_h*0.473*l; % two elliptic paraboloids;
+% m_ei1 = gamma_1*pi/2*g*a_i*l/10; % i=1,2,3; three semi-elliptical plates;
+% m_ti = gamma_2*g*l/10*(a_i+f_1); % i=4,5,6,7,8,9,10; seven trapezoidal plates on the posterior side of the segment;
+% m_ei = gamma_3*pi/2*a_i*b_i*l/10; % i=1,2,3,4,5,6,7; seven semi-elliptical plates;
+% m_l = gamma_4*0.3*l*(2*a_8*r-(2-pi/2)*a_1t*b_1t); % three special shape plates on the anterior side;
+% m_otl = gamma_ot*2*pi*a*b*h/3; % the removed superior parts of left thigh;
+% m_otr = gamma_ot*2*pi*a*b*h/3; % the removed superior parts of right thigh;
+% 
+% m_o = 0.007*i_m; % when A is no lager than 12;
+% m_o = gamma_o*i_m*2*pi*(0.005*A-0.045)^3/3; % when A is between 12 and 19;
+% m_o = 0.26*i_m; % when A is lager than 19;
+% 
+% nu = m_p*2/gamma_5 + sum(m_ei1)/gamma_1 + sum(m_ti)/gamma_2 + sum(m_ei)/gamma_3 + m_l*3/gamma_4 + m_o - m_otl - m_otr;
+% m = m_p*2 + sum(m_ei1) + sum(m_ti) + sum(m_ei) + m_l*3 + m_o - m_otl - m_otr;
+% 
+% % Mass centroid:
+% xc = O11(0);
+% y_p = -B/3-g;
+% y_1 = -4*g/3/pi;
+% y_2i = -(g/3)*(2*f_l+a_i)/(i_l+a_i);
+% y_3i = 4*b_i/3/pi;
+% y_4 = (2*(a_i(8)-a_lt)*b_lt*(r-b_lt/2)+a_i(8)*(r-b_lt)^2+1.571*a_lt*b_lt*(r-0.576*b_lt))/(2*a_i(8)*r-(2-pi/2)*a_lt*b_lt);
+% y_ot = r-b_lt;
+% z_p = -0.737*l;
+% z_li = -l*(indf/10-0.05);
+% z_4 = -0.85*l;
+% z_ot = -0.7*l-0.6*(l_t-l_lt);
+% yc = (2*m_p*y_p+y_1*sum(m_ei)+y_2i*sum(m_ti) + y_3i*sum(m_ei) + y_4*m_l*3 + m_o*(r+0.02) - m_otl*z_ot - m_otr*z_ot)/m;
+% zc = (m_p*2*z_p + sum(m_ei1)*z_li + sum(m_ti)*z_li + sum(m_ei)*z_li + m_l*3*z_li + m_o - m_otl*z_ot - m_otr*z_ot)/m;
+% 
+% 
+% disp('-------------------------')
+% disp('Abdomino pelvic section')
+% disp('-------------------------')
+% fprintf('Mass:     %2.3f kg\n',sum(m))
+% fprintf('Volume:   %1.4f m^3\n',sum(nu))
+% fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
+% fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
-
-disp('-------------------------')
-disp('Abdomino pelvic section')
-disp('-------------------------')
-fprintf('Mass:     %2.3f kg\n',sum(m))
-fprintf('Volume:   %1.4f m^3\n',sum(v))
-fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
-fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
+calcs = [];
 
 %% Plot
 
-% buttock 1
+% buttocks left and right
 
-
-
-% buttock 2
+plot_elliptic_paraboloid(O11+[-c*a_h;-g;-l+h_l-0.037*l],0.437*l,B,'rotate',[90 0 0])
+plot_elliptic_paraboloid(O11+[+c*a_h;-g;-l+h_r-0.037*l],0.437*l,B,'rotate',[90 0 0])
 
 % 3 semi-elliptical plates
 
+for ii = ind1
+  plot_elliptic_plate(O11+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5])
+end
+
 % 7 trapezoidal plates
+
+for ii = ind3
+  [a(ii) f_1(ii)]
+  plot_trapzoidal_plate(O11+[0;-g/2;-ii*h],a(ii),f_1(ii),g,h)
+end
 
 % 7 semi-elliptical plates
 

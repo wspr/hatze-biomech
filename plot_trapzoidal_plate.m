@@ -1,7 +1,5 @@
 function plot_trapzoidal_plate(O,a,b,c,h)
 
-% O  MUST  always be a 3x1 column vector
-
 if nargin == 0
   O = [0;0;0];
   a = 1;

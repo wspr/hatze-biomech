@@ -63,9 +63,11 @@ right_forearm_length = 257/1000;
 
 [calcs, O10] = forearm(O9,i_m,'r',right_forearm_diameters,right_forearm_perimeters,right_forearm_length);
 
+%% pelvis
 
-O12 = [0.1;0;-0.2]; % origin of left thigh
-O15 = [-0.1;0;-0.2]; % origin of right thigh
+hfig = figure(1); clf; hold on
+set(hfig,'color','white')
+axis equal
 
 %left_thigh
 left_thigh_diameters = [191 191 190 180 162 146 132 126 119 119]/1000; 
@@ -73,16 +75,22 @@ left_thigh_perimeters = [629 604 590 565 536 500 453 418 386 373]/1000;
 left_thigh_length = 439/1000;
 left_thigh_length2 = 364/1000;
 
-[calcs, O13] = thigh(O12,i_m,'l',left_thigh_diameters,left_thigh_perimeters,left_thigh_length,left_thigh_length2);
-
 %right_thigh
 right_thigh_diameters = [186 187 189 182 171 176 143 136 130 126]/1000; 
 right_thigh_perimeters = [620 602 592 563 528 495 461 417 388 377]/1000; 
 right_thigh_length = 445/1000;
 right_thigh_length2 = 353/1000;
 
+h_l = left_thigh_length-left_thigh_length2;
+h_r = right_thigh_length-right_thigh_length2;
+
+[calcs, O12, O15] = abdomino_pelvic(O1,i_m,h_l,h_r,...
+  left_thigh_diameters, left_thigh_perimeters,...
+  right_thigh_diameters,right_thigh_perimeters);
+[calcs, O13] = thigh(O12,i_m,'l',left_thigh_diameters,left_thigh_perimeters,left_thigh_length,left_thigh_length2);
 [calcs, O16] = thigh(O15,i_m,'r',right_thigh_diameters,right_thigh_perimeters,right_thigh_length,right_thigh_length2);
 
+%%
 
 %left_leg
 left_leg_diameters = [110 103 109 116 117 105 091 079 065 064]/1000; 

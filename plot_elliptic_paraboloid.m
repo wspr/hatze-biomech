@@ -1,23 +1,26 @@
-function plot_elliptic_paraboloid(origin,a,b,h,varargin)
+function plot_elliptic_paraboloid(origin,ab,h,varargin)
 
 p = inputParser;
 p.addRequired('origin');
-p.addRequired('a');
-p.addRequired('b');
+p.addRequired('ab');
 p.addRequired('h');
 p.addParamValue('rotate',[0 0 0]);
 p.addParamValue('colour',[1 0 0]);
 p.addParamValue('opacity',0.5);
 p.addParamValue('N',20);
-p.parse(origin,a,b,h,varargin{:})
+p.parse(origin,ab,h,varargin{:})
 
-O     = p.Results.origin;
-a     = p.Results.a;
-b     = p.Results.b;
-h     = p.Results.h;
+O  = p.Results.origin;
+ab = p.Results.ab;
+h  = p.Results.h;
+R  = p.Results.rotate;
+N  = p.Results.N;
 
-R = p.Results.rotate;
-N = p.Results.N;
+if length(ab) == 1
+  a = ab; b = ab;
+else
+  a = ab(1); b = ab(2);
+end
 
 nu = linspace(0,2*pi,N); % row
 u = linspace(0,h,N)';    % column
