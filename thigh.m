@@ -24,12 +24,13 @@ u = left_thigh_perimeters;
 b = sqrt(((u/pi).^2)/2-a.^2); % b
 l = left_thigh_length;
 l_1 = left_thigh_length2; 
+h = l-l_1;
 
 %% Calculations
 
 % Mass 
-v_i = pi*a.*b*l_1/N; % volume of each forearm disk
-m_i = gamma_i(i_m).*v_i; % mass of each forearm disk
+v_i = pi*a.*b*l_1/N;
+m_i = gamma_i(i_m).*v_i;
 a_1 = a(1);
 b_1 = b(1);
 v_0 = 2*pi*a_1*b_1*(l-l_1)/3;
@@ -81,5 +82,7 @@ for ii = indf
   ph = l_1-ii*l_1/N; % plate height
   plot_elliptic_plate(O13+[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:})
 end
+
+plot_hoof(O12-[0;0;h],a(1),b(1),h)
 
 end
