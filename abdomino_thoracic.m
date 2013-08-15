@@ -1,12 +1,5 @@
+function [calcs,O2] = abdomino_thoracic(O1,i_m,hatze1,hatze2,hatze11)
 %% abdomino-thoracic
-
-clear all
-
-O1 = [0;0;0]; % origin
-
-% For logical selection of gender:
-male   = 1;
-female = 0;
 
 N  = 10; % number of disks
 Nt =  7; % number of disks for thoracic region
@@ -37,19 +30,6 @@ gamma_b = 1200; % breasts (? see A2.94)
 %% Measurements
 %
 % Trying to use Hatze's measurements where possible
-
-i_m = male;
-
-hatze1 = [...
-  101 273 275 264 251 245 262 ... 1:7 ML
-  178 ... 8   ???
-  084 095 117 149 168 192 190 184 174 174 ... 9:18 AP
-  170 ... 19  ???
-  452 ... 20  l
-  213 ... 21  ???
-  ]/1000;
-hatze2 = [139 184 214 055]/1000;
-hatze11(21) = 0.053;
 
 l = hatze1(20);     % length of abdomino-thorasic section; has to be this
                     % value as it's the largest in the set
@@ -201,6 +181,8 @@ fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
 fprintf('Theta:    %2.2f°\n',theta*180/pi)
 fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
+calcs = [M,V,1000*xc,1000*yc,1000*zc,theta,Ip_x,Ip_y,Ip_z];
+
 %% Plot
 
 hfig = figure(1); clf; hold on
@@ -232,7 +214,7 @@ for ii = inda
 end
 
 % breasts:
-if i_m == female
+if i_m == 0 % female
   plot_sphere(O1+[+d/2; b(jj); l-h],r,opt{:})
   plot_sphere(O1+[-d/2; b(jj); l-h],r,opt{:})
 end
@@ -241,7 +223,7 @@ end
 plot_coord(O1,'index','1','axes','yz','length',0.1,'rotate',[theta*180/pi 0 0])
 
 % centroid:
-plot3(xc,yc,zc,'.k', 'markersize',10)
+plot3(xc,yc,zc,'.k', 'markersize',20)
 
 axis equal
 view(153,23)

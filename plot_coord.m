@@ -76,18 +76,18 @@ hold on
 
 if strcmp(plot_axes,'xyz')
   if labels_bool
-    text(-nameshift+O(1),-nameshift+O(2),O(3),['O_',ni]);
+    text(-nameshift+O(1),-nameshift+O(2),O(3),['O_{',ni,'}']);
   end
 end
 
 for s = plot_axes
   switch s
     case 'x'
-      plot_one_coord(O,R*ax,        R*head1,        R*head2,        ['x_',ni],[2*nameshift; 0; 0])
+      plot_one_coord(O,R*ax,        R*head1,        R*head2,        ['x_{',ni,'}'],[2*nameshift; 0; 0])
     case 'y'
-      plot_one_coord(O,R*Rz(+90)*ax,R*Rz(+90)*head1,R*Rz(+90)*head2,['y_',ni],[0; nameshift; 0])
+      plot_one_coord(O,R*Rz(+90)*ax,R*Rz(+90)*head1,R*Rz(+90)*head2,['y_{',ni,'}'],[0; nameshift; 0])
     case 'z'
-      plot_one_coord(O,R*Ry(-90)*ax,R*Ry(-90)*head1,R*Ry(-90)*head2,['z_',ni],[0; 0; nameshift])
+      plot_one_coord(O,R*Ry(-90)*ax,R*Ry(-90)*head1,R*Ry(-90)*head2,['z_{',ni,'}'],[0; 0; nameshift])
   end
 end
 

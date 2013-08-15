@@ -19,6 +19,8 @@ p = inputParser;
 p.addRequired('O');
 p.addRequired('r');
 p.addParamValue('N',15);
+p.addParamValue('latrange', [-1 1]);
+p.addParamValue('longrange',[-1 1]);
 p.addParamValue('colour',[0.5 0 0.5]);
 p.addParamValue('opacity',1);
 p.addParamValue('edgeopacity',1);
@@ -28,11 +30,13 @@ col   = p.Results.colour;
 opac  = p.Results.opacity;
 eopac = p.Results.edgeopacity;
 N     = p.Results.N;
+rlong     = p.Results.latrange;
+rlat      = p.Results.longrange;
 
 %% Define geometry and coordinates
 
-theta = linspace(-pi,pi,N);      % row
-phi   = linspace(-pi/2,pi/2,N)'; % column
+theta = linspace(pi*rlong(1),pi*rlong(2),N);      % row
+phi   = linspace(pi/2*rlat(1),pi/2*rlat(2),N)'; % column
 
 x1 = O(1) + r*cos(phi)*cos(theta);
 y1 = O(2) + r*cos(phi)*sin(theta);

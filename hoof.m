@@ -1,13 +1,9 @@
 %% Ellipto-parabolic hoof
 
-% radii
 a = 10;
-b = 15;
-
-% height
-h = 20;
-
-N = 40;
+b = 15; % radii
+h = 20; % height
+N = 50;
 
 %%
 
@@ -17,7 +13,7 @@ theta = linspace(-pi,pi,N);
 
 x = [a; a]*cos(theta);
 y = [b; b]*sin(theta);
-z = [h*ones(1,N); zeros(1,N)];
+z = [zeros(1,N); h*ones(1,N)];
 surf(x,y,z,'facecolor',[0 0 1],'facealpha',1,'edgealpha',0)
 
 c = h/b^2;
@@ -40,17 +36,15 @@ axis equal
 figure(46); clf; hold on
 
 opt = {'facecolor',[0 1 0],'facealpha',0.5};
-surf(x,y,[zeros(1,N); z3],opt{:})
-patch(x3,y3,zeros(1,N),opt{:})
 
 theta = linspace(-pi,0,N);
 x4 = a*cos(theta);
 y4 = b*sin(theta);
 z4 = h-h/a^2*x4.^2;
 
-% fill towards "y=0" from both sides:
-surf([x4;x4],[0*ones(1,N); y4],[z4;z4],[1 1 1],opt{:})
-surf([x4;x4],[0*ones(1,N);-y4],[z4;z4],[1 1 1],opt{:})
+surf(x,y,[zeros(1,N); z3],opt{:}) % sides
+patch(x3,y3,zeros(1,N),opt{:})    % base
+surf([x4;x4],[-y4; y4],[z4;z4],[1 1 1],opt{:}) % top
 
 view(3)
 axis equal
