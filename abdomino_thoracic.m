@@ -188,10 +188,6 @@ calcs = [M,V,1000*xc,1000*yc,1000*zc,theta,Ip_x,Ip_y,Ip_z];
 hfig = figure(1); clf; hold on
 set(hfig,'color','white')
 
-% axes:
-plot_coord(O1,'index','1''');
-plot_coord(O2,'index','2''');
-
 opt  = {'opacity',0.1,'edgeopacity',0.1};
 optl = {'opacity',0.2,'edgeopacity',0.1};
 
@@ -220,7 +216,7 @@ if i_m == 0 % female
 end
 
 % principle axes:
-plot_coord(O1,'index','1','axes','yz','length',0.1,'rotate',[theta*180/pi 0 0])
+%plot_coord(O1,'index','1','axes','yz','length',0.1,'rotate',[theta*180/pi 0 0])
 
 % centroid:
 plot3(xc,yc,zc,'.k', 'markersize',20)

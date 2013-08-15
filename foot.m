@@ -85,9 +85,6 @@ fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
 calcs = [sum(m),sum(v),xc,yc,zc];% Ip_x,Ip_y,Ip_z];
 
 %% Plot
-
-% axes:
-plot_coord(O14,'index','14''');
  
 opt  = {'opacity',0.1,'edgeopacity',0.1};
 optl = {'opacity',0.2,'edgeopacity',0.1};

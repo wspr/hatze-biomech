@@ -73,10 +73,6 @@ calcs = [m,v,xc,yc,zc, Ip_x,Ip_y,Ip_z];
 %% Plot
 
 O5 = O4+[0;0;-l];
-
-% axes:
-plot_coord(O4,'index','4''');
-plot_coord(O5,'index','5''');
  
 opt  = {'opacity',0.1,'edgeopacity',0.1};
 optl = {'opacity',0.2,'edgeopacity',0.1};

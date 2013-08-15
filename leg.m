@@ -64,10 +64,7 @@ calcs = [sum(m),sum(v),xc,yc,zc, Ip_x,Ip_y,Ip_z];
 %% Plot
 
 O17 = O16+[0;0;-l];
-% axes:
-plot_coord(O16,'index','13''');
-plot_coord(O17,'index','14''');
- 
+
 opt  = {'opacity',0.1,'edgeopacity',0.1};
 optl = {'opacity',0.2,'edgeopacity',0.1};
  

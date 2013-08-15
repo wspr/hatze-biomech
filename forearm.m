@@ -62,10 +62,6 @@ calcs = [mass,volume,xc,yc,zc,Ip_x,Ip_y,Ip_z];
 %% Plot
 
 O6 = O5+[0;0;-l];
-
-% axes:
-plot_coord(O5,'index','5''');
-plot_coord(O6,'index','6''');
  
 opt  = {'opacity',0.1,'edgeopacity',0.1};
 optl = {'opacity',0.2,'edgeopacity',0.1};

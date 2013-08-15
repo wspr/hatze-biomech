@@ -1,7 +1,6 @@
 %% Make a person
 
 clear all
-close all
 clc
 hfig = figure(1); clf; hold on
 set(hfig,'color','white')
@@ -122,6 +121,21 @@ right_foot_length=[212]/1000;
 
 [calcs]= foot(O17,i_m,'r',right_foot_ankle_length,right_foot_toes_length,right_foot_heel_length,right_foot_upper_height,right_foot_lower_height,right_foot_length);
 
+
+if false
+plot_coord(O1,'index','1''');
+plot_coord(O2,'index','2''');
+plot_coord(O4,'index','4''');
+plot_coord(O5,'index','5''');
+plot_coord(O6,'index','6''');
+plot_coord(O12,'index','12''');
+plot_coord(O13,'index','13''');
+plot_coord(O14,'index','14''');
+plot_coord(O16,'index','16''');
+plot_coord(O17,'index','17''');
+end
+
 axis equal
 view(153,23)
 axis off
+zoom(0.4)
