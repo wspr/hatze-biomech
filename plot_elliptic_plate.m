@@ -7,8 +7,8 @@ p.addRequired('h');
 p.addOptional('segment',[0 1]);
 p.addParamValue('N',25);
 p.addParamValue('colour',[0.5 0 0.5]);
-p.addParamValue('opacity',1);
-p.addParamValue('edgeopacity',1);
+p.addParamValue('opacity',0.5);
+p.addParamValue('edgeopacity',0.5);
 p.parse(O,r,h,varargin{:})
 
 t     = p.Results.segment;
@@ -27,5 +27,5 @@ z = O(3) + h*(0:1)'*ones(1,N);
 
 hold on
 surf(x,y,z,'edgealpha',eopac,'facecolor',col,'facealpha',opac)
-%patch(x(1,:),y(1,:),z(1,:),col,'facealpha',opac,'edgealpha',eopac)
-%patch(x(2,:),y(2,:),z(2,:),col,'facealpha',opac,'edgealpha',eopac)
+patch(x(1,:),y(1,:),z(1,:),col,'facealpha',opac,'edgealpha',eopac)
+patch(x(2,:),y(2,:),z(2,:),col,'facealpha',opac,'edgealpha',eopac)

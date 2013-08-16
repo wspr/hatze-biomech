@@ -65,9 +65,8 @@ right_forearm_length = 257/1000;
 
 %% pelvis
 
-hfig = figure(1); clf; hold on
-set(hfig,'color','white')
-axis equal
+% pelvis height
+pelvis_height = 228/1000;
 
 %left_thigh
 left_thigh_diameters = [191 191 190 180 162 146 132 126 119 119]/1000; 
@@ -81,14 +80,16 @@ right_thigh_perimeters = [620 602 592 563 528 495 461 417 388 377]/1000;
 right_thigh_length = 445/1000;
 right_thigh_length2 = 353/1000;
 
-h_l = left_thigh_length-left_thigh_length2;
-h_r = right_thigh_length-right_thigh_length2;
+h_l = 0.3*pelvis_height;
+h_r = 0.3*pelvis_height; % not sure how these could ever be different?
 
 [calcs, O12, O15] = abdomino_pelvic(O1,i_m,h_l,h_r,...
   left_thigh_diameters, left_thigh_perimeters,...
   right_thigh_diameters,right_thigh_perimeters);
-[calcs, O13] = thigh(O12,i_m,'l',left_thigh_diameters,left_thigh_perimeters,left_thigh_length,left_thigh_length2);
-[calcs, O16] = thigh(O15,i_m,'r',right_thigh_diameters,right_thigh_perimeters,right_thigh_length,right_thigh_length2);
+
+% thighs
+[calcs, O13] = thigh(O12,i_m,'l',left_thigh_diameters,left_thigh_perimeters,left_thigh_length,h_l);
+[calcs, O16] = thigh(O15,i_m,'r',right_thigh_diameters,right_thigh_perimeters,right_thigh_length,h_r);
 
 %%
 
