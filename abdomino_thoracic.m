@@ -1,4 +1,4 @@
-function [calcs,O2] = abdomino_thoracic(O1,i_m,hatze1,hatze2,hatze11)
+function [calcs,O2,a,l] = abdomino_thoracic(O1,i_m,hatze1,hatze2,hatze11)
 %% abdomino-thoracic
 
 N  = 10; % number of disks

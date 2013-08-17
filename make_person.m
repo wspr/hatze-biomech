@@ -9,6 +9,9 @@ male = 1;
 female = 0;
 i_m = female;
 
+person.sex = female;
+person.origin{1} = [0;0;0];
+
 O1 = [0;0;0]; % origin
 
 hatze1 = [...
@@ -22,31 +25,34 @@ hatze1 = [...
 hatze2 = [139 184 214 055]/1000;
 hatze11(21) = 0.053;
 
-[calcs,O2] = abdomino_thoracic(O1,i_m,hatze1,hatze2,hatze11);
-
-head_width  = 0.139;
-head_depth  = 0.184;
-head_height = 0.214;
-neck_height = 0.055;
-
-[calcs] = head_neck(O2,i_m,hatze1,head_width,head_depth,head_height,neck_height);
-
-O4 = O2+[0.3;0;0]; % origin of left arm
+[calcs,O2,thorax_hwidths,thorax_length] = abdomino_thoracic(O1,i_m,hatze1,hatze2,hatze11);
 
 %left_arm
 left_arm_diameters = [085 085 080 077 073 072 072 072 072 083]/1000; 
 left_arm_perimeters = [303 292 280 267 260 256 250 243 235 237]/1000; 
 left_arm_length = 294/1000;
 
-[calcs, O5] = arm(O4,i_m,'l',left_arm_diameters,left_arm_perimeters,left_arm_length);
-
-O8 = O2+[-0.3;0;0]; % origin of right arm
-
 %right_arm
 right_arm_diameters = [093 091 085 087 085 078 074 070 070 076]/1000; 
 right_arm_perimeters = [290 279 268 260 257 251 246 236 223 217]/1000; 
 right_arm_length = 291/1000;
 
+O4 = shoulder(O2,i_m,'l',thorax_hwidths,thorax_length,left_arm_diameters);
+O8 = shoulder(O2,i_m,'r',thorax_hwidths,thorax_length,right_arm_diameters);
+
+%%
+
+head_width  = 0.139;
+head_depth  = 0.184;
+head_height = 0.214;
+neck_height = 0.055;
+[calcs] = head_neck(O2,i_m,hatze1,head_width,head_depth,head_height,neck_height);
+
+%%
+
+if isempty(mfilename); clf; hold on; axis equal; view(3); end
+
+[calcs, O5] = arm(O4,i_m,'l',left_arm_diameters,left_arm_perimeters,left_arm_length);
 [calcs, O9] = arm(O8,i_m,'r',right_arm_diameters,right_arm_perimeters,right_arm_length);
 
 %left_forearm
