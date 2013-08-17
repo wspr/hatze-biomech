@@ -1,6 +1,9 @@
-function [calcs] = head_neck(O2,i_m,hatze1,head_width,head_depth,head_height,neck_height)
+function [person] = head_neck(person,hatze1,head_width,head_depth,head_height,neck_height)
 
 %% Head_neck
+
+O2 = person.origin{2};
+i_m = person.sex;
 
 %% Densities:
 
@@ -50,8 +53,6 @@ fprintf('Mass:     %2.3f kg\n',m)
 %fprintf('Volume:   %1.4f m^3\n',v)
 fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
 fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
-
-calcs = [m,xc,yc,zc, Ip_x,Ip_y,Ip_z];
 
 %% Plot
 

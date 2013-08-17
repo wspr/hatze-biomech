@@ -1,17 +1,22 @@
-function [O8,O7] = shoulder(O2,i_m,lr,a_thorax,l_t,d_arm)
-%%
+function person = shoulder(person,lr,l_t,d_arm)
 
-meas = [0.140 0.176 0.090 0.025];
+O2 = person.origin{2};
+i_m = person.sex;
 
-b = meas(1)/2;
-d = meas(2);
+at1 = person.meas(1).widths(1)/2;
+at5 = person.meas(1).widths(5)/2;
+
+meas = [140 176 090 025];
+
+b = meas(2)/2;
+d = meas(1);
 % meas(3) ?
 z_h = meas(4);
 
 b1 = d_arm(1)/4;
 
 j1 = 0.35*l_t-z_h;
-h1 = 0.68*a_thorax(5)-a_thorax(1);
+h1 = 0.68*at5-at1;
 d_z = 0.2*l_t-z_h-1.5*b1;
 
 beta = asin( d_z/d );
@@ -36,7 +41,8 @@ c6 = 1/tan(alpha)-tan(beta);
 A2 = @(z) c5 + c6*z; % 0..h1
 B2 = @(z) b*sqrt(z/h1);
 
-O7 = O2 + [0;0;-z_h-d_z-1.25*b1];
+O3 = O2 + [0;0;-z_h-d_z-1.25*b1];
+O7 = O3;
 
 if lr == 'r'
   lr_sign = 1;
@@ -44,9 +50,16 @@ elseif lr == 'l'
   lr_sign = -1;
 end
 
-O8 = O7 + [ lr_sign*(a_thorax(1)+d_x) ; 0; 0]
+O8 = O7 + [ lr_sign*(at1+d_x) ; 0; 0];
+person.origin{7} = O7;
+person.origin{3} = O3;
+if lr == 'l'
+  person.origin{4} = O8;
+elseif lr == 'r'
+  person.origin{8} = O8;
+end
 
-start = O2+[lr_sign*a_thorax(1); 0; -z_h];
+start = O2+[lr_sign*at1; 0; -z_h];
 shtop = start+[lr_sign*d_x;0;-d_z];
 
 a10 = A1(d_x);

@@ -1,4 +1,13 @@
-function [calcs, O6] = forearm(O5,i_m,lr,forearm_diameters,forearm_perimeters,forearm_length)
+function person = forearm(person,lr,forearm_diameters,forearm_perimeters,forearm_length)
+
+if lr == 'l'
+  o_arm = 5;
+elseif lr == 'r'
+  o_arm = 9;
+end
+P = person.origin{o_arm};
+
+i_m = person.sex;
 
 %% Forearm
 
@@ -28,9 +37,9 @@ v = pi*a(indf).*b(indf)*l/N; % volume of each forearm disk
 m = gamma_i(i_m).*v; % mass of each forearm disk
 
 % Mass centroid:
-xc = O5(1);
-yc = O5(1);
-zc = O5(3) - sum(sum(m(indf).*(2*indf-1).*l)/20*m);
+xc = P(1);
+yc = P(2);
+zc = P(3) - sum(sum(m(indf).*(2*indf-1).*l)/20*m);
 
 % Moments of inertia:
 I_x = m.*(3*(b.^2)+(l/10).^2)/12; 
@@ -61,14 +70,15 @@ calcs = [mass,volume,xc,yc,zc,Ip_x,Ip_y,Ip_z];
 
 %% Plot
 
-O6 = O5+[0;0;-l];
- 
+Q = P+[0;0;-l];
+person.origin{o_arm+1} = Q; 
+
 opt  = {'opacity',0.1,'edgeopacity',0.1};
 optl = {'opacity',0.2,'edgeopacity',0.1};
  
 for ii = indf
   ph = l-ii*l/N; % plate height
-  plot_elliptic_plate(O6+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
+  plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
 end
 
 end

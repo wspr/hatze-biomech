@@ -1,5 +1,8 @@
-function [calcs,O2,a,l] = abdomino_thoracic(O1,i_m,hatze1,hatze2,hatze11)
+function [l,person] = abdomino_thoracic(person,hatze1,hatze2,hatze11)
 %% abdomino-thoracic
+
+O1 = person.origin{1};
+i_m = person.sex;
 
 N  = 10; % number of disks
 Nt =  7; % number of disks for thoracic region
@@ -42,37 +45,18 @@ z_h = hatze2(4);    % height between shoulder and O1
                     % measurements
 
 % invented: (can't figure which they'd be, if any)
-d = 0.15;    % nipple-to-nipple distance
+d = 150;    % nipple-to-nipple distance
 h = l/2;     % height below C5 of nipple
-r = 0.05;    % radius of breast
+r = 050;    % radius of breast
 
-ML = 0;
-AP = 9;
-
-% thorax ML widths (7)
-X1(1)  = hatze1(ML+1);
-X1(5)  = hatze1(ML+2);
-X1(6)  = hatze1(ML+3);
-X1(7)  = hatze1(ML+4);
-X1(8)  = hatze1(ML+5);
-X1(9)  = hatze1(ML+6);
-X1(10) = hatze1(ML+7);
-
-% thorax AP thicknesses (10)
-Y1(1)  = hatze1(AP);
-Y1(2)  = hatze1(AP+1); 
-Y1(3)  = hatze1(AP+2); 
-Y1(4)  = hatze1(AP+3);
-Y1(5)  = hatze1(AP+4); 
-Y1(6)  = hatze1(AP+5); 
-Y1(7)  = hatze1(AP+6); 
-Y1(8)  = hatze1(AP+7); 
-Y1(9)  = hatze1(AP+8); 
-Y1(10) = hatze1(AP+9);
+% thorax ML widths (7) and AP thicknesses (10)
+X1 = person.meas(1).widths;
+Y1 = person.meas(1).depths;
 
 %% Implicit measurements
 
 O2 = O1+[0;0;l];
+person.origin{2} = O2;
 
 g = (1+0.3*i_m)*d_11;
 jj = round(h/(l/N));
@@ -220,9 +204,3 @@ end
 
 % centroid:
 plot3(xc,yc,zc,'.k', 'markersize',20)
-
-axis equal
-view(153,23)
-axis off
-zoom(3)
-% matlabfrag('fig/hatze-abthor','renderer','opengl')

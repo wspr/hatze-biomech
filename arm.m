@@ -1,4 +1,13 @@
-function [calcs, O5] = arm(O4,i_m,lr,arm_diameters,arm_perimeters,arm_length)
+function person = arm(person,lr,arm_diameters,arm_perimeters,arm_length)
+
+if lr == 'l'
+  o_arm = 4;
+elseif lr == 'r'
+  o_arm = 8;
+end
+P = person.origin{o_arm};
+
+i_m = person.sex;
 
 %%  Arm
 
@@ -70,19 +79,20 @@ fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
 calcs = [m,v,xc,yc,zc, Ip_x,Ip_y,Ip_z];
 
-%% Plot
+Q = P+[0;0;-l];
+person.origin{o_arm+1} = Q;
 
-O5 = O4+[0;0;-l];
+%% Plot
  
 opt  = {'opacity',0.1,'edgeopacity',0.1};
 optl = {'opacity',0.2,'edgeopacity',0.1};
  
 for ii = indu
   ph = l-ii*l/N; % plate height
-  plot_elliptic_plate(O5+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
+  plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
 end
 
 % the hemishpere
-plot_sphere(O4, b(1)/2, 'longrange',[0 1],opt{:})
+plot_sphere(P, b(1)/2, 'longrange',[0 1],opt{:})
 
 end

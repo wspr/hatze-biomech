@@ -1,4 +1,13 @@
-function [calcs, O13] = thigh(O12,i_m,lr,left_thigh_diameters,left_thigh_perimeters,left_thigh_length,h)
+function person = thigh(person,lr,left_thigh_diameters,left_thigh_perimeters,left_thigh_length,h)
+
+if lr == 'l'
+  o_ind = 12;
+elseif lr == 'r'
+  o_ind = 15;
+end
+P = person.origin{o_ind};
+
+i_m = person.sex;
 
 %% Thigh
 
@@ -38,9 +47,9 @@ v=sum(v_i)+v_0;
 m=sum(m_i)+m_0;
 
 % Mass centroid:
-xc = O12(1);
-yc = O12(2);
-zc = O12(3) - (m_0*0.4*h+sum(h+l_1*(2*indf-1)/20))/m;
+xc = P(1);
+yc = P(2);
+zc = P(3) - (m_0*0.4*h+sum(h+l_1*(2*indf-1)/20))/m;
 
 % Moments of inertia:
 I_x0 = m_0*(b_1^2/4+0.0686*h^2);
@@ -67,20 +76,19 @@ fprintf('Volume:   %1.4f m^3\n',v)
 fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
 fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
-calcs = [m,v,xc,yc,zc, Ip_x,Ip_y,Ip_z];
+Q = P+[0;0;-l_1-h];
+person.origin{o_ind+1} = Q;
 
 %% Plot
- 
-O13 = O12+[0;0;-l_1-h];
- 
+
 opt  = {'opacity',0.1,'edgeopacity',0.1};
 optl = {'opacity',0.2,'edgeopacity',0.1};
  
 for ii = indf
   ph = l_1-ii*l_1/N; % plate height
-  plot_elliptic_plate(O13+[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:})
+  plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:})
 end
 
-plot_hoof(O12-[0;0;h],a(1),b(1),h)
+plot_hoof(P-[0;0;h],a(1),b(1),h)
 
 end

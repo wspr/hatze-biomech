@@ -1,4 +1,13 @@
-function [calcs, O17] = leg(O16,i_m,lr,left_leg_diameters,left_leg_perimeters,left_leg_length,ankle_size)
+function person = leg(person,lr,left_leg_diameters,left_leg_perimeters,left_leg_length,ankle_size)
+
+if lr == 'l'
+  o_ind = 13;
+elseif lr == 'r'
+  o_ind = 16;
+end
+P = person.origin{o_ind};
+
+i_m = person.sex;
 
 %% Leg
 
@@ -33,9 +42,9 @@ m = gamma_i(i_m).*v+2*m_b; % mass of each forearm disk
 mass = sum(m)+m_b;
 
 % Mass centroid:
-xc = O16(1);
-yc = O16(2);
-zc = O16(3) - (-2*m_b*l-sum(m.*l.*(2*indf-1)/20)./mass);
+xc = P(1);
+yc = P(2);
+zc = P(3) - (-2*m_b*l-sum(m.*l.*(2*indf-1)/20)./mass);
 
 % Moments of inertia:
 I_xi = m.*(3*b.^2+(l/10)^2)/12;
@@ -63,14 +72,15 @@ calcs = [sum(m),sum(v),xc,yc,zc, Ip_x,Ip_y,Ip_z];
 
 %% Plot
 
-O17 = O16+[0;0;-l];
+Q = P+[0;0;-l];
+person.origin{o_ind+1} = Q;
 
 opt  = {'opacity',0.1,'edgeopacity',0.1};
 optl = {'opacity',0.2,'edgeopacity',0.1};
  
 for ii = indf
   ph = -ii*l/N; % plate height
-  plot_elliptic_plate(O16+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
+  plot_elliptic_plate(P+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
 end
 
 %% sideways paraboloids
@@ -87,8 +97,8 @@ x = a*sqrt(u/h)*cos(nu);
 y = b*sqrt(u/h)*sin(nu);
 z = u*ones(1,n);
 
-surf(O17(1)+z-a-h,O17(2)+y,O17(3)+x,'facealpha',0.1,'edgealpha',0.2)
-surf(O17(1)-z+a+h,O17(2)+y,O17(3)+x,'facealpha',0.1,'edgealpha',0.2)
+surf(Q(1)+z-a-h,Q(2)+y,Q(3)+x,'facealpha',0.1,'edgealpha',0.2)
+surf(Q(1)-z+a+h,Q(2)+y,Q(3)+x,'facealpha',0.1,'edgealpha',0.2)
 
 
 end

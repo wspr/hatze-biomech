@@ -1,9 +1,13 @@
-function [calcs,O12,O15] = abdomino_pelvic(O11,i_m,...
+function person = abdomino_pelvic(person,...
    pelvis_widths, pelvis_perimeters, pelvis_meas, ...
    h_l,h_r,...
     left_thigh_diameters, left_thigh_perimeters,...
    right_thigh_diameters,right_thigh_perimeters)
 
+O1 = person.origin{1};
+person.origin{11} = O1;
+i_m = person.sex;
+ 
 %% Abdominal pelvic region
 
 Nt = 10;
@@ -57,8 +61,11 @@ atr = right_thigh_diameters/2;
 utr = right_thigh_perimeters; 
 btr = sqrt(((utr/pi).^2)/2-atr.^2);
 
-O12 = O11 + [-btl(1); 0; -l + h_l];
-O15 = O11 + [+btr(1); 0; -l + h_r];
+O12 = O1 + [-btl(1); 0; -l + h_l];
+O15 = O1 + [+btr(1); 0; -l + h_r];
+
+person.origin{12} = O12;
+person.origin{15} = O15;
 
 %% Geometry
 
@@ -134,32 +141,30 @@ end
 % fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
 % fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
-calcs = [];
-
 %% Plot
 
 % buttocks left and right
 
-plot_elliptic_paraboloid(O11+[-c*a_h;-g;-l+h_l-0.037*l],0.437*l,B,'rotate',[90 0 0])
-plot_elliptic_paraboloid(O11+[+c*a_h;-g;-l+h_r-0.037*l],0.437*l,B,'rotate',[90 0 0])
+plot_elliptic_paraboloid(O1+[-c*a_h;-g;-l+h_l-0.037*l],0.437*l,B,'rotate',[90 0 0])
+plot_elliptic_paraboloid(O1+[+c*a_h;-g;-l+h_r-0.037*l],0.437*l,B,'rotate',[90 0 0])
 
 % posterior: 3 semi-elliptical plates
 for ii = ind_pe
-  plot_elliptic_plate(O11+[0;0;-ii*h],[a(ii) g],h,'segment',[0.5 1])
+  plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) g],h,'segment',[0.5 1])
 end
 
 % posterior: 7 trapezoidal plates
 for ii = ind_pt
-  plot_trapzoidal_plate(O11+[0;-g/2;-ii*h],2*a(ii),2*f_1(ii),g,h)
+  plot_trapzoidal_plate(O1+[0;-g/2;-ii*h],2*a(ii),2*f_1(ii),g,h)
 end
 
 % anterior: 7 semi-elliptical plates
 for ii = ind_ae
-  plot_elliptic_plate(O11+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5])
+  plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5])
 end
 
 % anterior: 3 "special shape" plates
 for ii = ind_as
-  plot_special_plate(O11+[0;0;-ii*h],2*a(8),r,atl(1),btl(1),h) 
+  plot_special_plate(O1+[0;0;-ii*h],2*a(8),r,atl(1),btl(1),h) 
 end
 
