@@ -65,7 +65,11 @@ right_forearm_length = 257/1000;
 
 %% pelvis
 
-% pelvis height
+if isempty(mfilename); clf; hold on; axis equal; view(3); end
+
+pelvis_widths = [287 301 318 331 341 344 359 382 326 240]/1000;
+pelvis_perimeters = [767 797 844 887 940 954 975]/1000;
+pelvis_meas = [097 081 228 053]/1000;
 pelvis_height = 228/1000;
 
 %left_thigh
@@ -83,7 +87,9 @@ right_thigh_length2 = 353/1000;
 h_l = 0.3*pelvis_height;
 h_r = 0.3*pelvis_height; % not sure how these could ever be different?
 
-[calcs, O12, O15] = abdomino_pelvic(O1,i_m,h_l,h_r,...
+[calcs, O12, O15] = abdomino_pelvic(O1,i_m,...
+  pelvis_widths,pelvis_perimeters,pelvis_meas,...
+  h_l,h_r,...
   left_thigh_diameters, left_thigh_perimeters,...
   right_thigh_diameters,right_thigh_perimeters);
 

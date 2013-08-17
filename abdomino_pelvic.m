@@ -1,8 +1,10 @@
-function [calcs,O12,O15] = abdomino_pelvic(O11,i_m,h_l,h_r,...
-   left_thigh_diameters, left_thigh_perimeters,...
-  right_thigh_diameters,right_thigh_perimeters)
+function [calcs,O12,O15] = abdomino_pelvic(O11,i_m,...
+   pelvis_widths, pelvis_perimeters, pelvis_meas, ...
+   h_l,h_r,...
+    left_thigh_diameters, left_thigh_perimeters,...
+   right_thigh_diameters,right_thigh_perimeters)
 
-%% Abdomino pelvic
+%% Abdominal pelvic region
 
 Nt = 10;
 Na = 7;
@@ -14,38 +16,39 @@ ind_pt = (Np+1):Nt;
 ind_as = (Na+1):Nt;
 ind = 1:Nt;
 
-% Densities:
-gamma_o = 1000;
-nu = 1;
-%v = wp/wt-1; % v is the subcutaneous fat indicator;
-gamma_ot = 1020 + 30/((1+2*nu)^2)+20*i_m; 
-gamma_1 = 1090 + 30*i_m;
-gamma_2 = 1020+30*i_m;
-gamma_3 = 1000 + 40*i_m;
-gamma_4 = 1020 + 30*i_m;
-gamma_5 = 960+30/(1+4*nu)^3+60*i_m;
-
 %% Measurements
 
-ap_data = [...
-  287 301 318 331 341 344 359 382 326 240 ...
-  767 797 844 887 940 954 975 ... 11:17 perimeters
-  097 081 228 053]/1000; % 18 19 20 21
+% WIDTHS  287 301 318 331 341 344 359 382 326 240
+%  PERIM  767 797 844 887 940 954 975
+%   MEAS  097 081 228 053
 
-a = ap_data(1:10)/2; % half-widths
-u = ap_data(11:17);  % perimeters
+a = pelvis_widths([1:8 8 8])/2; % half-widths. what's with 9 & 10 ??
+u = pelvis_perimeters;  % perimeters
 
-l    = ap_data(20);  % ? "height" of AP section
-C_11 = ap_data(18);  % ?
-d_11 = ap_data(19);  % ? NB also used in ab-thor
-e_11 = ap_data(20);  % ?
-a_h  = ap_data(20);  % ? half hip width (trochanter major bones)
-B    = ap_data(21);  % ? bum depth
+a_h  = a(10);  % ? half hip width (trochanter major bones)
+w_t  = 2*a_h;
+w_p  = pelvis_meas(3);
+B    = pelvis_meas(4);  % ? bum depth
+d_11 = pelvis_meas(4);  % ? NB also used in ab-thor
+e_11 = pelvis_meas(3);  % ?
 
+l    = pelvis_meas(3);  % ? "height" of AP section
 c = 0.44; % A2.76
-h = l/numel(ind);
+h = l/numel(ind); % height of each plate
 
-% thighs
+nu = w_p-w_t - 1; % fatness ratio
+
+%% Densities:
+
+gamma_o  = 1000;
+gamma_ot = 1020 + 20*i_m + 30/((1+2*nu)^2); 
+gamma_1  = 1090 + 30*i_m;
+gamma_2  = 1020 + 30*i_m;
+gamma_3  = 1000 + 40*i_m;
+gamma_4  = 1020 + 30*i_m;
+gamma_5  =  960 + 60*i_m + 30/(1+4*nu)^3;
+
+%% Thighs
 
 atl = left_thigh_diameters/2; 
 utl = left_thigh_perimeters; 
@@ -57,33 +60,41 @@ btr = sqrt(((utr/pi).^2)/2-atr.^2);
 O12 = O11 + [-btl(1); 0; -l + h_l];
 O15 = O11 + [+btr(1); 0; -l + h_r];
 
-%% Calculations
+%% Geometry
 
 g = (1+0.3*i_m)*d_11;
 
 f_1(ind_pt) = c*a_h*(1+sqrt(1-(0.88558-0.22883*(ind_pt-4)).^2));
-B
-g
-e_11
 r = sqrt(e_11^2-(0.037*l)^2)-B-g;
 
-aa(ind_pt) = c*a_h*sqrt(1-(0.88558-0.22883*(ind_pt-4)).^2)
-bb(ind_pt) = B*(1-(0.88558-0.22883*(ind_pt-4)).^2)
-
-s_l(ind_pt) = sqrt(g^2+(a(ind_pt)-f_1(ind_pt)).^2)
-rr = 2*bb(ind_pt)./aa(ind_pt);
-s_p(ind_pt) = 0.5*aa(ind_pt).*(...
-   sqrt(1+rr.^2) + 1./rr.*log(rr+sqrt(1+rr.^2))...
-  )
-
+% anterior depth of stomach above the buttocks:
 b(ind_pe) = sqrt( 2*(u(ind_pe)/pi-sqrt(0.5*(a(ind_pe).^2+g^2))).^2 - a(ind_pe).^2 );
-b(ind_p) = sqrt(0.20264*(...
-  u(ind_p) - 2*( c*a_h + s_p(ind_p) + s_l(ind_p) )...
-  ).^2-a(ind_p).^2)
 
-% % a_8 =
-% 
-% % Mass
+vv = 1-(0.88558-0.22883*(ind_p-4)).^2;
+aa(ind_p) = c*a_h*sqrt(vv);
+bb(ind_p) = B*vv;
+
+s_l(ind_p) = sqrt(g^2+(a(ind_p)-f_1(ind_p)).^2);
+rr = 2*bb(ind_p)./aa(ind_p);
+s_p(ind_p) = 0.5*aa(ind_p).*(...
+   sqrt(1+rr.^2) + 1./rr.*log(rr+sqrt(1+rr.^2))...
+  );
+
+b(ind_p) = sqrt(0.20264*(...
+    u(ind_p) - 2*( c*a_h + s_p(ind_p) + s_l(ind_p) )...
+  ).^2 - a(ind_p).^2 );
+
+% correction
+for ii = 1:length(b)
+  if ~isreal(b(ii))
+    [ii b(ii)]
+    b(ii) = b(ii-1);
+  end
+end
+
+
+%% Mass
+
 % m_p = gamma_5*pi/2*B*c*a_h*0.473*l; % two elliptic paraboloids;
 % m_ei1 = gamma_1*pi/2*g*a_i*l/10; % i=1,2,3; three semi-elliptical plates;
 % m_ti = gamma_2*g*l/10*(a_i+f_1); % i=4,5,6,7,8,9,10; seven trapezoidal plates on the posterior side of the segment;
@@ -133,27 +144,22 @@ plot_elliptic_paraboloid(O11+[-c*a_h;-g;-l+h_l-0.037*l],0.437*l,B,'rotate',[90 0
 plot_elliptic_paraboloid(O11+[+c*a_h;-g;-l+h_r-0.037*l],0.437*l,B,'rotate',[90 0 0])
 
 % posterior: 3 semi-elliptical plates
-
 for ii = ind_pe
   plot_elliptic_plate(O11+[0;0;-ii*h],[a(ii) g],h,'segment',[0.5 1])
 end
 
 % posterior: 7 trapezoidal plates
-
 for ii = ind_pt
-  [a(ii) f_1(ii)]
   plot_trapzoidal_plate(O11+[0;-g/2;-ii*h],2*a(ii),2*f_1(ii),g,h)
 end
 
 % anterior: 7 semi-elliptical plates
-
 for ii = ind_ae
   plot_elliptic_plate(O11+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5])
 end
 
 % anterior: 3 "special shape" plates
-
 for ii = ind_as
-  plot_trapzoidal_plate(O11+[0;+r/2;-ii*h],2*a(8),2*a(8),r,h) 
+  plot_special_plate(O11+[0;0;-ii*h],2*a(8),r,atl(1),btl(1),h) 
 end
 
