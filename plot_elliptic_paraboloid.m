@@ -34,4 +34,6 @@ xx = reshape(pos(1,:),size(x,1),size(x,2));
 yy = reshape(pos(2,:),size(y,1),size(y,2));
 zz = reshape(pos(3,:),size(z,1),size(z,2));
 
-surf(O(1)+xx,O(2)+yy,O(3)+zz)
+surf(O(1)+xx,O(2)+yy,O(3)+zz,...
+  'facecolor',p.Results.colour,...
+  'facealpha',p.Results.opacity)
