@@ -9,6 +9,7 @@ p.addRequired('h');
 p.addParamValue('rotate',[0 0 0]);
 p.addParamValue('colour',[1 0 0]);
 p.addParamValue('opacity',0.5);
+p.addParamValue('edgeopacity',0.5);
 p.addParamValue('N',20);
 p.parse(origin,a,b,h,varargin{:})
 
@@ -21,7 +22,7 @@ R = p.Results.rotate;
 N = p.Results.N;
 M = 2*N-1;
 
-opt = {'facecolor',p.Results.colour,'facealpha',p.Results.opacity};
+opt = {'facecolor',p.Results.colour,'facealpha',p.Results.opacity,'edgealpha',p.Results.edgeopacity};
 
 theta1 = linspace(-pi,pi,M);
 x3 = a*cos(theta1);

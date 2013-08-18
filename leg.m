@@ -1,12 +1,6 @@
-function person = leg(person,lr,left_leg_diameters,left_leg_perimeters,left_leg_length,ankle_size)
+function person = leg(person,S,lr,left_leg_diameters,left_leg_perimeters,left_leg_length,ankle_size)
 
-if lr == 'l'
-  o_ind = 13;
-elseif lr == 'r'
-  o_ind = 16;
-end
-P = person.origin{o_ind};
-
+P = person.origin{S};
 i_m = person.sex;
 
 %% Leg
@@ -73,10 +67,9 @@ calcs = [sum(m),sum(v),xc,yc,zc, Ip_x,Ip_y,Ip_z];
 %% Plot
 
 Q = P+[0;0;-l];
-person.origin{o_ind+1} = Q;
+person.origin{S+1} = Q;
 
-opt  = {'opacity',0.1,'edgeopacity',0.1};
-optl = {'opacity',0.2,'edgeopacity',0.1};
+opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
  
 for ii = indf
   ph = -ii*l/N; % plate height
@@ -97,8 +90,8 @@ x = a*sqrt(u/h)*cos(nu);
 y = b*sqrt(u/h)*sin(nu);
 z = u*ones(1,n);
 
-surf(Q(1)+z-a-h,Q(2)+y,Q(3)+x,'facealpha',0.1,'edgealpha',0.2)
-surf(Q(1)-z+a+h,Q(2)+y,Q(3)+x,'facealpha',0.1,'edgealpha',0.2)
+surf(Q(1)+z-a-h,Q(2)+y,Q(3)+x,'facealpha',person.opacity{S}(1),'edgealpha',person.opacity{S}(2),'facecolor',person.color{S})
+surf(Q(1)-z+a+h,Q(2)+y,Q(3)+x,'facealpha',person.opacity{S}(1),'edgealpha',person.opacity{S}(2),'facecolor',person.color{S})
 
 
 end

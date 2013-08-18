@@ -1,12 +1,6 @@
-function person = forearm(person,lr,forearm_diameters,forearm_perimeters,forearm_length)
+function person = forearm(person,S,lr,forearm_diameters,forearm_perimeters,forearm_length)
 
-if lr == 'l'
-  o_arm = 5;
-elseif lr == 'r'
-  o_arm = 9;
-end
-P = person.origin{o_arm};
-
+P = person.origin{S};
 i_m = person.sex;
 
 %% Forearm
@@ -31,6 +25,9 @@ l = forearm_length;
 
 % 11:20 perimieter ui
 b =sqrt (((u(indf)/pi).^2)/2-a(indf).^2); % b
+
+person.meas{S}.a = a;
+person.meas{S}.b = b;
 
 % Mass 
 v = pi*a(indf).*b(indf)*l/N; % volume of each forearm disk
@@ -71,10 +68,9 @@ calcs = [mass,volume,xc,yc,zc,Ip_x,Ip_y,Ip_z];
 %% Plot
 
 Q = P+[0;0;-l];
-person.origin{o_arm+1} = Q; 
+person.origin{S+1} = Q; 
 
-opt  = {'opacity',0.1,'edgeopacity',0.1};
-optl = {'opacity',0.2,'edgeopacity',0.1};
+opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
  
 for ii = indf
   ph = l-ii*l/N; % plate height

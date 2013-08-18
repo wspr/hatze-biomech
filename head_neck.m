@@ -1,8 +1,8 @@
-function [person] = head_neck(person,hatze1,head_width,head_depth,head_height,neck_height)
+function [person] = head_neck(person,S,hatze1,head_width,head_depth,head_height,neck_height)
 
 %% Head_neck
 
-O2 = person.origin{2};
+O2 = person.origin{S};
 i_m = person.sex;
 
 %% Densities:
@@ -56,7 +56,8 @@ fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
 %% Plot
 
-plot_elliptic_plate(O2,[a_1 b_1],h,'colour',[1 0 0],'opacity',0.3,'edgeopacity',0.1);
+plot_elliptic_plate(O2,[a_1 b_1],h,'colour',person.color{S},...
+  'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2));
 
 zf = @(x,y) c*sqrt(1-(y/b).^2).*(1-(x./a).^8);
 
@@ -72,7 +73,9 @@ x = O2(1)+dd*a.*cos(tt);
 y = O2(2)+dd*b.*sin(tt);
 z = zf(x,y);
 
-opt = {'facecolor',[1 0 0],'facealpha',0.3,'edgealpha',0.1};
+opt = {'facecolor',person.color{S},...
+  'facealpha',person.opacity{S}(1),...
+  'edgealpha',person.opacity{S}(2)};
 
 surf(x,y,ho+z,opt{:})
 surf(x,y,ho-z,opt{:})

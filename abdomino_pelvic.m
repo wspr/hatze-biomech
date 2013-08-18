@@ -1,11 +1,9 @@
-function person = abdomino_pelvic(person,...
+function person = abdomino_pelvic(person,S,...
    pelvis_widths, pelvis_perimeters, pelvis_meas, ...
-   h_l,h_r,...
-    left_thigh_diameters, left_thigh_perimeters,...
-   right_thigh_diameters,right_thigh_perimeters)
+   h_l,h_r)
 
 O1 = person.origin{1};
-person.origin{11} = O1;
+person.origin{S} = O1;
 i_m = person.sex;
  
 %% Abdominal pelvic region
@@ -54,11 +52,11 @@ gamma_5  =  960 + 60*i_m + 30/(1+4*nu)^3;
 
 %% Thighs
 
-atl = left_thigh_diameters/2; 
-utl = left_thigh_perimeters; 
+atl = person.meas{12}.diam/2; 
+utl = person.meas{12}.perim; 
 btl = sqrt(((utl/pi).^2)/2-atl.^2);
-atr = right_thigh_diameters/2; 
-utr = right_thigh_perimeters; 
+atr = person.meas{15}.diam/2; 
+utr = person.meas{15}.perim; 
 btr = sqrt(((utr/pi).^2)/2-atr.^2);
 
 O12 = O1 + [-btl(1); 0; -l + h_l];
@@ -143,28 +141,30 @@ end
 
 %% Plot
 
+opt = {'colour',person.color{S},'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2)};
+
 % buttocks left and right
 
-plot_elliptic_paraboloid(O1+[-c*a_h;-g;-l+h_l-0.037*l],0.437*l,B,'rotate',[90 0 0])
-plot_elliptic_paraboloid(O1+[+c*a_h;-g;-l+h_r-0.037*l],0.437*l,B,'rotate',[90 0 0])
+plot_elliptic_paraboloid(O1+[-c*a_h;-g;-l+h_l-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
+plot_elliptic_paraboloid(O1+[+c*a_h;-g;-l+h_r-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
 
 % posterior: 3 semi-elliptical plates
 for ii = ind_pe
-  plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) g],h,'segment',[0.5 1])
+  plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) g],h,'segment',[0.5 1],opt{:})
 end
 
 % posterior: 7 trapezoidal plates
 for ii = ind_pt
-  plot_trapzoidal_plate(O1+[0;-g/2;-ii*h],2*a(ii),2*f_1(ii),g,h)
+  plot_trapzoidal_plate(O1+[0;-g/2;-ii*h],2*a(ii),2*f_1(ii),g,h,opt{:})
 end
 
 % anterior: 7 semi-elliptical plates
 for ii = ind_ae
-  plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5])
+  plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5],opt{:})
 end
 
 % anterior: 3 "special shape" plates
 for ii = ind_as
-  plot_special_plate(O1+[0;0;-ii*h],2*a(8),r,atl(1),btl(1),h) 
+  plot_special_plate(O1+[0;0;-ii*h],2*a(8),r,atl(1),btl(1),h,opt{:}) 
 end
 

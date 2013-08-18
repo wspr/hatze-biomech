@@ -1,12 +1,6 @@
-function person = thigh(person,lr,left_thigh_diameters,left_thigh_perimeters,left_thigh_length,h)
+function person = thigh(person,S,lr,h)
 
-if lr == 'l'
-  o_ind = 12;
-elseif lr == 'r'
-  o_ind = 15;
-end
-P = person.origin{o_ind};
-
+P = person.origin{S};
 i_m = person.sex;
 
 %% Thigh
@@ -28,10 +22,13 @@ gamma_i = @(i_m) [gamma_i1(1:3,i_m) gamma_i2(i_m) gamma_i2(i_m) gamma_i2(i_m) ga
 
 %% Measurements
 
-a = left_thigh_diameters/2; % ai 
-u = left_thigh_perimeters; 
+a = person.meas{S}.diam/2; % ai 
+u = person.meas{S}.perim; 
 b = sqrt(((u/pi).^2)/2-a.^2); % b
-l_1 = left_thigh_length;
+l_1 = person.meas{S}.length;
+
+person.meas{S}.a = a;
+person.meas{S}.b = b;
 
 %% Calculations
 
@@ -77,18 +74,17 @@ fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
 fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
 Q = P+[0;0;-l_1-h];
-person.origin{o_ind+1} = Q;
+person.origin{S+1} = Q;
 
 %% Plot
 
-opt  = {'opacity',0.1,'edgeopacity',0.1};
-optl = {'opacity',0.2,'edgeopacity',0.1};
+opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
  
 for ii = indf
   ph = l_1-ii*l_1/N; % plate height
   plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:})
 end
 
-plot_hoof(P-[0;0;h],a(1),b(1),h)
+plot_hoof(P-[0;0;h],a(1),b(1),h,opt{:})
 
 end

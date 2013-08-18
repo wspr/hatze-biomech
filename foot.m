@@ -1,12 +1,6 @@
-function person = foot(person,lr,left_foot_ankle_length,left_foot_toes_length,left_foot_heel_length,left_foot_upper_height,left_foot_lower_height,left_foot_length)
+function person = foot(person,S,lr,left_foot_ankle_length,left_foot_toes_length,left_foot_heel_length,left_foot_upper_height,left_foot_lower_height,left_foot_length)
 
-if lr == 'l'
-  o_ind = 14;
-elseif lr == 'r'
-  o_ind = 17;
-end
-P = person.origin{o_ind};
-
+P = person.origin{S};
 i_m = person.sex;
 
 %% Foot
@@ -95,12 +89,12 @@ calcs = [sum(m),sum(v),xc,yc,zc];% Ip_x,Ip_y,Ip_z];
 
 %% Plot
  
-opt  = {'opacity',0.1,'edgeopacity',0.1};
-optl = {'opacity',0.2,'edgeopacity',0.1};
+opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
  
 for ii = indf
   ph = -ii*h2/100; % plate height
-  plot_trapzoidal_plate(P+[0;ii/100*h2;ph],c_i(ii),b_i(ii),l_i(ii),h2/100)
+  s = -a/2-ii/100*(2/3*l-a/2);
+  plot_trapzoidal_plate(P+[0;-s-l_i(ii)/2;ph],b_i(ii),c_i(ii),l_i(ii),h2/100,opt{:})
 end
 
 end

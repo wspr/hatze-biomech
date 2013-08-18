@@ -10,6 +10,7 @@ p.addRequired('h');
 p.addParamValue('rotate',[0 0 0]);
 p.addParamValue('colour',[1 0 0]);
 p.addParamValue('opacity',0.5);
+p.addParamValue('edgeopacity',0.5);
 p.addParamValue('N',9);
 p.parse(origin,l,r,a,b,h,varargin{:})
 
@@ -37,7 +38,7 @@ top(3,:) = h;
 bottom = rotation_matrix_zyx(R)*bottom + repmat(O,[1 size(bottom,2)]);
 top = rotation_matrix_zyx(R)*top + repmat(O,[1 size(top,2)]);
 
-opt = {'facecolor',p.Results.colour,'facealpha',p.Results.opacity};
+opt = {'facecolor',p.Results.colour,'facealpha',p.Results.opacity,'edgealpha',p.Results.edgeopacity};
 
 surf( [bottom(1,:);top(1,:)], [bottom(2,:);top(2,:)], [bottom(3,:);top(3,:)] , opt{:})
 patch( bottom(1,:) , bottom(2,:) , bottom(3,:) , [0 0 0] , opt{:})

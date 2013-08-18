@@ -1,12 +1,6 @@
-function person = arm(person,lr,arm_diameters,arm_perimeters,arm_length)
+function person = arm(person,S,lr,arm_diameters,arm_perimeters,arm_length)
 
-if lr == 'l'
-  o_arm = 4;
-elseif lr == 'r'
-  o_arm = 8;
-end
-P = person.origin{o_arm};
-
+P = person.origin{S};
 i_m = person.sex;
 
 %%  Arm
@@ -80,12 +74,11 @@ fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 calcs = [m,v,xc,yc,zc, Ip_x,Ip_y,Ip_z];
 
 Q = P+[0;0;-l];
-person.origin{o_arm+1} = Q;
+person.origin{S+1} = Q;
 
-%% Plot
+%% Plot,...
  
-opt  = {'opacity',0.1,'edgeopacity',0.1};
-optl = {'opacity',0.2,'edgeopacity',0.1};
+opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
  
 for ii = indu
   ph = l-ii*l/N; % plate height

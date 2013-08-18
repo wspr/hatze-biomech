@@ -1,7 +1,7 @@
-function [l,person] = abdomino_thoracic(person,hatze1,hatze2,hatze11)
+function [l,person] = abdomino_thoracic(person,S,hatze1,hatze2,hatze11)
 %% abdomino-thoracic
 
-O1 = person.origin{1};
+O1 = person.origin{S};
 i_m = person.sex;
 
 N  = 10; % number of disks
@@ -45,13 +45,13 @@ z_h = hatze2(4);    % height between shoulder and O1
                     % measurements
 
 % invented: (can't figure which they'd be, if any)
-d = 150;    % nipple-to-nipple distance
-h = l/2;     % height below C5 of nipple
-r = 050;    % radius of breast
+d = 140;    % nipple-to-nipple distance
+h = 0.55*l;    % height below C5 of nipple
+r =  60;    % radius of breast
 
 % thorax ML widths (7) and AP thicknesses (10)
-X1 = person.meas(1).widths;
-Y1 = person.meas(1).depths;
+X1 = person.meas{1}.widths;
+Y1 = person.meas{1}.depths;
 
 %% Implicit measurements
 
@@ -172,8 +172,8 @@ calcs = [M,V,1000*xc,1000*yc,1000*zc,theta,Ip_x,Ip_y,Ip_z];
 hfig = figure(1); clf; hold on
 set(hfig,'color','white')
 
-opt  = {'opacity',0.1,'edgeopacity',0.1};
-optl = {'opacity',0.2,'edgeopacity',0.1};
+opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
+optl = {'opacity',min(1,2*person.opacity{S}(1)),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
 
 % thorax:
 for ii = indt
@@ -195,8 +195,8 @@ end
 
 % breasts:
 if i_m == 0 % female
-  plot_sphere(O1+[+d/2; b(jj); l-h],r,opt{:})
-  plot_sphere(O1+[-d/2; b(jj); l-h],r,opt{:})
+  plot_sphere(O1+[+d/2; b(jj); l-h],r,'latrange',[0 1],opt{:})
+  plot_sphere(O1+[-d/2; b(jj); l-h],r,'latrange',[0 1],opt{:})
 end
 
 % principle axes:
