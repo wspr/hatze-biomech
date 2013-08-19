@@ -2,7 +2,7 @@ function [person] = head_neck(person,S,hatze1,head_width,head_depth,head_height,
 
 %% Head_neck
 
-O2 = person.origin{S};
+O2 = person.origin{S}+person.offset{S};
 i_m = person.sex;
 
 %% Densities:
@@ -84,5 +84,3 @@ x = O2(1)+a*sin(t);
 y = O2(2)+b*cos(t);
 z = zf(x,y);
 surf([x;x],[y;y],ho+[z;-z],opt{:})
-
-plot3(xc,yc,zc,'k.','markersize',20)

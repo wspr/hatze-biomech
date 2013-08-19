@@ -1,6 +1,6 @@
 function person = forearm(person,S,lr,forearm_diameters,forearm_perimeters,forearm_length)
 
-P = person.origin{S};
+P = person.origin{S} + person.offset{S};
 i_m = person.sex;
 
 %% Forearm

@@ -1,6 +1,6 @@
 function person = hand(person,S)
 
-P = person.origin{S};
+P = person.origin{S} + person.offset{S};
 
 r = person.meas{S}(1);
 h = person.meas{S}(2);

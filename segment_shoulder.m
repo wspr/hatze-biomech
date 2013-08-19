@@ -1,6 +1,6 @@
 function person = shoulder(person,S,lr,l_t,d_arm)
 
-O2 = person.origin{2};
+O2 = person.origin{2}+person.offset{S};
 i_m = person.sex;
 
 at1 = person.meas{1}.widths(1)/2;

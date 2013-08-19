@@ -203,4 +203,4 @@ end
 %plot_coord(O1,'index','1','axes','yz','length',0.1,'rotate',[theta*180/pi 0 0])
 
 % centroid:
-plot3(xc,yc,zc,'.k', 'markersize',20)
+%plot3(xc,yc,zc,'.k', 'markersize',20)
