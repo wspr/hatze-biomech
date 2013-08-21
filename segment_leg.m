@@ -1,6 +1,6 @@
 function person = leg(person,S,lr,left_leg_diameters,left_leg_perimeters,left_leg_length,ankle_size)
 
-P = person.origin{S};
+P = person.origin{S} + person.offset{S};
 i_m = person.sex;
 
 %% Leg

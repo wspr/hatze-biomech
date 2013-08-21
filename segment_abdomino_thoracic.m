@@ -1,7 +1,7 @@
-function [l,person] = abdomino_thoracic(person,S,hatze1,hatze2,hatze11)
+function person = abdomino_thoracic(person,S)
 %% abdomino-thoracic
 
-O1 = person.origin{S};
+O1 = person.origin{S} + person.offset{S};
 i_m = person.sex;
 
 N  = 10; % number of disks
@@ -34,15 +34,13 @@ gamma_b = 1200; % breasts (? see A2.94)
 %
 % Trying to use Hatze's measurements where possible
 
-l = hatze1(20);     % length of abdomino-thorasic section; has to be this
+l = person.meas{1}.all(20);     % length of abdomino-thorasic section; has to be this
                     % value as it's the largest in the set
 
-d_11 = hatze11(21); % AP distance between centre of hip joint & Symphysion
+d_11 = person.meas{11}.all(21); % AP distance between centre of hip joint & Symphysion
                     % maybe abdomino-pelvic measurement #21
 
-z_h = hatze2(4);    % height between shoulder and O1
-                    % guessing it's the smallest of the shoulder
-                    % measurements
+z_h = mean([person.meas{3}.all(4), person.meas{7}.all(4)]); % height between shoulder and O1
 
 % invented: (can't figure which they'd be, if any)
 d = 140;    % nipple-to-nipple distance
@@ -52,6 +50,7 @@ r =  60;    % radius of breast
 % thorax ML widths (7) and AP thicknesses (10)
 X1 = person.meas{1}.widths;
 Y1 = person.meas{1}.depths;
+person.meas{1}.length = l;
 
 %% Implicit measurements
 
@@ -169,9 +168,6 @@ calcs = [M,V,1000*xc,1000*yc,1000*zc,theta,Ip_x,Ip_y,Ip_z];
 
 %% Plot
 
-hfig = figure(1); clf; hold on
-set(hfig,'color','white')
-
 opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
 optl = {'opacity',min(1,2*person.opacity{S}(1)),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
 
@@ -195,8 +191,8 @@ end
 
 % breasts:
 if i_m == 0 % female
-  plot_sphere(O1+[+d/2; b(jj); l-h],r,'latrange',[0 1],opt{:})
-  plot_sphere(O1+[-d/2; b(jj); l-h],r,'latrange',[0 1],opt{:})
+  plot_sphere(O1+[+d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
+  plot_sphere(O1+[-d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
 end
 
 % principle axes:

@@ -1,6 +1,6 @@
 function person = thigh(person,S,lr,h)
 
-P = person.origin{S};
+P = person.origin{S} + person.offset{S};
 i_m = person.sex;
 
 %% Thigh

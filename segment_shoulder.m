@@ -1,17 +1,16 @@
-function person = shoulder(person,S,lr,l_t,d_arm)
+function person = shoulder(person,S,lr,d_arm)
 
-O2 = person.origin{2}+person.offset{S};
+P = person.origin{2}+person.offset{S};
 i_m = person.sex;
 
+l_t = person.meas{1}.length;
 at1 = person.meas{1}.widths(1)/2;
 at5 = person.meas{1}.widths(5)/2;
 
-meas = [140 176 090 025];
-
-b = meas(2)/2;
-d = meas(1);
+b = person.meas{S}.all(2)/2;
+d = person.meas{S}.all(1);
 % meas(3) ?
-z_h = meas(4);
+z_h = person.meas{S}.all(4);
 
 b1 = d_arm(1)/4;
 
@@ -44,7 +43,7 @@ c6 = 1/tan(alpha)-tan(beta);
 A2 = @(z) c5 + c6*z; % 0..h1
 B2 = @(z) b*sqrt(z/h1);
 
-O7 = O2 + [0;0;-z_h-d_z-1.25*b1];
+O7 = P + [0;0;-z_h-d_z-1.25*b1];
 
 if lr == 'r'
   lr_sign = 1;
@@ -56,7 +55,7 @@ O8 = O7 + [ lr_sign*(at1+d_x) ; 0; 0];
 person.origin{S} = O7;
 person.origin{S+1} = O8;
 
-start = O2+[lr_sign*at1; 0; -z_h];
+start = P+[lr_sign*at1; 0; -z_h];
 shtop = start+[lr_sign*d_x;0;-d_z];
 
 a10 = A1(d_x);
@@ -71,13 +70,13 @@ b2h = B2(h1);
 
 s = -hh*sin(gamma);
 plot_parabolic_wedge(...
-  [O8(1);0;O2(3)-z_h-d_z-a10],...
+  [O8(1);O8(2);P(3)-z_h-d_z-a10],...
   [a10 b10],[a1h b1h],lr_sign*hh,'t',s,...
   'rotate',[0 -90 0],...
   'colour',person.color{S},...
   'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2))
 plot_parabolic_wedge(...
-  [O8(1)-lr_sign*hh;0;O2(3)-z_h-d_z-a10+s],...
+  [O8(1)-lr_sign*hh;O8(2);P(3)-z_h-d_z-a10+s],...
   [a2h b2h],0.001*[a2h b2h],lr_sign*h1,'t',j1,...
   'rotate',[0 -90 0],'colour',person.color{S},...
   'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2))

@@ -2,8 +2,8 @@ function person = hand(person,S)
 
 P = person.origin{S} + person.offset{S};
 
-r = person.meas{S}(1);
-h = person.meas{S}(2);
+r = person.meas{S}.all(1);
+h = person.meas{S}.all(2);
 
 a10 = person.meas{S-1}.a(10);
 b10 = person.meas{S-1}.b(10);

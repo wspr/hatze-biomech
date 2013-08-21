@@ -1,9 +1,14 @@
-function [person] = head_neck(person,S,hatze1,head_width,head_depth,head_height,neck_height)
+function [person] = head_neck(person,S)
 
 %% Head_neck
 
-O2 = person.origin{S}+person.offset{S};
+P = person.origin{S}+person.offset{S};
 i_m = person.sex;
+
+head_width  = person.meas{2}.all(1);
+head_depth  = person.meas{2}.all(2);
+head_height = person.meas{2}.all(3);
+neck_height = person.meas{2}.all(4);
 
 %% Densities:
 
@@ -15,8 +20,8 @@ gamma_c = 1040;
 a = head_width/2;
 b = 1.08*head_depth/2;
 c = 1.04*head_height/2;
-a_1 = hatze1(1)/2;
-b_1 = hatze1(9)/2;
+a_1 = person.meas{1}.all(1)/2;
+b_1 = person.meas{1}.all(9)/2;
 h = neck_height;
 k = 0.30*c;
 
@@ -29,8 +34,8 @@ m_p = gamma_e*4.5708*b*c*a_1*(1.5708-b_1*(c-k)/(c*b)-asin((c-k)/c));
 m = m_e + m_c + m_p;
 
 % Mass centroid:
-xc = O2(1);
-yc = O2(2);
+xc = P(1);
+yc = P(2);
 zc = (m_e*(c+h-k)+m_c*h/2-m_p*(h-k/3))/m;
 
 % Moments of inertia:
@@ -56,7 +61,7 @@ fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
 %% Plot
 
-plot_elliptic_plate(O2,[a_1 b_1],h,'colour',person.color{S},...
+plot_elliptic_plate(P,[a_1 b_1],h,'colour',person.color{S},...
   'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2));
 
 zf = @(x,y) c*sqrt(1-(y/b).^2).*(1-(x./a).^8);
@@ -67,20 +72,21 @@ d = linspace(0,1,N);
 
 [tt,dd] = meshgrid(t,d);
 
-ho = O2(3) + h + c/2 + k;
+ho = h + c/2 + k;
 
-x = O2(1)+dd*a.*cos(tt);
-y = O2(2)+dd*b.*sin(tt);
+x = dd*a.*cos(tt);
+y = dd*b.*sin(tt);
 z = zf(x,y);
 
 opt = {'facecolor',person.color{S},...
   'facealpha',person.opacity{S}(1),...
   'edgealpha',person.opacity{S}(2)};
 
-surf(x,y,ho+z,opt{:})
-surf(x,y,ho-z,opt{:})
+surf(P(1)+x,P(2)+y,P(3)+ho+z,opt{:})
+surf(P(1)+x,P(2)+y,P(3) + ho-z,opt{:})
 
-x = O2(1)+a*sin(t);
-y = O2(2)+b*cos(t);
+x = a*sin(t);
+y = b*cos(t);
 z = zf(x,y);
-surf([x;x],[y;y],ho+[z;-z],opt{:})
+surf(P(1)+[x;x],P(2)+[y;y],P(3)+ho+[z;-z],opt{:})
+

@@ -2,7 +2,7 @@ function person = abdomino_pelvic(person,S,...
    pelvis_widths, pelvis_perimeters, pelvis_meas, ...
    h_l,h_r)
 
-O1 = person.origin{1};
+O1 = person.origin{1} + person.offset{S};
 person.origin{S} = O1;
 i_m = person.sex;
  
