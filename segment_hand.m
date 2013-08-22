@@ -1,4 +1,4 @@
-function person = hand(person,S)
+function person = segment_hand(person,S)
 
 P = person.origin{S} + person.offset{S};
 
@@ -65,16 +65,16 @@ opt = {'colour',person.color{S},'opacity',person.opacity{S}(1),'edgeopacity',per
 
 %%
 if person.plot
-
-plot_rect_prism(P,[2*a10 2*b10],[h 2.52*b10],-hh,opt{:});
-plot_cylinder_hollow(P+[h/2;0;-hh-r],r-h/4,r,h,[0 180],'N',10,'rotate',[0 90 180],opt{:})
-if S == 6 % left
-  s = 3*h/4;
-else
-  s = 0;
-end
-plot_cylinder_hollow(P+[h/2-s;0;-hh-r],r-h/4,r,h/4,[180 180+180/pi*h/r],'N',10,'rotate',[0 90 180],opt{:})
-
+  
+  plot_rect_prism(P,[2*a10 2*b10],[h 2.52*b10],-hh,opt{:});
+  plot_cylinder_hollow(P+[h/2;0;-hh-r],r-h/4,r,h,[0 180],'N',10,'rotate',[0 90 180],opt{:})
+  if S == 6 % left
+    s = 3*h/4;
+  else
+    s = 0;
+  end
+  plot_cylinder_hollow(P+[h/2-s;0;-hh-r],r-h/4,r,h/4,[180 180+180/pi*h/r],'N',10,'rotate',[0 90 180],opt{:})
+  
 end
 
 end

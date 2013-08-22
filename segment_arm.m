@@ -1,4 +1,4 @@
-function person = arm(person,S)
+function person = segment_arm(person,S)
 
 P = person.origin{S} + person.offset{S};
 i_m = person.sex;
@@ -59,16 +59,16 @@ person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
 if person.plot
   
-opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
- 
-for ii = indu
-  ph = l-ii*l/N; % plate height
-  plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
-end
-
-% the hemishpere
-plot_sphere(P, b(1)/2, 'longrange',[0 1],opt{:})
-
+  opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
+  
+  for ii = indu
+    ph = l-ii*l/N; % plate height
+    plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
+  end
+  
+  % the hemishpere
+  plot_sphere(P, b(1)/2, 'longrange',[0 1],opt{:})
+  
 end
 
 end

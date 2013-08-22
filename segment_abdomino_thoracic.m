@@ -1,4 +1,4 @@
-function person = abdomino_thoracic(person,S)
+function person = segment_abdomino_thoracic(person,S)
 %% abdomino-thoracic
 
 O1 = person.origin{S} + person.offset{S};
@@ -169,38 +169,38 @@ calcs = [M,V,1000*xc,1000*yc,1000*zc,theta,Ip_x,Ip_y,Ip_z];
 %% Plot
 
 if person.plot
-
-opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
-optl = {'opacity',min(1,2*person.opacity{S}(1)),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
-
-% thorax:
-for ii = indt
-  ph = l-ii*l/N; % plate height
   
-  plot_elliptic_plate(O1+[0;0;ph],[a(ii) w(ii)],l/N,opt{:});
+  opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
+  optl = {'opacity',min(1,2*person.opacity{S}(1)),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
   
-  % lungs:
-  plot_parabolic_plate(O1+[ c(ii)*a(ii);0;ph],[ a2(ii) b2(ii)],l/N,optl{:});
-  plot_parabolic_plate(O1+[-c(ii)*a(ii);0;ph],[-a2(ii) b2(ii)],l/N,optl{:});
-end
-
-% abdomen:
-for ii = inda
-  ph = l-ii*l/N; % plate height
-  plot_elliptic_plate(O1+[0;0;ph],[a(ii) -w(ii)],l/N,'segment',[0 0.5],opt{:})
-  plot_elliptic_plate(O1+[0;0;ph],[a(ii)  b(ii)],l/N,'segment',[0 0.5],opt{:})
-end
-
-% breasts:
-if i_m == 0 % female
-  plot_sphere(O1+[+d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
-  plot_sphere(O1+[-d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
-end
-
-% principle axes:
-%plot_coord(O1,'index','1','axes','yz','length',0.1,'rotate',[theta*180/pi 0 0])
-
-% centroid:
-%plot3(xc,yc,zc,'.k', 'markersize',20)
-
+  % thorax:
+  for ii = indt
+    ph = l-ii*l/N; % plate height
+    
+    plot_elliptic_plate(O1+[0;0;ph],[a(ii) w(ii)],l/N,opt{:});
+    
+    % lungs:
+    plot_parabolic_plate(O1+[ c(ii)*a(ii);0;ph],[ a2(ii) b2(ii)],l/N,optl{:});
+    plot_parabolic_plate(O1+[-c(ii)*a(ii);0;ph],[-a2(ii) b2(ii)],l/N,optl{:});
+  end
+  
+  % abdomen:
+  for ii = inda
+    ph = l-ii*l/N; % plate height
+    plot_elliptic_plate(O1+[0;0;ph],[a(ii) -w(ii)],l/N,'segment',[0 0.5],opt{:})
+    plot_elliptic_plate(O1+[0;0;ph],[a(ii)  b(ii)],l/N,'segment',[0 0.5],opt{:})
+  end
+  
+  % breasts:
+  if i_m == 0 % female
+    plot_sphere(O1+[+d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
+    plot_sphere(O1+[-d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
+  end
+  
+  % principle axes:
+  %plot_coord(O1,'index','1','axes','yz','length',0.1,'rotate',[theta*180/pi 0 0])
+  
+  % centroid:
+  %plot3(xc,yc,zc,'.k', 'markersize',20)
+  
 end

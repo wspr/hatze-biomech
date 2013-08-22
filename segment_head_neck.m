@@ -1,4 +1,4 @@
-function [person] = head_neck(person,S)
+function person = segment_head_neck(person,S)
 
 %% Head_neck
 
@@ -62,36 +62,36 @@ fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 %% Plot
 
 if person.plot
-
-plot_elliptic_plate(P,[a_1 b_1],h,'colour',person.color{S},...
-  'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2));
-
-zf = @(x,y) c*sqrt(1-(y/b).^2).*(1-(x./a).^8);
-
-N = 21;
-t = linspace(-pi,pi,N);
-d = linspace(0,1,N);
-
-[tt,dd] = meshgrid(t,d);
-
-ho = h + c/2 + k;
-
-x = dd*a.*cos(tt);
-y = dd*b.*sin(tt);
-z = zf(x,y);
-
-opt = {'facecolor',person.color{S},...
-  'facealpha',person.opacity{S}(1),...
-  'edgealpha',person.opacity{S}(2)};
-
-surf(P(1)+x,P(2)+y,P(3)+ho+z,opt{:})
-surf(P(1)+x,P(2)+y,P(3) + ho-z,opt{:})
-
-x = a*sin(t);
-y = b*cos(t);
-z = zf(x,y);
-surf(P(1)+[x;x],P(2)+[y;y],P(3)+ho+[z;-z],opt{:})
-
+  
+  plot_elliptic_plate(P,[a_1 b_1],h,'colour',person.color{S},...
+    'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2));
+  
+  zf = @(x,y) c*sqrt(1-(y/b).^2).*(1-(x./a).^8);
+  
+  N = 21;
+  t = linspace(-pi,pi,N);
+  d = linspace(0,1,N);
+  
+  [tt,dd] = meshgrid(t,d);
+  
+  ho = h + c/2 + k;
+  
+  x = dd*a.*cos(tt);
+  y = dd*b.*sin(tt);
+  z = zf(x,y);
+  
+  opt = {'facecolor',person.color{S},...
+    'facealpha',person.opacity{S}(1),...
+    'edgealpha',person.opacity{S}(2)};
+  
+  surf(P(1)+x,P(2)+y,P(3)+ho+z,opt{:})
+  surf(P(1)+x,P(2)+y,P(3) + ho-z,opt{:})
+  
+  x = a*sin(t);
+  y = b*cos(t);
+  z = zf(x,y);
+  surf(P(1)+[x;x],P(2)+[y;y],P(3)+ho+[z;-z],opt{:})
+  
 end
 
 end

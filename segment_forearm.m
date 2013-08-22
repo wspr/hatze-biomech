@@ -1,4 +1,4 @@
-function person = forearm(person,S)
+function person = segment_forearm(person,S)
 
 P = person.origin{S} + person.offset{S};
 i_m = person.sex;
@@ -55,14 +55,14 @@ person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 %% Plot
 
 if person.plot
-
-opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
- 
-for ii = ind
-  ph = l-ii*l/N; % plate height
-  plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
-end
-
+  
+  opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
+  
+  for ii = ind
+    ph = l-ii*l/N; % plate height
+    plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
+  end
+  
 end
 
 end

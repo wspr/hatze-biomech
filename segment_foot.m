@@ -1,4 +1,4 @@
-function person = foot(person,S,lr)
+function person = segment_foot(person,S)
 
 P = person.origin{S} + person.offset{S};
 i_m = person.sex;
@@ -6,8 +6,8 @@ i_m = person.sex;
 %% Foot
 
 N = 100; % number of disks
-indf = 1:N;
-gamma = person.density.foot(indf);
+ind = 1:N;
+gamma = person.density.foot(ind);
  
 %% Measurements
 
@@ -20,9 +20,9 @@ l  = person.meas{S}.all(6);
 
 %% Calculations
 
-l_i=a+(l-a)*indf./N;
-b_i=a+(b-a)*indf./N;
-c_i=a+(c-a)*indf./N;
+l_i=a+(l-a)*ind./N;
+b_i=a+(b-a)*ind./N;
+c_i=a+(c-a)*ind./N;
 v_i = (h2/N)*(b_i.*l_i/2+c_i.*l_i/2);
 
 m_i=gamma.*v_i;
@@ -37,10 +37,10 @@ v=m_11/990+m_12/990+m_13/1100+sum(v_i);
 xc = 0;
 yc = ((m_11+m_12)*(-h2-3*h1/4)...
     +m_13*(-h2-h1/4) ...
-    +sum(m_i.*(-indf.*h2/N)))/m;
+    +sum(m_i.*(-ind.*h2/N)))/m;
 zc = (m_11*l*(-2/3+(7*b+2*c)/(9*(5*b+c)))...
     +m_12*l*(b+8*c)/(9*(b+5*c))+m_13*l*(-2/3+(b+2*c)/(3*(b+c)))...
-    +sum(m_i.*(-a/2-(2*l/3-(2*l/3-a/2)*indf./100+l_i.*(b_i+2*c_i)/(3*(b_i+c_i))))))/m;
+    +sum(m_i.*(-a/2-(2*l/3-(2*l/3-a/2)*ind./100+l_i.*(b_i+2*c_i)/(3*(b_i+c_i))))))/m;
 
 % Moments of inertia:
 
@@ -71,37 +71,31 @@ zc = (m_11*l*(-2/3+(7*b+2*c)/(9*(5*b+c)))...
 
 
 disp('-------------------------')
-if lr == 'l'
-  disp('Left foot section')
-elseif lr == 'r'
-  disp('Right foot section')
-end
 disp('-------------------------')
 fprintf('Mass:     %2.3f kg\n',sum(m))
 fprintf('Volume:   %1.4f m^3\n',sum(v))
 fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
 %fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
-calcs = [sum(m),sum(v),xc,yc,zc];% Ip_x,Ip_y,Ip_z];
 
 %% Plot
 
 if person.plot
-
-opt1  = {'opacity',person.opacity{S}(1),'edgeopacity',0,'colour',person.color{S}};
-opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
- 
-for ii = indf
-  ph = -ii*h2/100; % plate height
-  s = -a/2-ii/100*(2/3*l-a/2);
-  plot_trapzoidal_plate(P+[0;-s-l_i(ii)/2;ph],b_i(ii),c_i(ii),l_i(ii),h2/100,opt1{:})
+  
+  opt1  = {'opacity',person.opacity{S}(1),'edgeopacity',0,'colour',person.color{S}};
+  opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
+  
+  for ii = ind
+    ph = -ii*h2/100; % plate height
+    s = -a/2-ii/100*(2/3*l-a/2);
+    plot_trapzoidal_plate(P+[0;-s-l_i(ii)/2;ph],b_i(ii),c_i(ii),l_i(ii),h2/100,opt1{:})
+  end
+  
+  plot_trapzoidal_plate(P+[0;-s-l/2;-h2],b,c,l,-h1/2,opt{:})
+  plot_trapzoidal_plate(P+[0;-s-l/2-l/3;-h2-h1],c+1/3*(b-c),c,l/3,h1/2,opt{:})
+  plot_trapzoidal_plate(P+[0;-s-l/2+l/3;-h2-h1],b,b+1/3*(c-b),l/3,h1/2,opt{:})
+  
 end
 
-plot_trapzoidal_plate(P+[0;-s-l/2;-h2],b,c,l,-h1/2,opt{:})
-plot_trapzoidal_plate(P+[0;-s-l/2-l/3;-h2-h1],c+1/3*(b-c),c,l/3,h1/2,opt{:})
-plot_trapzoidal_plate(P+[0;-s-l/2+l/3;-h2-h1],b,b+1/3*(c-b),l/3,h1/2,opt{:})
-
 end
 
-end
- 

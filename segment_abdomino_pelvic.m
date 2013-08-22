@@ -1,4 +1,4 @@
-function person = abdomino_pelvic(person,S,...
+function person = segment_abdomino_pelvic(person,S,...
    pelvis_widths, pelvis_perimeters, pelvis_meas, ...
    h_l,h_r)
 
@@ -143,32 +143,32 @@ end
 %% Plot
 
 if person.plot
-
-opt = {'colour',person.color{S},'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2)};
-
-% buttocks left and right
-
-plot_elliptic_paraboloid(O1+[-c*a_h;-g;-l+h_l-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
-plot_elliptic_paraboloid(O1+[+c*a_h;-g;-l+h_r-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
-
-% posterior: 3 semi-elliptical plates
-for ii = ind_pe
-  plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) g],h,'segment',[0.5 1],opt{:})
-end
-
-% posterior: 7 trapezoidal plates
-for ii = ind_pt
-  plot_trapzoidal_plate(O1+[0;-g/2;-ii*h],2*a(ii),2*f_1(ii),g,h,opt{:})
-end
-
-% anterior: 7 semi-elliptical plates
-for ii = ind_ae
-  plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5],opt{:})
-end
-
-% anterior: 3 "special shape" plates
-for ii = ind_as
-  plot_special_plate(O1+[0;0;-ii*h],2*a(8),r,atl(1),btl(1),h,opt{:}) 
-end
-
+  
+  opt = {'colour',person.color{S},'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2)};
+  
+  % buttocks left and right
+  
+  plot_elliptic_paraboloid(O1+[-c*a_h;-g;-l+h_l-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
+  plot_elliptic_paraboloid(O1+[+c*a_h;-g;-l+h_r-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
+  
+  % posterior: 3 semi-elliptical plates
+  for ii = ind_pe
+    plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) g],h,'segment',[0.5 1],opt{:})
+  end
+  
+  % posterior: 7 trapezoidal plates
+  for ii = ind_pt
+    plot_trapzoidal_plate(O1+[0;-g/2;-ii*h],2*a(ii),2*f_1(ii),g,h,opt{:})
+  end
+  
+  % anterior: 7 semi-elliptical plates
+  for ii = ind_ae
+    plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5],opt{:})
+  end
+  
+  % anterior: 3 "special shape" plates
+  for ii = ind_as
+    plot_special_plate(O1+[0;0;-ii*h],2*a(8),r,atl(1),btl(1),h,opt{:})
+  end
+  
 end

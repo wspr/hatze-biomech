@@ -1,4 +1,4 @@
-function person = thigh(person,S,lr,h)
+function person = segment_thigh(person,S)
 
 P = person.origin{S} + person.offset{S};
 i_m = person.sex;
@@ -20,7 +20,8 @@ a = person.meas{S}.diam/2;
 u = person.meas{S}.perim;
 b = sqrt(((u/pi).^2)/2-a.^2);
 l_1 = person.meas{S}.length;
-h
+
+disp('fixme:')
 h = person.meas{S}.length_long - l_1
 
 person.meas{S}.a = a;
@@ -66,16 +67,16 @@ person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 %% Plot
 
 if person.plot
-
-opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
- 
-for ii = indf
-  ph = l_1-ii*l_1/N; % plate height
-  plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:})
-end
-
-plot_hoof(P-[0;0;h],a(1),b(1),h,opt{:})
-
+  
+  opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
+  
+  for ii = indf
+    ph = l_1-ii*l_1/N; % plate height
+    plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:})
+  end
+  
+  plot_hoof(P-[0;0;h],a(1),b(1),h,opt{:})
+  
 end
 
 end

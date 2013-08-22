@@ -1,4 +1,4 @@
-function person = leg(person,S)
+function person = segment_leg(person,S)
 
 P = person.origin{S} + person.offset{S};
 i_m = person.sex;
@@ -61,30 +61,30 @@ person.origin{S+1} = Q;
 %% Plot
 
 if person.plot
-
-opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
- 
-for ii = ind
-  ph = -ii*l/N; % plate height
-  plot_elliptic_plate(P+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
-end
-
-%% sideways paraboloids
-
-a = r;
-b = r;
-n = 10;
-
-nu = linspace(0,2*pi,n); % row
-u = linspace(0,r_a,n)';    % column
-
-x = a*sqrt(u/r_a)*cos(nu);
-y = b*sqrt(u/r_a)*sin(nu);
-z = u*ones(1,n);
-
-surf(Q(1)+z-a-r_a,Q(2)+y,Q(3)+x,'facealpha',person.opacity{S}(1),'edgealpha',person.opacity{S}(2),'facecolor',person.color{S})
-surf(Q(1)-z+a+r_a,Q(2)+y,Q(3)+x,'facealpha',person.opacity{S}(1),'edgealpha',person.opacity{S}(2),'facecolor',person.color{S})
-
+  
+  opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
+  
+  for ii = ind
+    ph = -ii*l/N; % plate height
+    plot_elliptic_plate(P+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
+  end
+  
+  %% sideways paraboloids
+  
+  a = r;
+  b = r;
+  n = 10;
+  
+  nu = linspace(0,2*pi,n); % row
+  u = linspace(0,r_a,n)';    % column
+  
+  x = a*sqrt(u/r_a)*cos(nu);
+  y = b*sqrt(u/r_a)*sin(nu);
+  z = u*ones(1,n);
+  
+  surf(Q(1)+z-a-r_a,Q(2)+y,Q(3)+x,'facealpha',person.opacity{S}(1),'edgealpha',person.opacity{S}(2),'facecolor',person.color{S})
+  surf(Q(1)-z+a+r_a,Q(2)+y,Q(3)+x,'facealpha',person.opacity{S}(1),'edgealpha',person.opacity{S}(2),'facecolor',person.color{S})
+  
 end
 
 end
