@@ -1,6 +1,8 @@
 
 %% Raw measurements
 
+person.sex = i_m;
+
 % abdominal-thoracic
 person.meas{1}.all = [...
   101 273 275 264 251 245 262 ... 1:7 ML widths
@@ -120,8 +122,8 @@ person.meas{17}.all = [...
 
 %%
 
-for ii = 1:person.N
-  if strcmp(person.units,'mm')
+if strcmp(person.units,'mm')
+  for ii = 1:person.N
     person.meas{ii}.all = person.meas{ii}.all/1000;
   end
 end

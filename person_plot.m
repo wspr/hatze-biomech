@@ -3,43 +3,6 @@
 clear all
 clc
 
-% SEGMENTS
-person.segment(1).name = 'abdominal-thoracic';
-person.segment(2).name = 'head-neck';
-person.segment(3).name = 'left shoulder';
-person.segment(4).name = 'left arm';
-person.segment(5).name = 'left forearm';
-person.segment(6).name = 'left hand';
-person.segment(7).name = 'right shoulder';
-person.segment(8).name = 'right arm';
-person.segment(9).name = 'right forearm';
-person.segment(10).name = 'right hand';
-person.segment(11).name = 'abdominal-pelvic';
-person.segment(12).name = 'left thigh';
-person.segment(13).name = 'left leg';
-person.segment(14).name = 'left foot';
-person.segment(15).name = 'right thigh';
-person.segment(16).name = 'right leg';
-person.segment(17).name = 'right foot';
-
-male = 1;
-female = 0;
-i_m = female;
-
-person.N = 17;
-person.units = 'mm';
-
-person.solve_ellipse = @(a,u) sqrt(((u/pi).^2)/2-a.^2);
-person.plot = false;
-
-person.sex = female;
-person.origin{1} = [0;0;0];
-for ii = 1:person.N
-  person.color{ii} = hsv2rgb( [(ii-1)/person.N , 0.5 , 0.8] );
-  person.opacity{ii} = [0.2 0.1]; % face, edge
-  person.offset{ii} = [0;0;0];
-end
-
 person_data
 
 count = 0;
