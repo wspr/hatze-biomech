@@ -1,7 +1,12 @@
-function person = shoulder(person,S,lr,d_arm)
+function person = shoulder(person,S,lr)
 
 P = person.origin{2}+person.offset{S};
 i_m = person.sex;
+
+gamma_1 = person.density.shoulder_lateral(i_m);
+gamma_2 = person.density.shoulder_medial(i_m);
+gamma_T = person.density.shoulder_cutout(i_m);
+gamma_s = person.density.humerous(i_m);
 
 l_t = person.meas{1}.length;
 at1 = person.meas{1}.widths(1)/2;
@@ -12,7 +17,7 @@ d = person.meas{S}.all(1);
 % meas(3) ?
 z_h = person.meas{S}.all(4);
 
-b1 = d_arm(1)/4;
+b1 = person.solve_ellipse(person.meas{S+1}.diam(1)/2,person.meas{S+1}.perim(1))/2;
 
 j1 = 0.35*l_t-z_h;
 h1 = 0.68*at5-at1;
@@ -68,6 +73,9 @@ b20 = B2(0);
 a2h = A2(h1);
 b2h = B2(h1);
 
+
+if person.plot
+
 s = -hh*sin(gamma);
 plot_parabolic_wedge(...
   [O8(1);O8(2);P(3)-z_h-d_z-a10],...
@@ -80,5 +88,7 @@ plot_parabolic_wedge(...
   [a2h b2h],0.001*[a2h b2h],lr_sign*h1,'t',j1,...
   'rotate',[0 -90 0],'colour',person.color{S},...
   'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2))
+
+end
 
 end

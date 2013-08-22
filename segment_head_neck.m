@@ -12,8 +12,8 @@ neck_height = person.meas{2}.all(4);
 
 %% Densities:
 
-gamma_e = 1120;
-gamma_c = 1040;
+gamma_e = person.density.head(i_m);
+gamma_c = person.density.neck(i_m);
 
 %% Measurements
 
@@ -61,6 +61,8 @@ fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
 %% Plot
 
+if person.plot
+
 plot_elliptic_plate(P,[a_1 b_1],h,'colour',person.color{S},...
   'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2));
 
@@ -90,3 +92,6 @@ y = b*cos(t);
 z = zf(x,y);
 surf(P(1)+[x;x],P(2)+[y;y],P(3)+ho+[z;-z],opt{:})
 
+end
+
+end

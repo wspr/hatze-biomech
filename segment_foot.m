@@ -7,10 +7,7 @@ i_m = person.sex;
 
 N = 100; % number of disks
 indf = 1:N;
-
-%% Densities
-
-gamma_i = 1480*(1-(0.0001)*(indf.^2)*(1-1100/1480));
+gamma = person.density.foot(indf);
  
 %% Measurements
 
@@ -28,7 +25,7 @@ b_i=a+(b-a)*indf./N;
 c_i=a+(c-a)*indf./N;
 v_i = (h2/N)*(b_i.*l_i/2+c_i.*l_i/2);
 
-m_i=gamma_i.*v_i;
+m_i=gamma.*v_i;
 m_11=990*l*h1*(5*b+c)/36;
 m_12=990*l*h1*(b+5*c)/36;
 m_13=1100*l*h1*(b+c)/4;
@@ -72,7 +69,7 @@ zc = (m_11*l*(-2/3+(7*b+2*c)/(9*(5*b+c)))...
 % Ip_y = (Iy1+Iz1)/2+((Iy1-Iz1)^2/4+Iy1z1^2)^0.5;
 % Ip_z = (Iy1+Iz1)/2-((Iy1-Iz1)^2/4+Iy1z1^2)^0.5;
 
- 
+
 disp('-------------------------')
 if lr == 'l'
   disp('Left foot section')
@@ -88,7 +85,9 @@ fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
 calcs = [sum(m),sum(v),xc,yc,zc];% Ip_x,Ip_y,Ip_z];
 
 %% Plot
- 
+
+if person.plot
+
 opt1  = {'opacity',person.opacity{S}(1),'edgeopacity',0,'colour',person.color{S}};
 opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
  
@@ -101,6 +100,8 @@ end
 plot_trapzoidal_plate(P+[0;-s-l/2;-h2],b,c,l,-h1/2,opt{:})
 plot_trapzoidal_plate(P+[0;-s-l/2-l/3;-h2-h1],c+1/3*(b-c),c,l/3,h1/2,opt{:})
 plot_trapzoidal_plate(P+[0;-s-l/2+l/3;-h2-h1],b,b+1/3*(c-b),l/3,h1/2,opt{:})
+
+end
 
 end
  

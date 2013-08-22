@@ -25,10 +25,10 @@ c(3:6) = 0.2;
 c(7)   = 0.4111;
 
 % Densities:
-gamma_t = @(i_m) 1080+60*i_m; % thoracic wall
-gamma_a = @(i_m) 1000+30*i_m; % abdomen
-gamma_l = 300; % lungs
-gamma_b = 1200; % breasts (? see A2.94)
+gamma_t = person.density.thoracic_wall(i_m);
+gamma_a = person.density.abdomen(i_m);
+gamma_l = person.density.lungs(i_m);
+gamma_b = person.density.thoracic_wall(i_m); % (? see A2.94)
 
 %% Measurements
 %
@@ -43,9 +43,9 @@ d_11 = person.meas{11}.all(21); % AP distance between centre of hip joint & Symp
 z_h = mean([person.meas{3}.all(4), person.meas{7}.all(4)]); % height between shoulder and O1
 
 % invented: (can't figure which they'd be, if any)
-d = 140;    % nipple-to-nipple distance
-h = 0.55*l;    % height below C5 of nipple
-r =  60;    % radius of breast
+d = 0.140;    % nipple-to-nipple distance
+h = 0.55*l;   % height below C5 of nipple
+r = 0.060;    % radius of breast
 
 % thorax ML widths (7) and AP thicknesses (10)
 X1 = person.meas{1}.widths;
@@ -84,15 +84,15 @@ b2 = (b(indt)-a(indt)/6).*sqrt(1-(c/c(1)).^2);
 v_e = pi*a(indt).*b(indt)*l/N; % volume of each thoracic disk
 v_p = 8/3*a2.*b2*l/N; % volume of lungs in each disk
 
-m_e = gamma_t(i_m)*v_e; % mass of thorax as if it were solid
-m_p = (gamma_t(i_m)-gamma_l)*v_p; % mass difference between thorax & lungs
-m_t = (v_e-v_p)*gamma_t(i_m); % mass of thoracic volume without lungs
+m_e = gamma_t*v_e; % mass of thorax as if it were solid
+m_p = (gamma_t-gamma_l)*v_p; % mass difference between thorax & lungs
+m_t = (v_e-v_p)*gamma_t; % mass of thoracic volume without lungs
 m_g = v_p*gamma_l; % mass of lungs only
 
 v_1 = pi*a(inda).*w(inda)*l/2/N;
 v_2 = pi*a(inda).*b(inda)*l/2/N;
-m_1 = gamma_a(i_m)*v_1;
-m_2 = gamma_a(i_m)*v_2;
+m_1 = gamma_a*v_1;
+m_2 = gamma_a*v_2;
 
 v_f = (1-i_m)*4/3*pi*r^3; % breasts (2 hemispheres)
 m_f = gamma_b*v_f;
@@ -168,6 +168,8 @@ calcs = [M,V,1000*xc,1000*yc,1000*zc,theta,Ip_x,Ip_y,Ip_z];
 
 %% Plot
 
+if person.plot
+
 opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
 optl = {'opacity',min(1,2*person.opacity{S}(1)),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
 
@@ -200,3 +202,5 @@ end
 
 % centroid:
 %plot3(xc,yc,zc,'.k', 'markersize',20)
+
+end

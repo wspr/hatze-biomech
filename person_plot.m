@@ -19,7 +19,7 @@ person.segment(12).name = 'left thigh';
 person.segment(13).name = 'left leg';
 person.segment(14).name = 'left foot';
 person.segment(15).name = 'right thigh';
-person.segment(16).name = 'right left';
+person.segment(16).name = 'right leg';
 person.segment(17).name = 'right foot';
 
 male = 1;
@@ -27,6 +27,10 @@ female = 0;
 i_m = female;
 
 person.N = 17;
+person.units = 'mm';
+
+person.solve_ellipse = @(a,u) sqrt(((u/pi).^2)/2-a.^2);
+person.plot = false;
 
 person.sex = female;
 person.origin{1} = [0;0;0];
@@ -40,24 +44,54 @@ person_data
 
 count = 0;
 for ii = 1:person.N
-%    fprintf('Segment: %s\nMeasurements: %i\n',person.segment(ii).name,numel(person.meas{ii}.all))
-    fprintf('%s & %i\\\\\n',person.segment(ii).name,numel(person.meas{ii}.all))
+    fprintf('Segment: %s\nMeasurements: %i\n',person.segment(ii).name,numel(person.meas{ii}.all))
+%    fprintf('%s & %i\\\\\n',person.segment(ii).name,numel(person.meas{ii}.all))
     count = count + numel(person.meas{ii}.all);
 end
-count
+%count
 
-%%
+person.plot = false;
+person_generate
+
+disp('=============')
+disp('=============')
+disp('=============')
+disp('=============')
+disp('=============')
+disp('=============')
+
+for s = 1:person.N
+  
+if ~isempty(person.segment(s).mass)
+disp('-------------------------')
+disp(person.segment(s).name)
+disp('-------------------------')
+fprintf('Volume:   %1.4f L\n',1000*person.segment(s).volume)
+fprintf('         (%1.4f)\n',person.segment(s).volume_hatze)
+fprintf('Mass:     %2.3f kg\n',person.segment(s).mass)
+fprintf('         (%2.3f)\n',person.segment(s).mass_hatze)
+fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*person.segment(s).centroid(1),1000*person.segment(s).centroid(2),1000*person.segment(s).centroid(3))
+fprintf('         ([ %2.0f , %2.0f , %2.0f ])\n',1000*person.segment(s).centroid_hatze(1),1000*person.segment(s).centroid_hatze(2),1000*person.segment(s).centroid_hatze(3))
+fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] g.m^2\n',1000*person.segment(s).Minertia(1),1000*person.segment(s).Minertia(1),1000*person.segment(s).Minertia(3))
+fprintf('                   ([ %2.3f , %2.3f , %2.3f ])\n',1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(3))
+end
+
+end
+
+%% Calculate & plot
+
+person.plot = true;
 
 figure(1); clf; hold on
 set(gcf,'color','white')
-
-person_generate
 
 axis equal
 view(153,23)
 axis off
 zoom(2)
 
+person_generate
+  
 plot_points([person.origin{3:6}], 'k.-', 'markersize', 20,'linewidth',2)
 plot_points([person.origin{7:10}], 'k.-', 'markersize', 20,'linewidth',2)
 plot_points([person.origin{11:14}], 'k.-', 'markersize', 20,'linewidth',2)

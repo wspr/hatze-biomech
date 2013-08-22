@@ -1,4 +1,4 @@
-function person = forearm(person,S,lr,forearm_diameters,forearm_perimeters,forearm_length)
+function person = forearm(person,S)
 
 P = person.origin{S} + person.offset{S};
 i_m = person.sex;
@@ -6,37 +6,36 @@ i_m = person.sex;
 %% Forearm
 
 N = 10; 
-indf = 1:N;
+ind = 1:N;
 
 %% Densities
 
-gamma_i1 = @(ii,i_m) (1160-60*ii)*(1+0.0213*i_m); % for i = 1,2;
-gamma_i2 = @(ii,i_m) (1034.2-2.86*ii)*(1+0.0213*i_m); % for i = 3,4,5,6,7,8;
-gamma_i3 = @(i_m) 1204.29*(1+0.0213*i_m); % for i =9,10;
- 
-gamma_i = @(i_m) [gamma_i1([1 2],i_m) gamma_i2(3:8,i_m) gamma_i3(i_m) gamma_i3(i_m)];
+gamma = cellfun( @(x) x(i_m), person.density.forearm );
 
 %% Calculations
 
-% 1:10 diameters 2ai 
-a = forearm_diameters/2; % ai 
-u = forearm_perimeters;
-l = forearm_length;
-
-% 11:20 perimieter ui
-b =sqrt (((u(indf)/pi).^2)/2-a(indf).^2); % b
+a = person.meas{S}.diam/2; 
+u = person.meas{S}.perim;
+l = person.meas{S}.length;
+b = person.solve_ellipse(a,u);
 
 person.meas{S}.a = a;
 person.meas{S}.b = b;
 
+Q = P+[0;0;-l];
+person.origin{S+1} = Q; 
+
 % Mass 
-v = pi*a(indf).*b(indf)*l/N; % volume of each forearm disk
-m = gamma_i(i_m).*v; % mass of each forearm disk
+v = pi*a.*b*l/N; % volume of each forearm disk
+m = gamma.*v; % mass of each forearm disk
+
+mass = sum(m);
+volume = sum(v);
 
 % Mass centroid:
-xc = P(1);
-yc = P(2);
-zc = P(3) - sum(sum(m(indf).*(2*indf-1).*l)/20*m);
+xc = 0;
+yc = 0;
+zc = -sum(m.*(ind-1/2).*l)/(N*mass);
 
 % Moments of inertia:
 I_x = m.*(3*(b.^2)+(l/10).^2)/12; 
@@ -44,37 +43,26 @@ I_y = m.*(3*(a.^2)+(l/10).^2)/12;
 I_z = m.*(3*(b.^2)+(b/10).^2)/12;
 
 % principal moments of inertia; 
-Ip_x = sum(I_x) +sum(m.*(l*(2*indf-1)/20+zc).^2);
-Ip_y = sum(I_y) +sum(m.*(l*(2*indf-1)/20+zc).^2);
+Ip_x = sum(I_x) + sum(m.*(l*(ind-1/2)/N+zc).^2);
+Ip_y = sum(I_y) + sum(m.*(l*(ind-1/2)/N+zc).^2);
 Ip_z=sum(I_z);
 
-mass = sum(m);
-volume = sum(v);
-
-disp('-------------------------')
-if lr == 'l'
-disp('Left forearm section')
-elseif lr == 'r'
-disp('Right forearm section')
-end
-disp('-------------------------')
-fprintf('Mass:     %2.3f kg\n',mass)
-fprintf('Volume:   %1.4f m^3\n',volume)
-fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
-fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
-
-calcs = [mass,volume,xc,yc,zc,Ip_x,Ip_y,Ip_z];
+person.segment(S).mass = mass;
+person.segment(S).volume = volume;
+person.segment(S).centroid = [xc; yc; zc];
+person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
 %% Plot
 
-Q = P+[0;0;-l];
-person.origin{S+1} = Q; 
+if person.plot
 
 opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
  
-for ii = indf
+for ii = ind
   ph = l-ii*l/N; % plate height
   plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
+end
+
 end
 
 end

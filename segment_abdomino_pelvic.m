@@ -5,7 +5,8 @@ function person = abdomino_pelvic(person,S,...
 O1 = person.origin{1} + person.offset{S};
 person.origin{S} = O1;
 i_m = person.sex;
- 
+nu  = person.nu;
+
 %% Abdominal pelvic region
 
 Nt = 10;
@@ -38,17 +39,17 @@ l    = pelvis_meas(3);  % ? "height" of AP section
 c = 0.44; % A2.76
 h = l/numel(ind); % height of each plate
 
-nu = w_p-w_t - 1; % fatness ratio
+nu = person.nu; % fatness ratio
 
-%% Densities:
+%% Densities
 
-gamma_o  = 1000;
-gamma_ot = 1020 + 20*i_m + 30/((1+2*nu)^2); 
-gamma_1  = 1090 + 30*i_m;
-gamma_2  = 1020 + 30*i_m;
-gamma_3  = 1000 + 40*i_m;
-gamma_4  = 1020 + 30*i_m;
-gamma_5  =  960 + 60*i_m + 30/(1+4*nu)^3;
+gamma_o  = person.density.penis;
+gamma_ot = person.density.thigh_head(i_m,nu); 
+gamma_1  = person.density.lower_back(i_m);
+gamma_2  = person.density.posterior(i_m);
+gamma_3  = person.density.stomach(i_m);
+gamma_4  = person.density.pelvis(i_m);
+gamma_5  = person.density.buttocks(i_m,nu);
 
 %% Thighs
 
@@ -141,6 +142,8 @@ end
 
 %% Plot
 
+if person.plot
+
 opt = {'colour',person.color{S},'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2)};
 
 % buttocks left and right
@@ -168,3 +171,4 @@ for ii = ind_as
   plot_special_plate(O1+[0;0;-ii*h],2*a(8),r,atl(1),btl(1),h,opt{:}) 
 end
 
+end
