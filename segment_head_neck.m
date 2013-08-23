@@ -27,37 +27,40 @@ k = 0.30*c;
 
 %% Calculations
 
+% Volume 
+v_e = 4.66493*a*b*c;
+v_c = pi*a_1*b_1*h;
+v_p = 4.5708*b*c*a_1*(1.5708-b_1*(c-k)/(c*b)-asin((c-k)/c));
+volume = v_e + v_c + v_p;
+
 % Mass 
-m_e = gamma_e*4.66493*a*b*c;
-m_c = gamma_c*pi*a_1*b_1*h;
-m_p = gamma_e*4.5708*b*c*a_1*(1.5708-b_1*(c-k)/(c*b)-asin((c-k)/c));
-m = m_e + m_c + m_p;
+m_e = gamma_e*v_e;
+m_c = gamma_c*v_c;
+m_p = gamma_e*v_p;
+mass = m_e + m_c + m_p;
 
 % Mass centroid:
 xc = P(1);
 yc = P(2);
-zc = (m_e*(c+h-k)+m_c*h/2-m_p*(h-k/3))/m;
+zc = (m_e*(c+h-k)+m_c*h/2-m_p*(h-k/3))/mass;
 
 % Moments of inertia:
-I_xe = m*(0.19473*b^2+0.23511*c^2);
-I_ye = m*(0.211*a^2+0.23511*c^2);
-I_ze = m*(0.211*b^2+0.19473*b^2);
-I_xc = m*(3*b^2+h^2)/12;
-I_yc = m*(3*a^2+h^2)/12;
-I_zc = m*(a^2+b^2)/4;
+I_xe = mass*(0.19473*b^2+0.23511*c^2);
+I_ye = mass*(0.211*a^2+0.23511*c^2);
+I_ze = mass*(0.211*b^2+0.19473*b^2);
+I_xc = mass*(3*b^2+h^2)/12;
+I_yc = mass*(3*a^2+h^2)/12;
+I_zc = mass*(a^2+b^2)/4;
 
 % principal moments of inertia; 
 Ip_x = I_xe+m_e*(c+h-k-zc)^2+I_xc+m_c*(zc-h/2)^2-m_p*(zc-h+k/3)^2;
 Ip_y = I_ye+m_e*(c+h-k-zc)^2+I_yc+m_c*(zc-h/2)^2-m_p*(zc-h+k/3)^2;
 Ip_z = I_ze+I_zc-m_p*(a_1^2+b_1^2)/6;
 
-disp('-------------------------')
-disp('head neck section')
-disp('-------------------------')
-fprintf('Mass:     %2.3f kg\n',m)
-%fprintf('Volume:   %1.4f m^3\n',v)
-fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
-fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
+person.segment(S).mass = mass;
+person.segment(S).volume = volume;
+person.segment(S).centroid = [xc; yc; zc];
+person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
 %% Plot
 

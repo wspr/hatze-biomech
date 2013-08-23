@@ -23,24 +23,27 @@ l  = person.meas{S}.all(6);
 l_i=a+(l-a)*ind./N;
 b_i=a+(b-a)*ind./N;
 c_i=a+(c-a)*ind./N;
-v_i = (h2/N)*(b_i.*l_i/2+c_i.*l_i/2);
 
-m_i=gamma.*v_i;
-m_11=990*l*h1*(5*b+c)/36;
-m_12=990*l*h1*(b+5*c)/36;
-m_13=1100*l*h1*(b+c)/4;
+v = (h2/N)*(b_i.*l_i/2+c_i.*l_i/2);
+v_11=990*l*h1*(5*b+c)/36;
+v_12=990*l*h1*(b+5*c)/36;
+v_13=1100*l*h1*(b+c)/4;
+volume = v_11+v_12+v_13+sum(v);
 
-m=m_11+m_12+m_13+sum(m_i);
-v=m_11/990+m_12/990+m_13/1100+sum(v_i);
+m=gamma.*v;
+m_11=990*v_11;
+m_12=990*v_12;
+m_13=1100*v_13;
+mass = m_11+m_12+m_13+sum(m);
  
 % Mass centroid:
 xc = 0;
 yc = ((m_11+m_12)*(-h2-3*h1/4)...
     +m_13*(-h2-h1/4) ...
-    +sum(m_i.*(-ind.*h2/N)))/m;
+    +sum(m.*(-ind.*h2/N)))/mass;
 zc = (m_11*l*(-2/3+(7*b+2*c)/(9*(5*b+c)))...
     +m_12*l*(b+8*c)/(9*(b+5*c))+m_13*l*(-2/3+(b+2*c)/(3*(b+c)))...
-    +sum(m_i.*(-a/2-(2*l/3-(2*l/3-a/2)*ind./100+l_i.*(b_i+2*c_i)/(3*(b_i+c_i))))))/m;
+    +sum(m.*(-a/2-(2*l/3-(2*l/3-a/2)*ind/N+l_i.*(b_i+2*c_i)/(3*(b_i+c_i))))))/mass;
 
 % Moments of inertia:
 
@@ -70,12 +73,10 @@ zc = (m_11*l*(-2/3+(7*b+2*c)/(9*(5*b+c)))...
 % Ip_z = (Iy1+Iz1)/2-((Iy1-Iz1)^2/4+Iy1z1^2)^0.5;
 
 
-disp('-------------------------')
-disp('-------------------------')
-fprintf('Mass:     %2.3f kg\n',sum(m))
-fprintf('Volume:   %1.4f m^3\n',sum(v))
-fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
-%fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
+person.segment(S).mass = mass;
+person.segment(S).volume = volume;
+person.segment(S).centroid = [xc; yc; zc];
+%person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
 
 %% Plot

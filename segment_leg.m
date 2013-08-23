@@ -5,7 +5,7 @@ i_m = person.sex;
 
 %% Leg
 
-N = person.segment(S).N; 
+N = 10; 
 ind = 1:N;
 
 %% Densities

@@ -21,8 +21,11 @@ u = person.meas{S}.perim;
 b = sqrt(((u/pi).^2)/2-a.^2);
 l_1 = person.meas{S}.length;
 
-disp('fixme:')
-h = person.meas{S}.length_long - l_1
+% the height of the hoof is calculated per-thigh; for the pelvic region,
+% however, it is set to a fixed height! Therefore, the hoof does not
+% fit perfectly inside of its cutout in the pelvis; it is unclear whether
+% this is intentional or not (in Hatze's eyes).
+h = person.meas{S}.length_long - l_1;
 
 person.meas{S}.a = a;
 person.meas{S}.b = b;

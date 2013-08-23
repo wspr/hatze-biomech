@@ -1,7 +1,8 @@
 
 %% Raw measurements
 
-person.sex = i_m;
+person.sex = female;
+person.units = 'mm';
 
 % abdominal-thoracic
 person.meas{1}.all = [...
@@ -12,7 +13,8 @@ person.meas{1}.all = [...
   452 ... 20  length
   213 ... 21  ???
   ];
-person.segment(1).N = 10;
+person.segment(1).Nmeas = 10;
+person.segment(1).Ncalc = 10;
 
 % head-neck
 person.meas{2}.all = [139 184 214 055]; % width, depth, height, neck height
@@ -27,14 +29,16 @@ person.meas{4}.all = [...
     303 292 280 267 260 256 250 243 235 237 ... perimeters
     294 ... length
   ];
-person.segment(4).N = 10;
+person.segment(4).Nmeas = 10;
+person.segment(4).Ncalc = 10;
 
 person.meas{8}.all = [...
     093 091 085 087 085 078 074 070 070 076 ... diameters
     290 279 268 260 257 251 246 236 223 217 ... perimeters
     291 ... length
   ];
-person.segment(8).N = 10;
+person.segment(8).Nmeas = 10;
+person.segment(8).Ncalc = 10;
 
 % 5 & 9: forearms
 
@@ -43,14 +47,16 @@ person.meas{5}.all = [...
     235 239 239 233 219 201 183 171 162 160 ... perimeters
     252 ... length
   ];
-person.segment(5).N = 10;
+person.segment(5).Nmeas = 10;
+person.segment(5).Ncalc = 10;
 
 person.meas{9}.all = [...
     079 083 078 076 069 066 066 061 061 056 ... diameters
     231 229 225 221 211 195 184 174 164 161 ... perimeters
     257 ... length
   ];
-person.segment(9).N = 10;
+person.segment(9).Nmeas = 10;
+person.segment(9).Ncalc = 10;
 
 % 6 & 10: hands
 person.meas{6}.all  = [43 77];
@@ -63,7 +69,8 @@ person.meas{11}.all = [...
     767 797 844 887 940 954 975 ...
     097 081 228 053 ...
   ];
-person.segment(11).N = 10;
+person.segment(11).Nmeas = 10;
+person.segment(11).Ncalc = 10;
 
 % 12 & 15 thighs
 
@@ -73,7 +80,8 @@ person.meas{12}.all = [...
     439 ... ???
     364 ... length
 ];
-person.segment(12).N = 10;
+person.segment(12).Nmeas = 10;
+person.segment(12).Ncalc = 10;
 
 person.meas{15}.all = [...
     186 187 189 182 171 176 143 136 130 126 ... diam
@@ -81,7 +89,8 @@ person.meas{15}.all = [...
     445 ... ???
     353 ... length
 ];
-person.segment(15).N = 10;
+person.segment(15).Nmeas = 10;
+person.segment(15).Ncalc = 10;
 
 % 13 & 16: legs
 person.meas{13}.all = [...
@@ -90,7 +99,8 @@ person.meas{13}.all = [...
     406 ... length
     032 ... ankle size
 ];
-person.segment(13).N = 10;
+person.segment(13).Nmeas = 10;
+person.segment(13).Ncalc = 10;
 
 person.meas{16}.all = [...
     109 103 109 116 117 106 095 079 066 062 ... diam
@@ -98,7 +108,8 @@ person.meas{16}.all = [...
     419 ... length
     034 ... ankle size
 ];
-person.segment(16).N = 10;
+person.segment(16).Nmeas = 10;
+person.segment(16).Ncalc = 10;
 
 % 14 & 17: feet
 
@@ -200,10 +211,10 @@ person.density.pelvis     = @(i_m) 1020 + 30*i_m;
 person.density.buttocks   = @(i_m,nu) 960 + 60*i_m + 30/(1+4*nu)^3;
 
 person.density.arm{1} = @(i_m) 1060+40*i_m;
-for n = 2:(person.segment(4).N-1)
+for n = 2:9
   person.density.arm{n} = @(i_m) 1058+20*i_m;
 end
-person.density.arm{person.segment(4).N} = @(i_m) 1080+20*i_m;
+person.density.arm{10} = @(i_m) 1080+20*i_m;
 person.density.humerous = @(i_m) 1080+20*i_m;
 
 for n = 1:2

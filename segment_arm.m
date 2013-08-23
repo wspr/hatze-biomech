@@ -5,7 +5,7 @@ i_m = person.sex;
 
 %%  Arm
 
-N = person.segment(S).N; 
+N = 10; 
 indu = 1:N;
  
 %% Densities

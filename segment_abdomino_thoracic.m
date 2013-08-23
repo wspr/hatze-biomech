@@ -97,20 +97,20 @@ m_2 = gamma_a*v_2;
 v_f = (1-i_m)*4/3*pi*r^3; % breasts (2 hemispheres)
 m_f = gamma_b*v_f;
 
-V = sum(v_e)+sum(v_1+v_2)+v_f;
-M = sum(m_t+m_g)+sum(m_1+m_2)+m_f;
+volume = sum(v_e)+sum(v_1+v_2)+v_f;
+mass = sum(m_t+m_g)+sum(m_1+m_2)+m_f;
 
 % Mass centroid:
 xc = O1(1);
 yc = O1(2)+( ...
   sum( (m_1+m_2).*0.424.*(b(inda).^2+w(inda).^2)./Y1(inda) ) ...
   + m_f*(b(jj)+3/8*r) ...
-  )/M;
+  )/mass;
 zc = O1(3)+( ...
     sum( (m_t+m_g).*(21-2*indt)*l/2/N ) ...
   + sum( (m_1+m_2).*(21-2*inda)*l/2/N ) ...
   + m_f*(l-h) ...
-  )/M;
+  )/mass;
 
 % Moments of inertia:
 s = l^2/1200;
@@ -155,16 +155,11 @@ Ip_z = (I2_y+I2_z)/2-sqrt(((I2_y-I2_z)^2)/4+I2_yz^2);
 
 theta = atan(I2_yz/(I2_y-Ip_z));
 
-disp('-------------------------')
-disp('Abdomino-thoracic section')
-disp('-------------------------')
-fprintf('Mass:     %2.3f kg\n',M)
-fprintf('Volume:   %1.4f m^3\n',V)
-fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
-fprintf('Theta:    %2.2f°\n',theta*180/pi)
-fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
-
-calcs = [M,V,1000*xc,1000*yc,1000*zc,theta,Ip_x,Ip_y,Ip_z];
+person.segment(S).mass = mass;
+person.segment(S).volume = volume;
+person.segment(S).centroid = [xc; yc; zc];
+person.segment(S).theta = theta;
+person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
 %% Plot
 

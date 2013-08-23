@@ -52,7 +52,7 @@ O7 = P + [0;0;-z_h-d_z-1.25*b1];
 
 if S == 3 % left
   lr_sign = 1;
-elseif lr == 7 % right
+elseif S == 7 % right
   lr_sign = -1;
 end
 

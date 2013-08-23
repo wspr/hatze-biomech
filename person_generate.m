@@ -19,12 +19,12 @@ person = segment_forearm(person,9);
 person = segment_hand(person,10);
 
 % left
-person = segment_thigh(person,12,'l',h_l);
+person = segment_thigh(person,12);
 person = segment_leg(person,13);
 person = segment_foot(person,14);
 
 % right
-person = segment_thigh(person,15,'r',h_r);
+person = segment_thigh(person,15);
 person = segment_leg(person,16);
 person = segment_foot(person,17);
 
