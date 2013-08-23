@@ -1,25 +1,18 @@
 function person = segment_thigh(person,S)
 
 P = person.origin{S} + person.offset{S};
+N = person.segment(S).Ncalc;
+
 i_m = person.sex;
+ind = 1:N;
 
-%% Thigh
-
-N = 10; 
-indf = 1:N;
-
-%% Densities
-
-nu = person.nu;
-gamma = cellfun( @(x) x(i_m,nu), person.density.thigh );
-gamma_0 = person.density.thigh_head(i_m,nu); 
-
-%% Measurements
-
-a = person.meas{S}.diam/2;
-u = person.meas{S}.perim;
-b = sqrt(((u/pi).^2)/2-a.^2);
 l_1 = person.meas{S}.length;
+a = person.resample(person,S,person.meas{S}.diam)/2; 
+u = person.resample(person,S,person.meas{S}.perim);
+b = person.solve_ellipse(a,u);
+
+gamma = person.resample(person,S,cellfun( @(x) x(person.sex,person.nu), person.density.thigh ));
+gamma_0 = person.density.thigh_head(i_m,nu); 
 
 % the height of the hoof is calculated per-thigh; for the pelvic region,
 % however, it is set to a fixed height! Therefore, the hoof does not
@@ -44,19 +37,19 @@ mass   = sum(m)+m_0;
 % Mass centroid:
 xc = 0;
 yc = 0;
-zc = -(m_0*0.4*h+sum(h+l_1*(2*indf-1)/2/N))/mass;
+zc = -(m_0*0.4*h+sum(h+l_1*(ind-1/2)/N))/mass;
 
 % Moments of inertia:
 I_x0 = m_0*(b(1)^2/4+0.0686*h^2);
 I_y0 = m_0*(0.15*a(1)^2+0.0686*h^2);
 I_z0 = m_0*(0.15*a(1)^2+b(1)^2/4);
-I_xi = m.*(3*b.^2+(l_1/10)^2)/12;
-I_yi = m.*(3*a.^2+(l_1/10)^2)/12;
+I_xi = m.*(3*b.^2+(l_1/N)^2)/12;
+I_yi = m.*(3*a.^2+(l_1/N)^2)/12;
 I_zi = m.*(a.^2+b.^2)/4;
 
 % principal moments of inertia; 
-Ip_x = I_x0+m_0*(-0.4*h-zc).^2+sum(I_xi+m.*(h+l_1*(2*indf-1)/20+zc).^2);
-Ip_y = I_y0+m_0*(-0.4*h-zc).^2+sum(I_yi+m.*(h+l_1*(2*indf-1)/20+zc).^2);
+Ip_x = I_x0+m_0*(-0.4*h-zc).^2+sum(I_xi+m.*(h+l_1*(ind-1/2)/N+zc).^2);
+Ip_y = I_y0+m_0*(-0.4*h-zc).^2+sum(I_yi+m.*(h+l_1*(ind-1/2)/N+zc).^2);
 Ip_z = I_z0+sum(I_zi);
 
 Q = P+[0;0;-l_1-h];
@@ -73,7 +66,7 @@ if person.plot
   
   opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
   
-  for ii = indf
+  for ii = ind
     ph = l_1-ii*l_1/N; % plate height
     plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:})
   end

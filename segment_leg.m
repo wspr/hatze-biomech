@@ -1,27 +1,24 @@
 function person = segment_leg(person,S)
 
 P = person.origin{S} + person.offset{S};
-i_m = person.sex;
-
-%% Leg
-
-N = 10; 
+N = person.segment(S).Ncalc;
 ind = 1:N;
-
-%% Densities
-
-nu = person.nu; % subcutaneous fat indicator;
-gamma = cellfun( @(x) x(i_m), person.density.leg );
-gamma_b = person.density.ankle;
 
 %% Measurements
 
-a = person.meas{16}.diam/2; 
-u = person.meas{16}.perim;
-b = sqrt (((u(ind)/pi).^2)/2-a(ind).^2); 
-l = person.meas{16}.length;
+nu = person.nu; % subcutaneous fat indicator;
+
+l = person.meas{S}.length;
+a = person.resample(person,S,person.meas{S}.diam)/2; 
+u = person.resample(person,S,person.meas{S}.perim);
+b = person.solve_ellipse(a,u);
+
 r = person.meas{16}.ankle;
 r_a = 0.59*r;
+
+gamma = person.resample(person,S,cellfun( @(x) x(person.sex), person.density.leg ));
+gamma_b = person.density.ankle;
+
 
 %% Calculations
 
@@ -41,14 +38,14 @@ yc = 0;
 zc = -2*m_b*l - sum(m.*l.*(2*ind-1)/20)./mass;
 
 % Moments of inertia:
-I_xi = m.*(3*b.^2+(l/10)^2)/12;
-I_yi = m.*(3*a.^2+(l/10)^2)/12;
+I_xi = m.*(3*b.^2+(l/N)^2)/12;
+I_yi = m.*(3*a.^2+(l/N)^2)/12;
 I_zi = m.*(a.^2+b.^2)/4;
 
 % principal moments of inertia; 
-Ip_x = 2*m_b*(0.33*r^2+(l+zc).^2)+sum(I_xi+m.*(l*(2*ind-1)/20+zc).^2);
-Ip_y = 2*m_b*(0.1859*r^2+(l+zc).^2+(a(10)+0.196*r^2)) + sum(I_xi+m.*(l*(2*ind-1)/20+zc).^2);
-Ip_z = 2*m_b*(0.1859*r^2+(a(10)+0.196*r)^2)+ sum(I_zi);
+Ip_x = 2*m_b*(0.33*r^2+(l+zc).^2)+sum(I_xi+m.*(l*(ind-1/2)/N+zc).^2);
+Ip_y = 2*m_b*(0.1859*r^2+(l+zc).^2+(a(end)+0.196*r^2)) + sum(I_yi+m.*(l*(ind-1/2)/N+zc).^2);
+Ip_z = 2*m_b*(0.1859*r^2+(a(end)+0.196*r)^2)+ sum(I_zi);
 
 person.segment(S).mass = mass;
 person.segment(S).volume = volume;
