@@ -1,4 +1,4 @@
-# Hatze's 1979/1980 model of anthropomorphic segments
+# A Matlab implementation of Hatze's 1980 anthropometric body segment parameter model
 
 H. Hatze published an anthropomorphic model of the human body in 1979/1980 that was composed of 17 body segments with varying cross-section and density.
 It accurately models the masses, centroids, and moments of inertia for these body segments using a total of 242 anthropometric measurements of an individual.

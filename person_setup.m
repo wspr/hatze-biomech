@@ -43,6 +43,7 @@ person.N = 17;
 
 person.solve_ellipse = @(a,u) sqrt(((u/pi).^2)/2-a.^2);
 person.resample = @(person,S,x) meas_resample(x,person.meas{S}.length,10,person.segment(S).Nmeas,person.segment(S).Ncalc);
+person.plot_points = @(p,varargin) plot3( p(1,:), p(2,:), p(3,:) , varargin{:} );
 
 person.plot = false;
 for ii = 1:person.N
