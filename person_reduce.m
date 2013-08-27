@@ -1,3 +1,10 @@
+%% Driver file to experiment with interpolating limbs
+%
+% NB that Nmeas interpolates down from Hatze's original measurements.
+% The results of this interpolation is then used for interpolating to
+% an arbitrary number (Ncalc) of larger values.
+
+% Initialise
 
 clear all
 clc

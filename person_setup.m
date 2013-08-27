@@ -1,5 +1,11 @@
+%% Initialisation and helper variables
+%
+% This code should be run before any other person_*.m files.
 
-% not sure if I want to use these or not:
+%% Logical indexing
+%
+% Not sure if I want to use these or not.
+
 abthor         = 1;
 headneck       = 2;
 shoulder_left  = 3;
@@ -18,7 +24,14 @@ thigh_right    = 15;
 leg_right      = 16;
 foot_right     = 17;
 
-% SEGMENTS
+male = 1;
+female = 0;
+
+
+%% Segment names
+
+person.N = 17;
+
 person.segment(1).name = 'abdominal-thoracic';
 person.segment(2).name = 'head-neck';
 person.segment(3).name = 'left shoulder';
@@ -37,13 +50,15 @@ person.segment(15).name = 'right thigh';
 person.segment(16).name = 'right leg';
 person.segment(17).name = 'right foot';
 
-male = 1;
-female = 0;
-person.N = 17;
+
+%% Inline functions
 
 person.solve_ellipse = @(a,u) sqrt(((u/pi).^2)/2-a.^2);
 person.resample = @(person,S,x) meas_resample(x,person.meas{S}.length,10,person.segment(S).Nmeas,person.segment(S).Ncalc);
 person.plot_points = @(p,varargin) plot3( p(1,:), p(2,:), p(3,:) , varargin{:} );
+
+
+%% Plotting defaults
 
 person.plot = false;
 for ii = 1:person.N
@@ -56,3 +71,4 @@ for ii = 1:person.N
   person.opacity{ii} = [0.2 0.1]; % face, edge
   person.offset{ii} = [0;0;0];
 end
+

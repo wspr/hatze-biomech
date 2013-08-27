@@ -1,4 +1,3 @@
-
 %% Raw measurements
 
 person.sex = female;
@@ -131,7 +130,7 @@ person.meas{17}.all = [...
     212 ... length
 ];
 
-%%
+%% Organising measurements
 
 if strcmp(person.units,'mm')
   for ii = 1:person.N
@@ -186,7 +185,7 @@ person.meas{16}.perim  = person.meas{16}.all(11:20);
 person.meas{16}.length = person.meas{16}.all(21);
 person.meas{16}.ankle  = person.meas{16}.all(22);
 
-%%
+%% Densities
 
 person.nu = 0.1;
 
@@ -248,7 +247,7 @@ person.density.ankle = 1200;
 person.density.foot = @(n) 1480*(1-(0.0001)*(n.^2)*(1-1100/1480));
 
 
-%%
+%% Hatze's results to verify
 
 % left arm
 person.segment(4).mass_hatze = 1.616;
