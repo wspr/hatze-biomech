@@ -157,13 +157,9 @@ person.meas{9}.diam   = person.meas{9}.all(1:10);
 person.meas{9}.perim  = person.meas{9}.all(11:20); 
 person.meas{9}.length = person.meas{9}.all(21);
 
-pelvis_widths     = person.meas{11}.all(1:10);
-pelvis_perimeters = person.meas{11}.all(11:17);
-pelvis_meas       = person.meas{11}.all(18:21);
-pelvis_height     = person.meas{11}.all(20);
-
-h_l = 0.3*pelvis_height;
-h_r = 0.3*pelvis_height; % not sure how these could ever be different?
+person.meas{11}.diam   = person.meas{11}.all(1:10);
+person.meas{11}.perim  = person.meas{11}.all(11:17);
+person.meas{11}.length = person.meas{11}.all(20);
 
 person.meas{12}.diam   = person.meas{12}.all(1:10);
 person.meas{12}.perim  = person.meas{12}.all(11:20);

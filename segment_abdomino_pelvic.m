@@ -1,6 +1,4 @@
-function person = segment_abdomino_pelvic(person,S,...
-   pelvis_widths, pelvis_perimeters, pelvis_meas, ...
-   h_l,h_r)
+function person = segment_abdomino_pelvic(person,S)
 
 O1 = person.origin{1} + person.offset{S};
 person.origin{S} = O1;
@@ -17,7 +15,6 @@ ind_pe = 1:Np;
 ind_p = 4:7;
 ind_pt = (Np+1):Nt;
 ind_as = (Na+1):Nt;
-ind = 1:Nt;
 
 %% Measurements
 
@@ -25,21 +22,19 @@ ind = 1:Nt;
 %  PERIM  767 797 844 887 940 954 975
 %   MEAS  097 081 228 053
 
-a = pelvis_widths([1:8 8 8])/2; % half-widths. what's with 9 & 10 ??
-u = pelvis_perimeters;  % perimeters
+a = person.meas{S}.diam([1:8 8 8])/2; % half-widths. what's with 9 & 10 ??
+u = person.meas{S}.perim;  % perimeters
 
 a_h  = a(10);  % ? half hip width (trochanter major bones)
-w_t  = 2*a_h;
-w_p  = pelvis_meas(3);
-B    = pelvis_meas(4);  % ? bum depth
-d_11 = pelvis_meas(4);  % ? NB also used in ab-thor
-e_11 = pelvis_meas(3);  % ?
+B    = person.meas{S}.all(17+4);  % ? bum depth
+d_11 = person.meas{S}.all(17+4);  % ? NB also used in ab-thor
+e_11 = person.meas{S}.all(17+3);  % ?
 
-l    = pelvis_meas(3);  % ? "height" of AP section
+h_hoof = Np/Nt*person.meas{11}.length;
+
+l    = person.meas{S}.length;  % "height" of AP section
 c = 0.44; % A2.76
-h = l/numel(ind); % height of each plate
-
-nu = person.nu; % fatness ratio
+h = l/Nt; % height of each plate
 
 %% Densities
 
@@ -60,8 +55,8 @@ atr = person.meas{15}.diam/2;
 utr = person.meas{15}.perim; 
 btr = sqrt(((utr/pi).^2)/2-atr.^2);
 
-O12 = O1 + [-btl(1); 0; -l + h_l];
-O15 = O1 + [+btr(1); 0; -l + h_r];
+O12 = O1 + [-btl(1); 0; -l + h_hoof];
+O15 = O1 + [+btr(1); 0; -l + h_hoof];
 
 person.origin{12} = O12;
 person.origin{15} = O15;
@@ -90,7 +85,7 @@ b(ind_p) = sqrt(0.20264*(...
     u(ind_p) - 2*( c*a_h + s_p(ind_p) + s_l(ind_p) )...
   ).^2 - a(ind_p).^2 );
 
-% correction
+% correction if necessary for really bad inputs
 for ii = 1:length(b)
   if ~isreal(b(ii))
     [ii b(ii)]
@@ -140,6 +135,8 @@ end
 % fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
 % fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
+person.segment(S).theta = 10; % needs to be calculated
+
 %% Plot
 
 if person.plot
@@ -148,8 +145,8 @@ if person.plot
   
   % buttocks left and right
   
-  plot_elliptic_paraboloid(O1+[-c*a_h;-g;-l+h_l-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
-  plot_elliptic_paraboloid(O1+[+c*a_h;-g;-l+h_r-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
+  plot_elliptic_paraboloid(O1+[-c*a_h;-g;-l+h_hoof-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
+  plot_elliptic_paraboloid(O1+[+c*a_h;-g;-l+h_hoof-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
   
   % posterior: 3 semi-elliptical plates
   for ii = ind_pe

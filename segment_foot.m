@@ -77,7 +77,7 @@ person.segment(S).mass = mass;
 person.segment(S).volume = volume;
 person.segment(S).centroid = [xc; yc; zc];
 %person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
-
+person.segment(S).theta = 30; % needs to be calculated
 
 %% Plot
 

@@ -12,8 +12,6 @@ indt = 1:Nt;
 inda = (Nt+1):N;
 
 % Measurements and variables:
-Y1 = nan(1,N);
-X1 = nan(1,N);
 a  = nan(1,N);
 b  = nan(1,N);
 w  = nan(1,N);
@@ -54,8 +52,9 @@ person.meas{1}.length = l;
 
 %% Implicit measurements
 
-O2 = O1+[0;0;l];
+O2 = O1+person.cardan_rotation(person.q(4:6))*[0;0;l];
 person.origin{2} = O2;
+person.segment(S).frame = [];
 
 g = (1+0.3*i_m)*d_11;
 jj = round(h/(l/N));
@@ -65,9 +64,9 @@ w(indt)  = Y1(indt)/2;
 b(indt)  = Y1(indt)/2;
 
 % interpolate width minus shoulder; implies 10 disks:
-a([1 5:10]) = X1([1 5:10])/2;
+a([1, 5:10]) = X1([1, 5:10])/2;
 a(4) = a(5);
-ii = [2 3];
+ii = [2, 3];
 a(ii) = a(5)+(0.42*a(5)-a(1))*l.*(4-ii)/N/(0.35*l-z_h)+(2*a(1)-1.42*a(5))*((1/N*l*(4-ii))/(0.35*l-z_h)).^2;
 
 % interpolate asymmetric belly thicknesses:
@@ -191,11 +190,5 @@ if person.plot
     plot_sphere(O1+[+d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
     plot_sphere(O1+[-d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
   end
-  
-  % principle axes:
-  %plot_coord(O1,'index','1','axes','yz','length',0.1,'rotate',[theta*180/pi 0 0])
-  
-  % centroid:
-  %plot3(xc,yc,zc,'.k', 'markersize',20)
   
 end

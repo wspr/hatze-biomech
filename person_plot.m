@@ -9,7 +9,7 @@ person_data
 %% Check against Hatze's measurements
 
 person.plot = false;
-person_generate
+person = person_generate(person);
 
 disp('=============')
 disp('=============')
@@ -70,7 +70,7 @@ view(153,23)
 axis off
 zoom(2)
 
-person_generate
+person = person_generate(person);
   
 person.plot_points([person.origin{3:6}], 'k.-', 'markersize', 20,'linewidth',2)
 person.plot_points([person.origin{7:10}], 'k.-', 'markersize', 20,'linewidth',2)
@@ -144,7 +144,7 @@ person.offset{17} = [0; 0; -50]/1000;
 figure(2); clf; hold on
 set(gcf,'color','white')
 
-person_generate
+person = person_generate(person);
 
 axis equal
 view(153,23)
@@ -162,7 +162,7 @@ pbaspect([1 4 4])
 figure(3); clf; hold on
 set(gcf,'color','white')
 
-person_generate
+person = person_generate(person);
 
 axis equal
 view(153,23)

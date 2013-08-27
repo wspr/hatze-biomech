@@ -62,6 +62,7 @@ opt = {'colour',person.color{S},'opacity',person.opacity{S}(1),'edgeopacity',per
 % Ip_x =(I_x+I_z)/2+((I_x-I_z)^2/4+I_xz^2)^(1/2);
 % Ip_z =(I_x+I_z)/2-((I_x-I_z)^2/4+I_xz^2)^(1/2);
 
+person.segment(S).theta = 4; % needs to be calculated
 
 %%
 if person.plot
