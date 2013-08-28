@@ -1,11 +1,6 @@
 function person = segment_shoulder(person,S)
 
 P = person.origin{2}+person.offset{S};
-if S == 3 % left
-  person.segment(S).Rlocal = person.cardan_rotation([person.q(10:11); 0]);
-elseif S == 7
-  person.segment(S).Rlocal = person.cardan_rotation([person.q(19:20); 0]);  
-end
 person.segment(S).Rglobal = person.segment(2).Rglobal*person.segment(S).Rlocal;
 i_m = person.sex;
 
@@ -62,7 +57,7 @@ elseif S == 7 % right
   lr_sign = -1;
 end
 
-O8 = O7 + [ lr_sign*(at1+d_x) ; 0; 0];
+O8 = P + person.segment(1).Rglobal*[ lr_sign*(at1+d_x) ; 0; -z_h-d_z-1.25*b1];
 person.origin{S} = O7;
 person.origin{S+1} = O8;
 

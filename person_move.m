@@ -1,8 +1,9 @@
 %% Driver file to experiment with movement
 
 clear all
+close all
 clc
-clf
+
 
 person_setup
 person_data
@@ -21,7 +22,8 @@ person.q(35) =  person.segment(14).theta + 90;
 person.q(37) = -person.segment(11).theta;
 person.q(41) =  person.segment(17).theta + 90;
 
-person.q(4) = 45;
+person.q(4) = 0; % lumbar extension
+person.q(6) = 0; % lumbar twist
 
 person = person_generate(person,'plot',true);
 

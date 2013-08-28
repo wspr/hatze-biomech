@@ -33,7 +33,7 @@ gamma_b = person.density.thoracic_wall(i_m); % (? see A2.94)
 %
 % Trying to use Hatze's measurements where possible
 
-l = person.meas{1}.all(20);     % length of abdomino-thorasic section; has to be this
+l = person.meas{S}.all(20);     % length of abdomino-thorasic section; has to be this
                     % value as it's the largest in the set
 
 d_11 = person.meas{11}.all(21); % AP distance between centre of hip joint & Symphysion
@@ -47,14 +47,13 @@ h = 0.55*l;   % height below C5 of nipple
 r = 0.060;    % radius of breast
 
 % thorax ML widths (7) and AP thicknesses (10)
-X1 = person.meas{1}.widths;
-Y1 = person.meas{1}.depths;
-person.meas{1}.length = l;
+X1 = person.meas{S}.widths;
+Y1 = person.meas{S}.depths;
+person.meas{S}.length = l;
 
 %% Implicit measurements
 
-person.segment(S).Rlocal  = person.cardan_rotation(person.q(4:6));
-person.segment(S).Rglobal = person.segment(1).Rlocal;
+person.segment(S).Rglobal = person.segment(S).Rlocal;
 
 person.origin{S+1} = O1+person.segment(S).Rlocal*[0;0;l];
 
