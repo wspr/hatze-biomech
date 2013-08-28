@@ -1,5 +1,11 @@
 function person = segment_shoulder(person,S)
 
+if S == 3 % left
+  lr_sign = 1;
+elseif S == 7 % right
+  lr_sign = -1;
+end
+
 P = person.origin{2}+person.offset{S};
 person.segment(S).Rglobal = person.segment(2).Rglobal*person.segment(S).Rlocal;
 i_m = person.sex;
@@ -42,27 +48,17 @@ c3 = 1.42*b1 + d_x*c4;
 A1 = @(z) c1 - c2*z; % h1..d_x
 B1 = @(z) c3 - c4*z;
 
-% c5 = j1-h1/tan(alpha); % these two terms are equal!! ( i think )
+% c5 = j1-h1/tan(alpha); % these two terms are equal!! hatze is silly
 c5 = 0;
 c6 = 1/tan(alpha)-tan(beta);
 
 A2 = @(z) c5 + c6*z; % 0..h1
 B2 = @(z) b*sqrt(z/h1);
 
-O7 = P + person.segment(1).Rglobal*[0;0;-z_h-d_z-1.25*b1];
-
-if S == 3 % left
-  lr_sign = 1;
-elseif S == 7 % right
-  lr_sign = -1;
-end
-
-O8 = P + person.segment(1).Rglobal*[ lr_sign*(at1+d_x) ; 0; -z_h-d_z-1.25*b1];
-person.origin{S} = O7;
-person.origin{S+1} = O8;
-
-start = P+[lr_sign*at1; 0; -z_h];
-shtop = start+[lr_sign*d_x;0;-d_z];
+Oshoulder = P + person.segment(1).Rglobal*[0;0;-z_h-d_z-1.25*b1];
+Oarm = P + person.segment(1).Rglobal*[ lr_sign*(at1+d_x) ; 0; -z_h-d_z-1.25*b1];
+person.origin{S} = Oshoulder;
+person.origin{S+1} = Oarm;
 
 a10 = A1(d_x);
 b10 = B1(d_x);
@@ -79,13 +75,13 @@ if person.plot
   
   s = -hh*sin(gamma);
   plot_parabolic_wedge(...
-    [O8(1);O8(2);P(3)-z_h-d_z-a10],...
+    [Oarm(1);Oarm(2);P(3)-z_h-d_z-a10],...
     [a10 b10],[a1h b1h],lr_sign*hh,'t',s,...
     'rotate',person.segment(S).Rglobal,...
     'colour',person.color{S},...
     'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2))
   plot_parabolic_wedge(...
-    [O8(1)-lr_sign*hh;O8(2);P(3)-z_h-d_z-a10+s],...
+    [Oarm(1)-lr_sign*hh;Oarm(2);P(3)-z_h-d_z-a10+s],...
     [a2h b2h],0.001*[a2h b2h],lr_sign*h1,'t',j1,...
     'rotate',person.segment(S).Rglobal,'colour',person.color{S},...
     'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2))

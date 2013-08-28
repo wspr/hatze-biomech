@@ -7,6 +7,7 @@ parse(ip,varargin{:})
 person.plot = ip.Results.plot;
 
 person = person_copy_angles(person);
+person.segment.Rlocal
 
 for ii = 1:person.N
   person = person.segment(ii).setup_fn(person,ii);

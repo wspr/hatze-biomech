@@ -3,7 +3,6 @@ function person = segment_head_neck(person,S)
 %% Head_neck
 
 P = person.origin{S}+person.offset{S};
-person.segment(S).Rlocal = person.cardan_rotation(7:9);
 person.segment(S).Rglobal = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
 
 i_m = person.sex;
@@ -43,8 +42,8 @@ m_p = gamma_e*v_p;
 mass = m_e + m_c + m_p;
 
 % Mass centroid:
-xc = P(1);
-yc = P(2);
+xc = 0;
+yc = 0;
 zc = (m_e*(c+h-k)+m_c*h/2-m_p*(h-k/3))/mass;
 
 % Moments of inertia:

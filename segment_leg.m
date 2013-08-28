@@ -1,6 +1,7 @@
 function person = segment_leg(person,S)
 
 P = person.origin{S} + person.offset{S};
+person.segment(S).Rglobal = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
 N = person.segment(S).Ncalc;
 ind = 1:N;
 
@@ -52,7 +53,7 @@ person.segment(S).volume = volume;
 person.segment(S).centroid = [xc; yc; zc];
 person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
-Q = P+[0;0;-l];
+Q = P+person.segment(S).Rglobal*[0;0;-l];
 person.origin{S+1} = Q;
 
 %% Plot

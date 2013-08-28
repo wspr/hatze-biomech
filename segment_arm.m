@@ -57,7 +57,7 @@ if person.plot
   
   for ii = ind
     ph = L-ii*L/N; % plate height
-    plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],L/N,opt{:})
+    plot_elliptic_plate(Q+person.segment(S).Rglobal*[0;0;ph],[a(ii) b(ii)],L/N,opt{:})
   end
   
   % the hemishpere
