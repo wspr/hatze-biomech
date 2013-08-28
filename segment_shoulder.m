@@ -1,6 +1,12 @@
 function person = segment_shoulder(person,S)
 
 P = person.origin{2}+person.offset{S};
+if S == 3 % left
+  person.segment(S).Rlocal = person.cardan_rotation([person.q(10:11); 0]);
+elseif S == 7
+  person.segment(S).Rlocal = person.cardan_rotation([person.q(19:20); 0]);  
+end
+person.segment(S).Rglobal = person.segment(2).Rglobal*person.segment(S).Rlocal;
 i_m = person.sex;
 
 gamma_1 = person.density.shoulder_lateral(i_m);
@@ -48,7 +54,7 @@ c6 = 1/tan(alpha)-tan(beta);
 A2 = @(z) c5 + c6*z; % 0..h1
 B2 = @(z) b*sqrt(z/h1);
 
-O7 = P + [0;0;-z_h-d_z-1.25*b1];
+O7 = P + person.segment(1).Rglobal*[0;0;-z_h-d_z-1.25*b1];
 
 if S == 3 % left
   lr_sign = 1;
@@ -80,13 +86,13 @@ if person.plot
   plot_parabolic_wedge(...
     [O8(1);O8(2);P(3)-z_h-d_z-a10],...
     [a10 b10],[a1h b1h],lr_sign*hh,'t',s,...
-    'rotate',[0 -90 0],...
+    'rotate',person.segment(S).Rglobal,...
     'colour',person.color{S},...
     'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2))
   plot_parabolic_wedge(...
     [O8(1)-lr_sign*hh;O8(2);P(3)-z_h-d_z-a10+s],...
     [a2h b2h],0.001*[a2h b2h],lr_sign*h1,'t',j1,...
-    'rotate',[0 -90 0],'colour',person.color{S},...
+    'rotate',person.segment(S).Rglobal,'colour',person.color{S},...
     'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2))
   
 end

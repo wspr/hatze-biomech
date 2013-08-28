@@ -111,9 +111,6 @@ for ii = 1:person.N
   person.segment(ii).plot = false;
 end
 
-person.origin{1} = person.q(1:3);
-person.segment(1).frame = [person.cardan_rotation(person.q(4:6)) person.q(1:3);0 0 0 1];
-
 for ii = 1:person.N
   person.color{ii} = hsv2rgb( [(ii-1)/person.N , 0.5 , 0.8] );
   person.opacity{ii} = [0.2 0.1]; % face, edge

@@ -3,6 +3,9 @@ function person = segment_head_neck(person,S)
 %% Head_neck
 
 P = person.origin{S}+person.offset{S};
+person.segment(S).Rlocal = person.cardan_rotation(7:9);
+person.segment(S).Rglobal = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
+
 i_m = person.sex;
 
 head_width  = person.meas{2}.all(1);

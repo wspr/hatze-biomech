@@ -1,6 +1,7 @@
 function person = segment_abdomino_thoracic(person,S)
 %% abdomino-thoracic
 
+person.origin{S} = person.q(1:3);
 O1 = person.origin{S} + person.offset{S};
 i_m = person.sex;
 
@@ -52,9 +53,10 @@ person.meas{1}.length = l;
 
 %% Implicit measurements
 
-O2 = O1+person.cardan_rotation(person.q(4:6))*[0;0;l];
-person.origin{2} = O2;
-person.segment(S).frame = [];
+person.segment(S).Rlocal  = person.cardan_rotation(person.q(4:6));
+person.segment(S).Rglobal = person.segment(1).Rlocal;
+
+person.origin{S+1} = O1+person.segment(S).Rlocal*[0;0;l];
 
 g = (1+0.3*i_m)*d_11;
 jj = round(h/(l/N));
