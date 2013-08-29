@@ -1,10 +1,32 @@
-function person = person_generate(person,varargin)
+%% PERSON_GENERATE
+%
+% Main function to calculate and plot Hatze's body segment parameter model
+
+%% Inputs and options
+function result = person_generate(person,varargin)
 
 ip = inputParser;
+ip.StructExpand = false;
+addOptional(ip,'person',struct());
+addParamValue(ip,'data','');
 addParamValue(ip,'plot',false);
-parse(ip,varargin{:})
+parse(ip,person,varargin{:})
+
+if isempty(fieldnames(ip.Results.person))
+  person = person_setup();
+end
 
 person.plot = ip.Results.plot;
+
+if ~isempty(ip.Results.data)
+  person = person_data(person,ip.Results.data);
+end
+
+%% Main body
+%
+% Not much here right now.
+% First translate input pose into a form we can process.
+% Then run each calculation function in a convenient loop.
 
 person = person_copy_angles(person);
 
@@ -12,7 +34,17 @@ for ii = 1:person.N
   person = person.segment(ii).setup_fn(person,ii);
 end
 
+if nargout > 0
+  result = person;
 end
+
+end
+
+
+%% Subfunction: Copy angles from input to pose
+%
+% This code translates generalised coordinates into local coordinate system
+% rotations for each segment.
 
 function person = person_copy_angles(person)
 

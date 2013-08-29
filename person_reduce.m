@@ -11,23 +11,24 @@ clc
 
 pdata = @(person,s) [1000*person.segment(s).volume, person.segment(s).mass, person.segment(s).centroid(3), person.segment(s).Minertia(1), person.segment(s).Minertia(2), person.segment(s).Minertia(3)];
 
-person_setup
-person_data
-
 %% Original data
 
-person_generate
+person = person_generate('data','hatze_meas.txt');
 
 calc = [];
-calc(forearm_left,end+1,:)  = pdata(person,forearm_left);
-calc(forearm_right,end,:)   = pdata(person,forearm_right);
-calc(arm_left,end,:)        = pdata(person,arm_left);
-calc(arm_right,end,:)       = pdata(person,arm_right);
+calc(5,end+1,:)  = pdata(person,5);
+calc(9,end+1,:)   = pdata(person,9);
+calc(4,end+1,:)        = pdata(person,4);
+calc(5,end+1,:)       = pdata(person,5);
+
+disp(squeeze(calc))
 
 %% Figure showing interpolation
 
 willfig('interp'); clf; hold on
 figuresize(15,8,'centimeters');
+
+forearm_right = 9;
 
 person.segment(forearm_right).plot = true;
 
@@ -39,25 +40,25 @@ person.offset{forearm_right} = [0; 0; 0]./1000;
 person.segment(forearm_right).Nmeas = 10; % SAME
 person.segment(forearm_right).Ncalc = 10;
 person.color{forearm_right} = [1 0 0];
-person_generate
+person_generate(person)
 
 person.offset{forearm_right} = [2*x; 0; 0]./1000;
 person.segment(forearm_right).Nmeas = 10; % SAME
 person.segment(forearm_right).Ncalc = 40;
 person.color{forearm_right} = col;
-person_generate
+person_generate(person)
 
 person.offset{forearm_right} = [x; 0; 0]./1000;
 person.segment(forearm_right).Nmeas = 5;
 person.segment(forearm_right).Ncalc = 5;
 person.color{forearm_right} = [1 0 0];
-person_generate
+person_generate(person)
 
 person.offset{forearm_right} = [3*x; 0; 0]./1000;
 person.segment(forearm_right).Nmeas = 5;
 person.segment(forearm_right).Ncalc = 40;
 person.color{forearm_right} = col;
-person_generate
+person_generate(person)
 
 text(-0.19,0,0.1,'10 measurements','HorizontalAlignment','center')
 text(-0.19+1*x/1000,0,0.1,'5 measurements','HorizontalAlignment','center')
@@ -67,7 +68,7 @@ text(-0.19+3*x/1000,0,0.1,'Interp. from 5','HorizontalAlignment','center')
 view([0 0])
 axis tight equal off
 
-matlabfrag('fig/interp-slice','renderer','opengl')
+%matlabfrag('fig/interp-slice','renderer','opengl')
 
 
 %% interpolation
@@ -77,8 +78,8 @@ clc
 
 pdata = @(person,s) [1000*person.segment(s).volume, person.segment(s).mass, person.segment(s).centroid(3), person.segment(s).Minertia(1), person.segment(s).Minertia(2), person.segment(s).Minertia(3)];
 
-person_setup
-person_data
+person = person_generate('data','hatze_meas.txt');
+forearm_right = 9;
 
 person.segment(forearm_right).plot = false;
 
@@ -87,20 +88,20 @@ NC = numel(calcs);
 
 person.segment(forearm_right).Nmeas = 10;
 person.segment(forearm_right).Ncalc = 10;
-person_generate
+person = person_generate(person);
 forearm_R_standard = pdata(person,forearm_right);
 
 for cc = 1:length(calcs)
   
   person.segment(forearm_right).Nmeas = calcs(cc);
   person.segment(forearm_right).Ncalc = calcs(cc);
-  person_generate
+  person = person_generate(person);
   
   forearm_R_normal(cc,:)  = abs(100*(pdata(person,forearm_right)-forearm_R_standard)./forearm_R_standard);
 
   person.segment(forearm_right).Nmeas = calcs(cc);
   person.segment(forearm_right).Ncalc = 10;
-  person_generate
+  person = person_generate(person);
   
   forearm_R_interp(cc,:)  = abs(100*(pdata(person,forearm_right)-forearm_R_standard)./forearm_R_standard);
 

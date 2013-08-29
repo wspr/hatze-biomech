@@ -3,39 +3,7 @@
 clear all
 clc
 
-person_setup
-person_data
-
-%% Check against Hatze's measurements
-
-person = person_generate(person);
-
-for s = 1:person.N
-  
-  if ~isempty(person.segment(s).volume)
-    disp('-------------------------')
-    disp(person.segment(s).name)
-    disp('-------------------------')
-    fprintf('Volume:   %1.4f L\n',1000*person.segment(s).volume)
-    fprintf('         (%1.4f)\n',person.segment(s).volume_hatze)
-    fprintf('Mass:     %2.3f kg\n',person.segment(s).mass)
-    fprintf('         (%2.3f)\n',person.segment(s).mass_hatze)
-    if ~isempty(person.segment(s).centroid)
-      fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*person.segment(s).centroid(1),1000*person.segment(s).centroid(2),1000*person.segment(s).centroid(3))
-    end
-    if ~isempty(person.segment(s).centroid_hatze)
-      fprintf('         ([ %2.0f , %2.0f , %2.0f ])\n',1000*person.segment(s).centroid_hatze(1),1000*person.segment(s).centroid_hatze(2),1000*person.segment(s).centroid_hatze(3))
-    end
-    if ~isempty(person.segment(s).Minertia)
-      fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] g.m^2\n',1000*person.segment(s).Minertia(1),1000*person.segment(s).Minertia(1),1000*person.segment(s).Minertia(3))
-    end
-    if ~isempty(person.segment(s).Minertia_hatze)
-      fprintf('                   ([ %2.3f , %2.3f , %2.3f ])\n',1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(3))
-    end
-    
-  end
-
-end
+person = person_generate('data','hatze_meas.txt');
 
 %% Count measurements
 
@@ -46,12 +14,11 @@ for ii = 1:person.N
     %fprintf('%s & %i\\\\\n',person.segment(ii).name,numel(person.meas{ii}.all))
     count = count + numel(person.meas{ii}.all);
 end
-fprintf('-----------------------\nTotal measurements: %i\n=======================\n',count)
+fprintf('-----------------------\nTotal measurements: %i\n=======================\n\n',count)
 
 %% Plot isometric view of the model
 
-person_setup
-person_data
+person = person_generate('data','hatze_meas.txt');
 
 figure(1); clf; hold on
 set(gcf,'color','white')
@@ -135,7 +102,7 @@ person.offset{17} = [0; 0; -50]/1000;
 figure(2); clf; hold on
 set(gcf,'color','white')
 
-person = person_generate(person,'plot',true);
+person_generate(person,'plot',true);
 
 axis equal
 view(153,23)
@@ -153,7 +120,7 @@ pbaspect([1 4 4])
 figure(3); clf; hold on
 set(gcf,'color','white')
 
-person = person_generate(person,'plot',true);
+person_generate(person,'plot',true);
 
 axis equal
 view(153,23)

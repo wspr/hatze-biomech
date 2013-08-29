@@ -1,32 +1,6 @@
+function person = person_setup()
+
 %% Initialisation and helper variables
-%
-% This code should be run before any other person_*.m files.
-
-%% Logical indexing
-%
-% Not sure if I want to use these or not.
-
-abthor         = 1;
-headneck       = 2;
-shoulder_left  = 3;
-arm_left       = 4;
-forearm_left   = 5;
-hand_left      = 6;
-shoulder_right = 7;
-arm_right      = 8;
-forearm_right  = 9;
-hand_right     = 10;
-abpelv         = 11;
-thigh_left     = 12;
-leg_left       = 13;
-foot_left      = 14;
-thigh_right    = 15;
-leg_right      = 16;
-foot_right     = 17;
-
-male = 1;
-female = 0;
-
 
 %% Segment names
 
@@ -117,3 +91,4 @@ for ii = 1:person.N
   person.offset{ii} = [0;0;0];
 end
 
+end
