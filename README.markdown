@@ -41,6 +41,7 @@ Miscellaneous functions
 * Develop a generalised extruded ellipse shape to avoid interpolation and improve accuracy
 * Verify with measured data
 * Incorporate centre of mass coordinate systems (HOMSIM report, Hatze 1981)
+* Provide reference documentation for all equations and shape derivations
 * Compare against models of Hanavan, Yeadon, etc.
 * Provide a method for taking measurements from photographic (and/or rangefinder?) data
 * Consider adding additional degrees of freedom (e.g., knee ab/adduction)

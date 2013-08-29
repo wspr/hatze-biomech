@@ -1,2 +1,11 @@
 .DS_Store
 fig/*
+documentation/hatze-blx.bib
+documentation/hatze.aux
+documentation/hatze.bbl
+documentation/hatze.blg
+documentation/hatze.log
+documentation/hatze.out
+documentation/hatze.pdf
+documentation/hatze.run.xml
+documentation/hatze.synctex
