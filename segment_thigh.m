@@ -69,7 +69,7 @@ if person.plot
   
   for ii = ind
     ph = l_1-ii*l_1/N; % plate height
-    plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:})
+    plot_elliptic_plate(Q+person.segment(S).Rglobal*[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:},'rotate',person.segment(S).Rglobal)
   end
   
   plot_hoof(P-[0;0;h],a(1),b(1),h,opt{:})

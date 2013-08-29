@@ -161,7 +161,7 @@ if person.plot
   
   % anterior: 7 semi-elliptical plates
   for ii = ind_ae
-    plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5],opt{:})
+    plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5],opt{:},'rotate',person.segment(S).Rglobal)
   end
   
   % anterior: 3 "special shape" plates

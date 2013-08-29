@@ -53,7 +53,8 @@ person.meas{S}.length = l;
 
 %% Implicit measurements
 
-person.segment(S).Rglobal = person.segment(S).Rlocal;
+RR = person.segment(S).Rlocal;
+person.segment(S).Rglobal = RR;
 
 person.origin{S+1} = O1+person.segment(S).Rlocal*[0;0;l];
 
@@ -172,24 +173,24 @@ if person.plot
   for ii = indt
     ph = l-ii*l/N; % plate height
     
-    plot_elliptic_plate(O1+[0;0;ph],[a(ii) w(ii)],l/N,opt{:});
+    plot_elliptic_plate(O1+RR*[0;0;ph],[a(ii) w(ii)],l/N,opt{:},'rotate',RR);
     
     % lungs:
-    plot_parabolic_plate(O1+[ c(ii)*a(ii);0;ph],[ a2(ii) b2(ii)],l/N,optl{:});
-    plot_parabolic_plate(O1+[-c(ii)*a(ii);0;ph],[-a2(ii) b2(ii)],l/N,optl{:});
+    plot_parabolic_plate(O1+RR*[ c(ii)*a(ii);0;ph],[ a2(ii) b2(ii)],l/N,optl{:});
+    plot_parabolic_plate(O1+RR*[-c(ii)*a(ii);0;ph],[-a2(ii) b2(ii)],l/N,optl{:});
   end
   
   % abdomen:
   for ii = inda
     ph = l-ii*l/N; % plate height
-    plot_elliptic_plate(O1+[0;0;ph],[a(ii) -w(ii)],l/N,'segment',[0 0.5],opt{:})
-    plot_elliptic_plate(O1+[0;0;ph],[a(ii)  b(ii)],l/N,'segment',[0 0.5],opt{:})
+    plot_elliptic_plate(O1+RR*[0;0;ph],[a(ii) -w(ii)],l/N,'segment',[0 0.5],opt{:},'rotate',RR)
+    plot_elliptic_plate(O1+RR*[0;0;ph],[a(ii)  b(ii)],l/N,'segment',[0 0.5],opt{:},'rotate',RR)
   end
   
   % breasts:
   if i_m == 0 % female
-    plot_sphere(O1+[+d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
-    plot_sphere(O1+[-d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
+    plot_sphere(O1+RR*[+d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
+    plot_sphere(O1+RR*[-d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
   end
   
 end

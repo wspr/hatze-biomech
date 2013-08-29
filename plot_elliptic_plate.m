@@ -5,11 +5,17 @@ p.addRequired('O');
 p.addRequired('r');
 p.addRequired('h');
 p.addOptional('segment',[0 1]);
+p.addParamValue('rotate',[0 0 0]);
 p.addParamValue('N',25);
 p.addParamValue('colour',[0.5 0 0.5]);
 p.addParamValue('opacity',0.5);
 p.addParamValue('edgeopacity',0.5);
 p.parse(O,r,h,varargin{:})
+
+R     = p.Results.rotate;
+if numel(R) == 3
+  R = rotation_matrix_zyx(R);
+end
 
 t     = p.Results.segment;
 N     = p.Results.N;
@@ -17,15 +23,19 @@ col   = p.Results.colour;
 opac  = p.Results.opacity;
 eopac = p.Results.edgeopacity;
 
-r1 = [r(1);r(1)];
-r2 = [r(2);r(2)];
 theta = linspace(t(1)*2*pi,t(2)*2*pi,N);
 
-x = O(1) + r1*cos(theta);
-y = O(2) + r2*sin(theta);
-z = O(3) + h*(0:1)'*ones(1,N);
+pp = R*[r(1)*cos(theta), r(1)*cos(theta);
+        r(2)*sin(theta), r(2)*sin(theta);
+        zeros(size(theta)), repmat(h,size(theta))];
 
-hold on
-surf(x,y,z,'edgealpha',eopac,'facecolor',col,'facealpha',opac)
-patch(x(1,:),y(1,:),z(1,:),col,'facealpha',opac,'edgealpha',eopac)
-patch(x(2,:),y(2,:),z(2,:),col,'facealpha',opac,'edgealpha',eopac)
+PP = repmat(O,[1 2*N]) + pp;
+
+shape.FaceColor = col;
+shape.Vertices = PP';
+
+shape.Faces = [1:N;N+(1:N)];
+patch(shape,'facealpha',opac,'edgealpha',eopac)
+
+shape.Faces = [1:N-1; 2:N; N+(2:N); N+(1:N-1)]';
+patch(shape,'facealpha',opac,'edgealpha',eopac)

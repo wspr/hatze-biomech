@@ -8,7 +8,7 @@ person_data
 
 person = person_generate(person);
 
-person.q2 = [ ...
+person.q = [ ...
   0; 0; 0;   ...  1,  2,  3 : global *position*; rest are angles:
   0; 0; 0;   ...  4,  5,  6 : abdomen-thorax
   45; 0; 0;   ...  7,  8,  9 : head-neck
@@ -43,9 +43,9 @@ person.q(37) = -person.segment(11).theta;
 person.q(41) =  person.segment(17).theta + 90;
 end
 
-person = person_generate(person);
-
 figure(111); clf; hold on
+
+person = person_generate(person,'plot',true);
 
 person.plot_points([person.origin{3:6}], 'k.-', 'markersize', 20,'linewidth',2)
 person.plot_points([person.origin{7:10}], 'k.-', 'markersize', 20,'linewidth',2)

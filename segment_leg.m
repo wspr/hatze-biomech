@@ -64,7 +64,7 @@ if person.plot
   
   for ii = ind
     ph = -ii*l/N; % plate height
-    plot_elliptic_plate(P+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
+    plot_elliptic_plate(P+person.segment(S).Rglobal*[0;0;ph],[a(ii) b(ii)],l/N,opt{:},'rotate',person.segment(S).Rglobal)
   end
   
   %% sideways paraboloids

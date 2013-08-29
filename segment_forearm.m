@@ -52,8 +52,8 @@ if person.plot || person.segment(S).plot
   opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
   
   for ii = ind
-    ph = l-ii*l/N; % plate height
-    plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
+    ph = -ii*l/N; % plate height
+    plot_elliptic_plate(P+person.segment(S).Rglobal*[0;0;ph],[a(ii) b(ii)],l/N,opt{:},'rotate',person.segment(S).Rglobal)
   end
   
 end
