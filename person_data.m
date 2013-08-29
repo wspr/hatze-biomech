@@ -1,142 +1,62 @@
+function person = person_data(person,filename)
+
 %% Raw measurements
 
-person.sex = female;
-person.units = 'mm';
+fileID = fopen(filename);
+if fileID == -1
+  error(['File "',filename,'" not found.'])
+end
+C = textscan(fileID, '%d','CommentStyle','#');
+fclose(fileID);
 
-% abdominal-thoracic
-person.meas{1}.all = [...
-  101 273 275 264 251 245 262 ... 1:7 ML widths
-  178 ... 8   ???
-  084 095 117 149 168 192 190 184 174 174 ... 9:18 AP depths
-  170 ... 19  ???
-  452 ... 20  length
-  213 ... 21  ???
-  ];
+meas = transpose(C{1}); % rows are easier
+omeas = meas;
+
+person.sex = double(meas(1));
+person.scale = double(meas(2));
+
+meas([1 2]) = [];
+meas = double(meas)/person.scale;
+
+% order of segments in the measurement file:
+seg   = [ 1 2 3 7  4  8  5  9 6 10 11 12 15 13 16 14 17];
+
+% number of measurements per segment:
+count = [21 4 4 4 21 21 21 21 2  2 21 22 22 22 22  6  6];
+
+for S = 1:17
+  
+  person.meas{seg(S)}.all = meas(1:count(S));
+  meas(1:count(S)) = [];
+  
+end
+
+%% Index counts
+%
+% Pretty sure I can do better than this!
+
 person.segment(1).Nmeas = 10;
 person.segment(1).Ncalc = 10;
-
-% head-neck
-person.meas{2}.all = [139 184 214 055]; % width, depth, height, neck height
-
-% 3 & 7: shoulders
-person.meas{3}.all = [140 176 090 025]; % d, 2*b, ?, z_h
-person.meas{7}.all = [145 182 086 025];
-
-% 4 & 8: arms
-person.meas{4}.all = [...
-    085 085 080 077 073 072 072 072 072 083 ... diameters
-    303 292 280 267 260 256 250 243 235 237 ... perimeters
-    294 ... length
-  ];
 person.segment(4).Nmeas = 10;
 person.segment(4).Ncalc = 10;
-
-person.meas{8}.all = [...
-    093 091 085 087 085 078 074 070 070 076 ... diameters
-    290 279 268 260 257 251 246 236 223 217 ... perimeters
-    291 ... length
-  ];
 person.segment(8).Nmeas = 10;
 person.segment(8).Ncalc = 10;
-
-% 5 & 9: forearms
-
-person.meas{5}.all = [...
-    085 084 083 082 075 070 065 062 058 055 ... diameters
-    235 239 239 233 219 201 183 171 162 160 ... perimeters
-    252 ... length
-  ];
 person.segment(5).Nmeas = 10;
 person.segment(5).Ncalc = 10;
-
-person.meas{9}.all = [...
-    079 083 078 076 069 066 066 061 061 056 ... diameters
-    231 229 225 221 211 195 184 174 164 161 ... perimeters
-    257 ... length
-  ];
 person.segment(9).Nmeas = 10;
 person.segment(9).Ncalc = 10;
-
-% 6 & 10: hands
-person.meas{6}.all  = [43 77];
-person.meas{10}.all = [45 76];
-
-% 11: pelvis
-
-person.meas{11}.all = [...
-    287 301 318 331 341 344 359 382 326 240 ...
-    767 797 844 887 940 954 975 ...
-    097 081 228 053 ...
-  ];
 person.segment(11).Nmeas = 10;
 person.segment(11).Ncalc = 10;
-
-% 12 & 15 thighs
-
-person.meas{12}.all = [...
-    191 191 190 180 162 146 132 126 119 119 ... diam
-    629 604 590 565 536 500 453 418 386 373 ... perim
-    439 ... ???
-    364 ... length
-];
 person.segment(12).Nmeas = 10;
 person.segment(12).Ncalc = 10;
-
-person.meas{15}.all = [...
-    186 187 189 182 171 176 143 136 130 126 ... diam
-    620 602 592 563 528 495 461 417 388 377 ... perim
-    445 ... ???
-    353 ... length
-];
 person.segment(15).Nmeas = 10;
 person.segment(15).Ncalc = 10;
-
-% 13 & 16: legs
-person.meas{13}.all = [...
-    110 103 109 116 117 105 091 079 065 064 ... diam
-    353 335 362 375 370 338 293 264 238 238 ... perim
-    406 ... length
-    032 ... ankle size
-];
 person.segment(13).Nmeas = 10;
 person.segment(13).Ncalc = 10;
-
-person.meas{16}.all = [...
-    109 103 109 116 117 106 095 079 066 062 ... diam
-    351 332 353 375 374 351 309 279 245 239 ... perim
-    419 ... length
-    034 ... ankle size
-];
 person.segment(16).Nmeas = 10;
 person.segment(16).Ncalc = 10;
 
-% 14 & 17: feet
-
-person.meas{14}.all = [...
-    053 ... ankle length
-    158 ... toes length
-    072 ... heel length
-    035 ... lower height
-    099 ... upper+lower height
-    216 ... length
-];
-
-person.meas{17}.all = [...
-    058 ... ankle length
-    147 ... toes length
-    077 ... heel length
-    035 ... lower height
-    098 ... upper+lower height
-    212 ... length
-];
-
 %% Organising measurements
-
-if strcmp(person.units,'mm')
-  for ii = 1:person.N
-    person.meas{ii}.all = person.meas{ii}.all/1000;
-  end
-end
 
 person.meas{1}.widths = [person.meas{1}.all(1) NaN NaN NaN person.meas{1}.all(2:7)];
 person.meas{1}.depths = person.meas{1}.all(9:18);
@@ -242,53 +162,4 @@ end
 person.density.ankle = 1200;
 person.density.foot = @(n) 1480*(1-(0.0001)*(n.^2)*(1-1100/1480));
 
-
-%% Hatze's results to verify
-
-% left arm
-person.segment(4).mass_hatze = 1.616;
-person.segment(4).volume_hatze = 1.713;
-person.segment(4).centroid_hatze = [0; 0; -0.131];
-person.segment(4).Minertia_hatze = [0.013677 0.013435 0.001528];
-
-% left forearm
-person.segment(5).mass_hatze = 0.835;
-person.segment(5).volume_hatze = 0.896;
-person.segment(5).centroid_hatze = [0; 0; -0.108];
-person.segment(5).Minertia_hatze = [0.004596 0.004712 0.000523];
-
-% right arm
-person.segment(8).mass_hatze = 1.505;
-person.segment(8).volume_hatze = 1.595;
-person.segment(8).centroid_hatze = [0; 0; -0.129];
-person.segment(8).Minertia_hatze = [0.011917 0.011937 0.001325];
-
-% right forearm
-person.segment(9).mass_hatze = 0.809;
-person.segment(9).volume_hatze = 0.869;
-person.segment(9).centroid_hatze = [0; 0; -0.112];
-person.segment(9).Minertia_hatze = [0.004765 0.004855 0.000472];
-
-% left thigh
-person.segment(12).mass_hatze = 9.166;
-person.segment(12).volume_hatze = 9.593;
-person.segment(12).centroid_hatze = [0; 0; -0.194];
-person.segment(12).Minertia_hatze = [0.156305 0.152523 0.035853];
-
-% left leg
-person.segment(13).mass_hatze = 3.310;
-person.segment(13).volume_hatze = 3.602;
-person.segment(13).centroid_hatze = [0; 0; -0.174];
-person.segment(13).Minertia_hatze = [0.045315 0.044973 0.005106];
-
-% right thigh
-person.segment(15).mass_hatze = 8.955;
-person.segment(15).volume_hatze = 9.375;
-person.segment(15).centroid_hatze = [0; 0; -0.194];
-person.segment(15).Minertia_hatze = [0.149153 0.146883 0.034605];
-
-% right leg
-person.segment(16).mass_hatze = 3.487;
-person.segment(16).volume_hatze = 3.794;
-person.segment(16).centroid_hatze = [0; 0; -0.183];
-person.segment(16).Minertia_hatze = [0.050537 0.050114 0.005438];
+end

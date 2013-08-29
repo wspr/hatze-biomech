@@ -1,6 +1,7 @@
 function person = segment_foot(person,S)
 
 P = person.origin{S} + person.offset{S};
+person.segment(S).Rglobal = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
 i_m = person.sex;
 
 %% Foot

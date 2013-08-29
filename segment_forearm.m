@@ -1,6 +1,7 @@
 function person = segment_forearm(person,S)
 
 P = person.origin{S} + person.offset{S}(:);
+person.segment(S).Rglobal = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
 N = person.segment(S).Ncalc;
 ind = 1:N;
 
@@ -14,7 +15,7 @@ gamma = person.resample(person,S,cellfun( @(x) x(person.sex), person.density.for
 person.meas{S}.a = a;
 person.meas{S}.b = b;
 
-Q = P+[0;0;-l];
+Q = P+person.segment(S).Rglobal*[0;0;-l];
 person.origin{S+1} = Q; 
 
 % Mass 
@@ -51,8 +52,8 @@ if person.plot || person.segment(S).plot
   opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
   
   for ii = ind
-    ph = l-ii*l/N; % plate height
-    plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l/N,opt{:})
+    ph = -ii*l/N; % plate height
+    plot_elliptic_plate(P+person.segment(S).Rglobal*[0;0;ph],[a(ii) b(ii)],l/N,opt{:},'rotate',person.segment(S).Rglobal)
   end
   
 end

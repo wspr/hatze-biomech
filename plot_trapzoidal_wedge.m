@@ -1,4 +1,4 @@
-function plot_trapzoidal_plate(O,b,c,l,h,varargin)
+function plot_trapzoidal_wedge(O,b,c,l,h,varargin)
 % origin is the *centre* of the trapezoid.
 % Straight edges are along X and perpendicular to Y. Height is Z.
 

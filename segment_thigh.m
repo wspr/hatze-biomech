@@ -1,6 +1,7 @@
 function person = segment_thigh(person,S)
 
 P = person.origin{S} + person.offset{S};
+person.segment(S).Rglobal = person.segment(11).Rglobal*person.segment(S).Rlocal;
 N = person.segment(S).Ncalc;
 
 i_m = person.sex;
@@ -52,7 +53,7 @@ Ip_x = I_x0+m_0*(-0.4*h-zc).^2+sum(I_xi+m.*(h+l_1*(ind-1/2)/N+zc).^2);
 Ip_y = I_y0+m_0*(-0.4*h-zc).^2+sum(I_yi+m.*(h+l_1*(ind-1/2)/N+zc).^2);
 Ip_z = I_z0+sum(I_zi);
 
-Q = P+[0;0;-l_1-h];
+Q = P+person.segment(S).Rglobal*[0;0;-l_1-h];
 person.origin{S+1} = Q;
 
 person.segment(S).mass = mass;
@@ -68,7 +69,7 @@ if person.plot
   
   for ii = ind
     ph = l_1-ii*l_1/N; % plate height
-    plot_elliptic_plate(Q+[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:})
+    plot_elliptic_plate(Q+person.segment(S).Rglobal*[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:},'rotate',person.segment(S).Rglobal)
   end
   
   plot_hoof(P-[0;0;h],a(1),b(1),h,opt{:})

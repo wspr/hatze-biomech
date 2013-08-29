@@ -68,7 +68,13 @@ head1 = [ax pxy pxy.*[1; -1; 1]]; % arrowhead points in XY plane
 head2 = [ax pxz pxz.*[1; 1; -1]]; % arrowhead points in XZ plane
 
 % Rotation matrix (note inverse order of application)
-R = Rz(r(3))*Ry(r(2))*Rx(r(1));
+if numel(r) == 3
+  R = Rz(r(3))*Ry(r(2))*Rx(r(1));
+elseif all(size(r)==[3,3])
+  R = r;
+else
+  error('Rotation must be 3 cardan angles or a 3x3 rotation matrix.')
+end
 
 %% Plot
 

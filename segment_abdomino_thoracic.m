@@ -1,6 +1,7 @@
 function person = segment_abdomino_thoracic(person,S)
 %% abdomino-thoracic
 
+person.origin{S} = person.q(1:3);
 O1 = person.origin{S} + person.offset{S};
 i_m = person.sex;
 
@@ -32,7 +33,7 @@ gamma_b = person.density.thoracic_wall(i_m); % (? see A2.94)
 %
 % Trying to use Hatze's measurements where possible
 
-l = person.meas{1}.all(20);     % length of abdomino-thorasic section; has to be this
+l = person.meas{S}.all(20);     % length of abdomino-thorasic section; has to be this
                     % value as it's the largest in the set
 
 d_11 = person.meas{11}.all(21); % AP distance between centre of hip joint & Symphysion
@@ -46,15 +47,16 @@ h = 0.55*l;   % height below C5 of nipple
 r = 0.060;    % radius of breast
 
 % thorax ML widths (7) and AP thicknesses (10)
-X1 = person.meas{1}.widths;
-Y1 = person.meas{1}.depths;
-person.meas{1}.length = l;
+X1 = person.meas{S}.widths;
+Y1 = person.meas{S}.depths;
+person.meas{S}.length = l;
 
 %% Implicit measurements
 
-O2 = O1+person.cardan_rotation(person.q(4:6))*[0;0;l];
-person.origin{2} = O2;
-person.segment(S).frame = [];
+RR = person.segment(S).Rlocal;
+person.segment(S).Rglobal = RR;
+
+person.origin{S+1} = O1+person.segment(S).Rlocal*[0;0;l];
 
 g = (1+0.3*i_m)*d_11;
 jj = round(h/(l/N));
@@ -171,24 +173,24 @@ if person.plot
   for ii = indt
     ph = l-ii*l/N; % plate height
     
-    plot_elliptic_plate(O1+[0;0;ph],[a(ii) w(ii)],l/N,opt{:});
+    plot_elliptic_plate(O1+RR*[0;0;ph],[a(ii) w(ii)],l/N,opt{:},'rotate',RR);
     
     % lungs:
-    plot_parabolic_plate(O1+[ c(ii)*a(ii);0;ph],[ a2(ii) b2(ii)],l/N,optl{:});
-    plot_parabolic_plate(O1+[-c(ii)*a(ii);0;ph],[-a2(ii) b2(ii)],l/N,optl{:});
+    plot_parabolic_plate(O1+RR*[ c(ii)*a(ii);0;ph],[ a2(ii) b2(ii)],l/N,optl{:});
+    plot_parabolic_plate(O1+RR*[-c(ii)*a(ii);0;ph],[-a2(ii) b2(ii)],l/N,optl{:});
   end
   
   % abdomen:
   for ii = inda
     ph = l-ii*l/N; % plate height
-    plot_elliptic_plate(O1+[0;0;ph],[a(ii) -w(ii)],l/N,'segment',[0 0.5],opt{:})
-    plot_elliptic_plate(O1+[0;0;ph],[a(ii)  b(ii)],l/N,'segment',[0 0.5],opt{:})
+    plot_elliptic_plate(O1+RR*[0;0;ph],[a(ii) -w(ii)],l/N,'segment',[0 0.5],opt{:},'rotate',RR)
+    plot_elliptic_plate(O1+RR*[0;0;ph],[a(ii)  b(ii)],l/N,'segment',[0 0.5],opt{:},'rotate',RR)
   end
   
   % breasts:
   if i_m == 0 % female
-    plot_sphere(O1+[+d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
-    plot_sphere(O1+[-d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
+    plot_sphere(O1+RR*[+d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
+    plot_sphere(O1+RR*[-d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
   end
   
 end

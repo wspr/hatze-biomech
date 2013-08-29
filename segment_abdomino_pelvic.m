@@ -1,6 +1,7 @@
 function person = segment_abdomino_pelvic(person,S)
 
 O1 = person.origin{1} + person.offset{S};
+person.segment(S).Rglobal = person.segment(1).Rglobal*person.segment(S).Rlocal;
 person.origin{S} = O1;
 i_m = person.sex;
 nu  = person.nu;
@@ -55,8 +56,8 @@ atr = person.meas{15}.diam/2;
 utr = person.meas{15}.perim; 
 btr = sqrt(((utr/pi).^2)/2-atr.^2);
 
-O12 = O1 + [-btl(1); 0; -l + h_hoof];
-O15 = O1 + [+btr(1); 0; -l + h_hoof];
+O12 = O1 + person.segment(S).Rglobal*[-btl(1); 0; -l + h_hoof];
+O15 = O1 + person.segment(S).Rglobal*[+btr(1); 0; -l + h_hoof];
 
 person.origin{12} = O12;
 person.origin{15} = O15;
@@ -160,7 +161,7 @@ if person.plot
   
   % anterior: 7 semi-elliptical plates
   for ii = ind_ae
-    plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5],opt{:})
+    plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5],opt{:},'rotate',person.segment(S).Rglobal)
   end
   
   % anterior: 3 "special shape" plates

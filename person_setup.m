@@ -1,32 +1,6 @@
+function person = person_setup()
+
 %% Initialisation and helper variables
-%
-% This code should be run before any other person_*.m files.
-
-%% Logical indexing
-%
-% Not sure if I want to use these or not.
-
-abthor         = 1;
-headneck       = 2;
-shoulder_left  = 3;
-arm_left       = 4;
-forearm_left   = 5;
-hand_left      = 6;
-shoulder_right = 7;
-arm_right      = 8;
-forearm_right  = 9;
-hand_right     = 10;
-abpelv         = 11;
-thigh_left     = 12;
-leg_left       = 13;
-foot_left      = 14;
-thigh_right    = 15;
-leg_right      = 16;
-foot_right     = 17;
-
-male = 1;
-female = 0;
-
 
 %% Segment names
 
@@ -88,10 +62,10 @@ person.q = [ ...
   0; 0; 0;   ... 28, 29, 30 : abdomen-pelvis
   0; 0; 0;   ... 31, 32, 33 : left thigh
   0;         ... 34         : left knee
-  0; 0;      ... 35, 36     : left foot
+  90; 0;      ... 35, 36     : left foot
   0; 0; 0;   ... 37, 38, 39 : right thigh
   0;         ... 40         : right knee
-  0; 0;      ... 41, 42     : right foot
+  90; 0;      ... 41, 42     : right foot
 ];
 
 %% Inline functions
@@ -111,12 +85,10 @@ for ii = 1:person.N
   person.segment(ii).plot = false;
 end
 
-person.origin{1} = person.q(1:3);
-person.segment(1).frame = [person.cardan_rotation(person.q(4:6)) person.q(1:3);0 0 0 1];
-
 for ii = 1:person.N
   person.color{ii} = hsv2rgb( [(ii-1)/person.N , 0.5 , 0.8] );
   person.opacity{ii} = [0.2 0.1]; % face, edge
   person.offset{ii} = [0;0;0];
 end
 
+end

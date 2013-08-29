@@ -27,7 +27,13 @@ x2 = t+(-ab2(1)/ab2(2)^2 * y2.^2 + ab2(1));
 z1 = zeros(1,n);
 z2 = h*ones(1,n);
 
-R = rotation_matrix_zyx(p.Results.rotate);
+if numel(p.Results.rotate) == 9
+  R = p.Results.rotate;
+elseif numel(R) == 3
+  R = rotation_matrix_zyx(p.Results.rotate);
+else
+  error('Rotation input must be 3 cardan angles or the 3x3 rotation matrix itself.')
+end
 p1 = R*[x1;y1;z1];
 p2 = R*[x2;y2;z2];
 
