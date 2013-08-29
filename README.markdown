@@ -11,33 +11,34 @@ We hope that this will increase the viability of using his model.
 
 # Code layout
 
-This code repository consists of two branches: `master` and `move`.
-The code in `master` is currently at a state which can draw all of the geometry of a set of measurements (see `person_plot.m`) and intertwined are many of the calculations required to obtain volume, mass, moment of inertia, etc.
+The code in the `master` branch is currently at a state which can draw all of the geometry of a set of measurements (see `person_plot.m`) and intertwined are many of the calculations required to obtain volume, mass, moment of inertia, etc.
 These calculations can be interpolated in the cases of the limbs (see MODSIM 2013 paper) to achieve better accuracy especially in the cases with fewer measurements.
 Many other calculations, however are still incomplete or, worse, incorrect; this shall hopefully be rectified in the coming weeks (time of writing Sept 2013).
 
-The code in branch `move` is a fork to allow joint angle inputs as defined in Hatze (1981).
-The reason for the separation is that adding transformation matrices to the code has rendered the graphical display of the model somewhat unstable and while this code is still evolving the `master` branch should still function correctly.
+Since submission of the MODSIM paper, changes have been made to allow joint angles to be reflected in the visual output.
+This functionality is still half-baked, however; tweaking the drawing functions to display correctly at arbitrary orientations is still ongoing.
 
 ## Manifest
 
 * `hatze-cheatsheet.pdf` — a short summary taken from Hatze's works
-* `person_*.pdf` — driver files
-   * `person_plot.m` — the main ‘run this file to see the results’ file
-   * `person_reduce.m` — the file used to generate the results for the MODSIM paper
-   * Other `person_` files subject to change
+* `hatze_meas.txt` — transcription of Hatze's measurements
+* `person_generate.m` — main function
+* `person_*.pdf` — driver files to:
+   * `person_plot.m` — generic ‘run this file to see the results’
+   * `person_hatze_compare.m` — compare our calculations to Hatze's
+   * `person_reduce.m` — generate the results for the MODSIM paper
+   * `person_move.m` — experiment with joint angles
 * `segment_*.m` — the functions used to calculate and plot the various body segments
 * `plot_*.m` — various plotting functions for the graphical output
 
 Miscellaneous functions
 
 * `rotation_matrix_zyx.m` — XYZ rotation matrix
-* `meas_resample.m` — specialised (but simple) resampling function for the interpolation routines
 
 # TODO
 
 * Complete all segment parameter calculations (ongoing)
-* Allow joint angle inputs (ongoing, see above regarding `move` branch)
+* Allow joint angle inputs (ongoing)
 * Develop a generalised extruded ellipse shape to avoid interpolation and improve accuracy
 * Verify with measured data
 * Incorporate centre of mass coordinate systems (HOMSIM report, Hatze 1981)
@@ -70,5 +71,4 @@ Will Robertson wrote most of the code relating to the graphics objects and struc
 
 * H. Hatze (1981) ‘HOMSIM: a simulator of three-dimensional hominoid dynamics’, CSIR Techn. Report SWISK 23, Pretoria
 
-* M. Dillon (2001) ‘Biomechanical Models for the Analysis of Partial Foot Amputee Gait
-Dillon’ PhD Thesis, Queensland University of Technology, Australia
+* M. Dillon (2001) ‘Biomechanical Models for the Analysis of Partial Foot Amputee Gait’ PhD Thesis, Queensland University of Technology, Australia

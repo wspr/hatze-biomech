@@ -3,10 +3,7 @@
 clear all
 clc
 
-person_setup
-person_data
-
-person = person_generate(person);
+person = person_generate('data','hatze_meas.txt');
 
 person.q = [ ...
   0; 0; 0;   ...  1,  2,  3 : global *position*; rest are angles:
