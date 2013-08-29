@@ -82,11 +82,11 @@ end
 
 person.offset{1} =  [0; 0;  0];
 person.offset{2} =  [0; 0; 50]/1000;
-person.offset{3} =  [150; 250; 100]/1000; % left shoulder
+person.offset{3} =  [-100; 250; 100]/1000; % left shoulder
 person.offset{4} =  [-50; 0; -140]/1000;
 person.offset{5} =  [0; 0; -50]/1000;
 person.offset{6} =  [0; 60; -50]/1000;
-person.offset{7} =  [-150; -250; 100]/1000; % right shoulder
+person.offset{7} =  [ 100; -250; 100]/1000; % right shoulder
 person.offset{8} =  [50; 0; -140]/1000;
 person.offset{9} =  [0; 0; -50]/1000;
 person.offset{10} = [0; -60; -50]/1000;
