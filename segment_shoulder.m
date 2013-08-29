@@ -1,13 +1,13 @@
 function person = segment_shoulder(person,S)
 
 if S == 3 % left
-  lr_sign = 1;
-elseif S == 7 % right
   lr_sign = -1;
+elseif S == 7 % right
+  lr_sign = 1;
 end
 
 P = person.origin{2}+person.offset{S};
-person.segment(S).Rglobal = person.segment(2).Rglobal*person.segment(S).Rlocal;
+person.segment(S).Rglobal = person.segment(1).Rglobal*person.segment(S).Rlocal;
 i_m = person.sex;
 
 gamma_1 = person.density.shoulder_lateral(i_m);

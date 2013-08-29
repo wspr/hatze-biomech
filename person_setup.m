@@ -88,10 +88,10 @@ person.q = [ ...
   0; 0; 0;   ... 28, 29, 30 : abdomen-pelvis
   0; 0; 0;   ... 31, 32, 33 : left thigh
   0;         ... 34         : left knee
-  0; 0;      ... 35, 36     : left foot
+  90; 0;      ... 35, 36     : left foot
   0; 0; 0;   ... 37, 38, 39 : right thigh
   0;         ... 40         : right knee
-  0; 0;      ... 41, 42     : right foot
+  90; 0;      ... 41, 42     : right foot
 ];
 
 %% Inline functions

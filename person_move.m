@@ -8,10 +8,10 @@ person_data
 
 person = person_generate(person);
 
-person.q = [ ...
+person.q2 = [ ...
   0; 0; 0;   ...  1,  2,  3 : global *position*; rest are angles:
   0; 0; 0;   ...  4,  5,  6 : abdomen-thorax
-  0; 0; 0;   ...  7,  8,  9 : head-neck
+  45; 0; 0;   ...  7,  8,  9 : head-neck
   45; -135;    ... 10, 11     : left shoulder
   0;  90; 90; ... 12, 13, 14 : left arm
   90;  0;    ... 15, 16     : left forearm
@@ -26,7 +26,7 @@ person.q = [ ...
   90; 0;      ... 35, 36     : left foot
   60; -45; 0;   ... 37, 38, 39 : right thigh
   -90;         ... 40         : right knee
-  0; 0;      ... 41, 42     : right foot
+  90; 0;      ... 41, 42     : right foot
 ];
 
 if false
@@ -55,7 +55,7 @@ person.plot_points([person.origin{[1,3,2]}], 'k.-', 'markersize', 20,'linewidth'
 
 ind = 1:person.N;
 for ii = ind
-  plot_coord(person.origin{ii},'index',[num2str(ii),''''],'rotate',person.segment(ii).angle);
+  plot_coord(person.origin{ii},'index',[num2str(ii),''''],'rotate',person.segment(ii).Rglobal,'length',0.07);
 end
 
 axis equal

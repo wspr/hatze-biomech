@@ -1,6 +1,7 @@
 function person = segment_hand(person,S)
 
 P = person.origin{S} + person.offset{S};
+person.segment(S).Rglobal = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
 
 r = person.meas{S}.all(1);
 h = person.meas{S}.all(2);
