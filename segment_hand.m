@@ -66,7 +66,7 @@ opt = {'colour',person.color{S},'opacity',person.opacity{S}(1),'edgeopacity',per
 person.segment(S).theta = 4; % needs to be calculated
 
 %%
-if person.plot
+if person.plot || person.segment(S).plot
   
   plot_rect_prism(P,[2*a10 2*b10],[h 2.52*b10],-hh,opt{:});
   plot_cylinder_hollow(P+[h/2;0;-hh-r],r-h/4,r,h,[0 180],'N',10,'rotate',[0 90 180],opt{:})

@@ -9,7 +9,7 @@ ip = inputParser;
 ip.StructExpand = false;
 addOptional(ip,'person',struct());
 addParamValue(ip,'data','');
-addParamValue(ip,'plot',false);
+addParamValue(ip,'plot','');
 parse(ip,person,varargin{:})
 
 %% Main body
@@ -29,7 +29,9 @@ end
 
 person = person_copy_angles(person);
 
-person.plot = ip.Results.plot;
+if ~isempty(ip.Results.plot)
+  person.plot = ip.Results.plot;
+end
 
 for ii = 1:person.N
   person = person.segment(ii).setup_fn(person,ii);

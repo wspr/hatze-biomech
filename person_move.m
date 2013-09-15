@@ -7,9 +7,9 @@ person = person_generate('data','hatze_meas.txt');
 
 person.q = [ ...
   0; 0; 0;   ...  1,  2,  3 : global *position*; rest are angles:
-  0; 0; 0;   ...  4,  5,  6 : abdomen-thorax
+  -20; 0; 0;   ...  4,  5,  6 : abdomen-thorax
   45; 0; 0;   ...  7,  8,  9 : head-neck
-  45; -135;    ... 10, 11     : left shoulder
+  0; -90;    ... 10, 11     : left shoulder
   0;  90; 90; ... 12, 13, 14 : left arm
   90;  0;    ... 15, 16     : left forearm
   0; 0;      ... 17, 18     : left hand
@@ -42,7 +42,20 @@ end
 
 figure(111); clf; hold on
 
-person = person_generate(person,'plot',true);
+%person.plot = true; % all segments
+person.segment(3).plot = true;
+person.segment(7).plot = true;
+person = person_generate(person);
+
+person.plot_points([person.origin{3:4}], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.origin{7:8}], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.origin{[1,3,2]}], 'k.-', 'markersize', 20,'linewidth',2)
+
+axis equal
+view([140 20])
+pbaspect([1 1 1])
+
+%%
 
 person.plot_points([person.origin{3:6}], 'k.-', 'markersize', 20,'linewidth',2)
 person.plot_points([person.origin{7:10}], 'k.-', 'markersize', 20,'linewidth',2)

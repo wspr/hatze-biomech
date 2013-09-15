@@ -1,6 +1,6 @@
-function plot_trapzoidal_plate(O,b,c,l,h,varargin)
+function plot_trapzoidal_plate_xy(O,b,c,l,h,varargin)
 % origin is the *centre* of the trapezoid.
-% Straight edges are along X and perpendicular to Z. Height is Y.
+% Straight edges are along X and perpendicular to Y. Height is Z.
 
 if nargin == 0
   O = [0;0;0];
@@ -19,8 +19,8 @@ p.parse(varargin{:})
 
 R = rotation_matrix_zyx(p.Results.rotate);
 
-vertex_l = [O O O O]+R*transpose([b/2 0 l/2; -b/2 0 l/2; -c/2 0 -l/2; c/2 0 -l/2]);
-vertex_h = [O O O O]+R*transpose([b/2 h l/2; -b/2 h l/2; -c/2 h -l/2; c/2 h -l/2]);
+vertex_l = [O O O O]+R*transpose([b/2 l/2 0; -b/2 l/2 0; -c/2 -l/2 0; c/2 -l/2 0]);
+vertex_h = [O O O O]+R*transpose([b/2 l/2 h; -b/2 l/2 h; -c/2 -l/2 h; c/2 -l/2 h]);
 
 trapz.Vertices = [vertex_l, vertex_h]';
 trapz.Faces = [1 2 3 4;

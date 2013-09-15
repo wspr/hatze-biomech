@@ -1,7 +1,8 @@
 function person = segment_abdomino_pelvic(person,S)
 
 O1 = person.origin{1} + person.offset{S};
-person.segment(S).Rglobal = person.segment(1).Rglobal*person.segment(S).Rlocal;
+R = person.segment(1).Rglobal*person.segment(S).Rlocal;
+person.segment(S).Rglobal = R;
 person.origin{S} = O1;
 i_m = person.sex;
 nu  = person.nu;
@@ -140,33 +141,33 @@ person.segment(S).theta = 10; % needs to be calculated
 
 %% Plot
 
-if person.plot
+if person.plot || person.segment(S).plot
   
   opt = {'colour',person.color{S},'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2)};
   
   % buttocks left and right
   
-  plot_elliptic_paraboloid(O1+[-c*a_h;-g;-l+h_hoof-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
-  plot_elliptic_paraboloid(O1+[+c*a_h;-g;-l+h_hoof-0.037*l],0.437*l,B,'rotate',[90 0 0],'N',[20 7],opt{:})
+  plot_elliptic_paraboloid(O1+R*[-c*a_h;-g;-l+h_hoof-0.037*l],0.437*l,B,'rotate',R*rotation_matrix_zyx([90 0 0]),'N',[20 7],opt{:})
+  plot_elliptic_paraboloid(O1+R*[+c*a_h;-g;-l+h_hoof-0.037*l],0.437*l,B,'rotate',R*rotation_matrix_zyx([90 0 0]),'N',[20 7],opt{:})
   
   % posterior: 3 semi-elliptical plates
   for ii = ind_pe
-    plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) g],h,'segment',[0.5 1],opt{:})
+    plot_elliptic_plate(O1+R*[0;0;-ii*h],[a(ii) g],h,'segment',[0.5 1],'rotate',R,opt{:})
   end
   
   % posterior: 7 trapezoidal plates
   for ii = ind_pt
-    plot_trapzoidal_plate(O1+[0;-g/2;-ii*h],2*a(ii),2*f_1(ii),g,h,opt{:})
+    plot_trapzoidal_plate_xy(O1+R*[0;-g/2;-ii*h],2*a(ii),2*f_1(ii),g,h,'rotate',R,opt{:})
   end
   
   % anterior: 7 semi-elliptical plates
   for ii = ind_ae
-    plot_elliptic_plate(O1+[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5],opt{:},'rotate',person.segment(S).Rglobal)
+    plot_elliptic_plate(O1+R*[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5],opt{:},'rotate',R)
   end
   
   % anterior: 3 "special shape" plates
   for ii = ind_as
-    plot_special_plate(O1+[0;0;-ii*h],2*a(8),r,atl(1),btl(1),h,opt{:})
+    plot_special_plate(O1+R*[0;0;-ii*h],2*a(8),r,atl(1),btl(1),h,'rotate',R,opt{:})
   end
   
 end

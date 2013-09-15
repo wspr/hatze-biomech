@@ -58,7 +58,7 @@ person.origin{S+1} = Q;
 
 %% Plot
 
-if person.plot
+if person.plot || person.segment(S).plot
   
   opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
   

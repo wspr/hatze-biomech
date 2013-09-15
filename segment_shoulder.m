@@ -7,7 +7,8 @@ elseif S == 7 % right
 end
 
 P = person.origin{2}+person.offset{S};
-person.segment(S).Rglobal = person.segment(1).Rglobal*person.segment(S).Rlocal;
+R = person.segment(1).Rglobal*person.segment(S).Rlocal;
+person.segment(S).Rglobal = R;
 i_m = person.sex;
 
 gamma_1 = person.density.shoulder_lateral(i_m);
@@ -56,7 +57,7 @@ A2 = @(z) c5 + c6*z; % 0..h1
 B2 = @(z) b*sqrt(z/h1);
 
 Oshoulder = P + person.segment(1).Rglobal*[0;0;-z_h-d_z-1.25*b1];
-Oarm = P + person.segment(1).Rglobal*[ lr_sign*(at1+d_x) ; 0; -z_h-d_z-1.25*b1];
+Oarm = Oshoulder + person.segment(S).Rglobal*[ 0 ; 0; at1+d_x ];
 person.origin{S} = Oshoulder;
 person.origin{S+1} = Oarm;
 
@@ -71,7 +72,7 @@ a2h = A2(h1);
 b2h = B2(h1);
 
 
-if person.plot
+if person.plot || person.segment(S).plot
   
   if S == 7
     rcorr = [0 180 0];
@@ -81,15 +82,16 @@ if person.plot
   
   s = -hh*sin(gamma);
   plot_parabolic_wedge(...
-    [Oarm(1);Oarm(2);P(3)-z_h-d_z-a10],...
+    Oarm,...
     [a10 b10],[a1h b1h],lr_sign*hh,'t',s,...
-    'rotate',person.segment(S).Rglobal*rotation_matrix_zyx(rcorr),...
+    'rotate',R*rotation_matrix_zyx(rcorr),...
     'colour',person.color{S},...
     'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2))
+  
   plot_parabolic_wedge(...
-    [Oarm(1)-lr_sign*hh;Oarm(2);P(3)-z_h-d_z-a10+s],...
+    Oarm+[-lr_sign*hh;0;0],...
     [a2h b2h],0.001*[a2h b2h],lr_sign*h1,'t',j1,...
-    'rotate',person.segment(S).Rglobal*rotation_matrix_zyx(rcorr),'colour',person.color{S},...
+    'rotate',R*rotation_matrix_zyx(rcorr),'colour',person.color{S},...
     'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2))
   
 end

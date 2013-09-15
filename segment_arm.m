@@ -51,7 +51,7 @@ person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
 %% Plot,...
 
-if person.plot
+if person.plot || person.segment(S).plot
   
   opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
   

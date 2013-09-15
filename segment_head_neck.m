@@ -66,7 +66,7 @@ person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
 %% Plot
 
-if person.plot
+if person.plot || person.segment(S).plot
   
   plot_elliptic_plate(P,[a_1 b_1],h,'colour',person.color{S},...
     'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2));

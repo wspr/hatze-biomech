@@ -1,7 +1,8 @@
 function person = segment_thigh(person,S)
 
 P = person.origin{S} + person.offset{S};
-person.segment(S).Rglobal = person.segment(11).Rglobal*person.segment(S).Rlocal;
+R = person.segment(11).Rglobal*person.segment(S).Rlocal;
+person.segment(S).Rglobal = R;
 N = person.segment(S).Ncalc;
 
 i_m = person.sex;
@@ -63,16 +64,16 @@ person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
 %% Plot
 
-if person.plot
+if person.plot || person.segment(S).plot
   
   opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
   
   for ii = ind
     ph = l_1-ii*l_1/N; % plate height
-    plot_elliptic_plate(Q+person.segment(S).Rglobal*[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:},'rotate',person.segment(S).Rglobal)
+    plot_elliptic_plate(Q+person.segment(S).Rglobal*[0;0;ph],[a(ii) b(ii)],l_1/N,opt{:},'rotate',R)
   end
   
-  plot_hoof(P-[0;0;h],a(1),b(1),h,opt{:})
+  plot_hoof(P-R*[0;0;h],a(1),b(1),h,opt{:},'rotate',R)
   
 end
 

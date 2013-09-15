@@ -1,7 +1,8 @@
 function person = segment_foot(person,S)
 
 P = person.origin{S} + person.offset{S};
-person.segment(S).Rglobal = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
+R = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
+person.segment(S).Rglobal = R;
 i_m = person.sex;
 
 %% Foot
@@ -82,7 +83,7 @@ person.segment(S).theta = 30; % needs to be calculated
 
 %% Plot
 
-if person.plot
+if person.plot || person.segment(S).plot
   
   opt1  = {'opacity',person.opacity{S}(1),'edgeopacity',0,'colour',person.color{S}};
   opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
@@ -90,12 +91,12 @@ if person.plot
   for ii = ind
     ph = -ii*h2/100; % plate height
     s = -a/2-ii/100*(2/3*l-a/2);
-    plot_trapzoidal_plate(P+[0;-s-l_i(ii)/2;ph],b_i(ii),c_i(ii),l_i(ii),h2/100,opt1{:})
+    plot_trapzoidal_plate(P+R*[0;ph;s+l_i(ii)/2],c_i(ii),b_i(ii),l_i(ii),h2/100,opt1{:},'rotate',R)
   end
   
-  plot_trapzoidal_plate(P+[0;-s-l/2;-h2],b,c,l,-h1/2,opt{:})
-  plot_trapzoidal_plate(P+[0;-s-l/2-l/3;-h2-h1],c+1/3*(b-c),c,l/3,h1/2,opt{:})
-  plot_trapzoidal_plate(P+[0;-s-l/2+l/3;-h2-h1],b,b+1/3*(c-b),l/3,h1/2,opt{:})
+  plot_trapzoidal_plate(P+R*[0;-h2;-l/6],c,b,l,-h1/2,opt{:},'rotate',R)
+  plot_trapzoidal_plate(P+R*[0;-h2-h1;l/6],c,c+1/3*(b-c),l/3,h1/2,opt{:},'rotate',R)
+  plot_trapzoidal_plate(P+R*[0;-h2-h1;-l/2],b+1/3*(c-b),b,l/3,h1/2,opt{:},'rotate',R)
   
 end
 
