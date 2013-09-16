@@ -7,13 +7,13 @@ person = person_generate('data','hatze_meas.txt');
 
 person.q = [ ...
   0; 0; 0;   ...  1,  2,  3 : global *position*; rest are angles:
-  -20; 0; 0;   ...  4,  5,  6 : abdomen-thorax
+  0; 0; 0;   ...  4,  5,  6 : abdomen-thorax
   45; 0; 0;   ...  7,  8,  9 : head-neck
-  0; -90;    ... 10, 11     : left shoulder
+  45; -70;    ... 10, 11     : left shoulder
   0;  90; 90; ... 12, 13, 14 : left arm
   90;  0;    ... 15, 16     : left forearm
   0; 0;      ... 17, 18     : left hand
-  0;  90;    ... 19, 20     : right shoulder
+  0;  55;    ... 19, 20     : right shoulder
   45; 90; 0; ... 21, 22, 23 : right arm
   45; -90;    ... 24, 25     : right forearm
   0; 0;      ... 26, 27     : right hand
@@ -42,9 +42,9 @@ end
 
 figure(111); clf; hold on
 
-%person.plot = true; % all segments
-person.segment(3).plot = true;
-person.segment(7).plot = true;
+person.plot = true; % all segments
+%person.segment(3).plot = true;
+%person.segment(7).plot = true;
 person = person_generate(person);
 
 person.plot_points([person.origin{3:4}], 'k.-', 'markersize', 20,'linewidth',2)
