@@ -1,7 +1,8 @@
 function person = segment_arm(person,S)
 
 P = person.origin{S} + person.offset{S};
-person.segment(S).Rglobal = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
+R = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
+person.segment(S).Rglobal = R;
 
 N = person.segment(S).Ncalc;
 ind = 1:N;
@@ -49,7 +50,7 @@ person.segment(S).volume = volume;
 person.segment(S).centroid = [xc; yc; zc];
 person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
-%% Plot,...
+%% Plot...
 
 if person.plot || person.segment(S).plot
   
@@ -57,11 +58,11 @@ if person.plot || person.segment(S).plot
   
   for ii = ind
     ph = L-ii*L/N; % plate height
-    plot_elliptic_plate(Q+person.segment(S).Rglobal*[0;0;ph],[a(ii) b(ii)],L/N,opt{:},'rotate',person.segment(S).Rglobal)
+    plot_elliptic_plate(Q+R*[0;0;ph],[a(ii) b(ii)],L/N,opt{:},'rotate',R)
   end
   
   % the hemishpere
-  plot_sphere(P, b(1)/2, 'longrange',[0 1],opt{:})
+  plot_sphere(P, b(1)/2, 'longrange',[0 1],'rotate',R,opt{:})
   
 end
 

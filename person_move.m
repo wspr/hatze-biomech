@@ -42,9 +42,9 @@ end
 
 figure(111); clf; hold on
 
-person.plot = true; % all segments
-%person.segment(3).plot = true;
-%person.segment(7).plot = true;
+%person.plot = true; % all segments
+person.segment(4).plot = true;
+person.segment(8).plot = true;
 person = person_generate(person);
 
 person.plot_points([person.origin{3:4}], 'k.-', 'markersize', 20,'linewidth',2)
