@@ -189,8 +189,8 @@ if person.plot || person.segment(S).plot
   
   % breasts:
   if i_m == 0 % female
-    plot_sphere(O1+RR*[+d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
-    plot_sphere(O1+RR*[-d/2; b(jj); l-h],r,'latrange',[-1 1],opt{:})
+    plot_sphere(O1+RR*[+d/2; b(jj); l-h],r,'latrange',[-1 1],'N',[20 10],opt{:})
+    plot_sphere(O1+RR*[-d/2; b(jj); l-h],r,'latrange',[-1 1],'N',[20 10],opt{:})
   end
   
 end

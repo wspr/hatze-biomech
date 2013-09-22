@@ -1,7 +1,8 @@
 function person = segment_hand(person,S)
 
 P = person.origin{S} + person.offset{S};
-person.segment(S).Rglobal = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
+R = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
+person.segment(S).Rglobal = R;
 
 r = person.meas{S}.all(1);
 h = person.meas{S}.all(2);
@@ -10,8 +11,6 @@ a10 = person.meas{S-1}.a(end);
 b10 = person.meas{S-1}.b(end);
 
 hh = 0.378*h;
-
-opt = {'colour',person.color{S},'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2)};
 
 %%
 
@@ -68,14 +67,22 @@ person.segment(S).theta = 4; % needs to be calculated
 %%
 if person.plot || person.segment(S).plot
   
-  plot_rect_prism(P,[2*a10 2*b10],[h 2.52*b10],-hh,opt{:});
-  plot_cylinder_hollow(P+[h/2;0;-hh-r],r-h/4,r,h,[0 180],'N',10,'rotate',[0 90 180],opt{:})
+  opt = {'colour',person.color{S},'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2)};
+  
+  plot_rect_prism(P,[2*a10 2*b10],[h 2.52*b10],-hh,'rotate',R,opt{:});
+  
   if S == 6 % left
-    s = 3*h/4;
+    s = h;
+    t = 0;
+    RR = R*person.cardan_rotation([0 0 180]);
   else
     s = 0;
+    t = 3*h/4;
+    RR = R;
   end
-  plot_cylinder_hollow(P+[h/2-s;0;-hh-r],r-h/4,r,h/4,[180 180+180/pi*h/r],'N',10,'rotate',[0 90 180],opt{:})
+  
+  plot_cylinder_hollow(P+R*[0;s-h/2;-hh-r],r-h/4,r,h,[0 180],'N',10,'rotate',RR,opt{:})
+  plot_cylinder_hollow(P+R*[0;s+t-h/2;-hh-r],r-h/4,r,h/4,[0 -180/pi*h/r],'N',10,'rotate',RR,opt{:})
   
 end
 

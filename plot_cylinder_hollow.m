@@ -22,8 +22,8 @@ p1y = [r*sind(theta1) R*sind(theta2)];
 p1z = zeros(1,2*N);
 p2z = h*ones(1,2*N);
 
-p1 = Rot*[p1x p1x(1);p1y p1y(1);p1z p1z(1)];
-p2 = Rot*[p1x p1x(1);p1y p1y(1);p2z p2z(1)];
+p1 = Rot*[p1y p1y(1);p1z p1z(1);p1x p1x(1)];
+p2 = Rot*[p1y p1y(1);p2z p2z(1);p1x p1x(1)];
 
 patch(O(1)+p1(1,:),O(2)+p1(2,:),O(3)+p1(3,:),col,'facealpha',opac,'edgealpha',eopac)
 patch(O(1)+p2(1,:),O(2)+p2(2,:),O(3)+p2(3,:),col,'facealpha',opac,'edgealpha',eopac)
