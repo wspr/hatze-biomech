@@ -3,7 +3,6 @@ function person = segment_head_neck(person,S)
 %% Head_neck
 
 P = person.origin{S}+person.offset{S};
-person.segment(S).Rglobal = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
 
 i_m = person.sex;
 

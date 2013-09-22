@@ -1,8 +1,7 @@
 function person = segment_abdomino_pelvic(person,S)
 
 O1 = person.origin{1} + person.offset{S};
-R = person.segment(1).Rglobal*person.segment(S).Rlocal;
-person.segment(S).Rglobal = R;
+R = person.segment(S).Rglobal;
 person.origin{S} = O1;
 i_m = person.sex;
 nu  = person.nu;

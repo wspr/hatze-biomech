@@ -1,8 +1,7 @@
 function person = segment_arm(person,S)
 
 P = person.origin{S} + person.offset{S};
-R = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
-person.segment(S).Rglobal = R;
+R = person.segment(S).Rglobal;
 
 N = person.segment(S).Ncalc;
 ind = 1:N;

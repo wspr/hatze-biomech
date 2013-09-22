@@ -53,8 +53,7 @@ person.meas{S}.length = l;
 
 %% Implicit measurements
 
-RR = person.segment(S).Rlocal;
-person.segment(S).Rglobal = RR;
+RR = person.segment(S).Rglobal;
 
 person.origin{S+1} = O1+person.segment(S).Rlocal*[0;0;l];
 

@@ -92,6 +92,25 @@ person.segment(15).setup_fn = @segment_thigh;
 person.segment(16).setup_fn = @segment_leg;
 person.segment(17).setup_fn = @segment_foot;
 
+%% Tree
+
+person.segment( 1).prior = [];
+person.segment( 2).prior =  1;
+person.segment( 3).prior =  1;
+person.segment( 4).prior =  3;
+person.segment( 5).prior =  4;
+person.segment( 6).prior =  5;
+person.segment( 7).prior =  1;
+person.segment( 8).prior =  7;
+person.segment( 9).prior =  8;
+person.segment(10).prior =  9;
+person.segment(11).prior =  1;
+person.segment(12).prior = 11;
+person.segment(13).prior = 12;
+person.segment(14).prior = 13;
+person.segment(15).prior = 11;
+person.segment(16).prior = 15;
+person.segment(17).prior = 16;
 
 %% Joint angles
 
@@ -340,6 +359,12 @@ person.segment(17).angle = [person.q(41); 0; person.q(42)];
 
 for S = 1:person.N
   person.segment(S).Rlocal  = person.cardan_rotation(person.segment(S).angle);
+end
+
+person.segment(1).Rglobal = person.segment(1).Rlocal;
+for S = 2:person.N
+  person.segment(S).Rglobal = ...
+    person.segment( person.segment(S).prior ).Rglobal * person.segment(S).Rlocal;
 end
 
 end

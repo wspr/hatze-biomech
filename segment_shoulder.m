@@ -1,8 +1,7 @@
 function person = segment_shoulder(person,S)
 
 P = person.origin{2}+person.offset{S};
-R = person.segment(1).Rglobal*person.segment(S).Rlocal;
-person.segment(S).Rglobal = R;
+R = person.segment(S).Rglobal;
 i_m = person.sex;
 
 gamma_1 = person.density.shoulder_lateral(i_m);

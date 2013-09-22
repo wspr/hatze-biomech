@@ -1,8 +1,7 @@
 function person = segment_thigh(person,S)
 
 P = person.origin{S} + person.offset{S};
-R = person.segment(11).Rglobal*person.segment(S).Rlocal;
-person.segment(S).Rglobal = R;
+R = person.segment(S).Rglobal;
 N = person.segment(S).Ncalc;
 
 i_m = person.sex;

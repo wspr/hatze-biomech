@@ -1,7 +1,7 @@
 function person = segment_forearm(person,S)
 
 P = person.origin{S} + person.offset{S}(:);
-person.segment(S).Rglobal = person.segment(S-1).Rglobal*person.segment(S).Rlocal;
+R = person.segment(S).Rglobal;
 N = person.segment(S).Ncalc;
 ind = 1:N;
 
@@ -53,7 +53,7 @@ if person.plot || person.segment(S).plot
   
   for ii = ind
     ph = -ii*l/N; % plate height
-    plot_elliptic_plate(P+person.segment(S).Rglobal*[0;0;ph],[a(ii) b(ii)],l/N,opt{:},'rotate',person.segment(S).Rglobal)
+    plot_elliptic_plate(P+R*[0;0;ph],[a(ii) b(ii)],l/N,opt{:},'rotate',R)
   end
   
 end
