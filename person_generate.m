@@ -54,15 +54,15 @@ person.N = 17;
 
 %% Segment names
 
-person.segment(1).name = 'abdominal-thoracic';
-person.segment(2).name = 'head-neck';
-person.segment(3).name = 'left shoulder';
-person.segment(4).name = 'left arm';
-person.segment(5).name = 'left forearm';
-person.segment(6).name = 'left hand';
-person.segment(7).name = 'right shoulder';
-person.segment(8).name = 'right arm';
-person.segment(9).name = 'right forearm';
+person.segment( 1).name = 'abdominal-thoracic';
+person.segment( 2).name = 'head-neck';
+person.segment( 3).name = 'left shoulder';
+person.segment( 4).name = 'left arm';
+person.segment( 5).name = 'left forearm';
+person.segment( 6).name = 'left hand';
+person.segment( 7).name = 'right shoulder';
+person.segment( 8).name = 'right arm';
+person.segment( 9).name = 'right forearm';
 person.segment(10).name = 'right hand';
 person.segment(11).name = 'abdominal-pelvic';
 person.segment(12).name = 'left thigh';
@@ -74,15 +74,15 @@ person.segment(17).name = 'right foot';
 
 %% Setup functions
 
-person.segment(1).setup_fn = @segment_abdomino_thoracic;
-person.segment(2).setup_fn = @segment_head_neck;
-person.segment(3).setup_fn = @segment_shoulder;
-person.segment(4).setup_fn = @segment_arm;
-person.segment(5).setup_fn = @segment_forearm;
-person.segment(6).setup_fn = @segment_hand;
-person.segment(7).setup_fn = @segment_shoulder;
-person.segment(8).setup_fn = @segment_arm;
-person.segment(9).setup_fn = @segment_forearm;
+person.segment( 1).setup_fn = @segment_abdomino_thoracic;
+person.segment( 2).setup_fn = @segment_head_neck;
+person.segment( 3).setup_fn = @segment_shoulder;
+person.segment( 4).setup_fn = @segment_arm;
+person.segment( 5).setup_fn = @segment_forearm;
+person.segment( 6).setup_fn = @segment_hand;
+person.segment( 7).setup_fn = @segment_shoulder;
+person.segment( 8).setup_fn = @segment_arm;
+person.segment( 9).setup_fn = @segment_forearm;
 person.segment(10).setup_fn = @segment_hand;
 person.segment(11).setup_fn = @segment_abdomino_pelvic;
 person.segment(12).setup_fn = @segment_thigh;
@@ -115,7 +115,7 @@ person.segment(17).prior = 16;
 %% Joint angles
 
 person.q = [ ...
-  0; 0; 0;   ...  1,  2,  3 : global position 
+  0; 0; 0;   ...  1,  2,  3 : global position
   0; 0; 0;   ...  4,  5,  6 : orientation of segment 1 (abdomen-thorax)
   0; 0; 0;   ...  7,  8,  9 : orientation of segment 2 (head-neck)
   0; -90;    ... 10, 11     : left shoulder
@@ -153,9 +153,9 @@ for ii = 1:person.N
 end
 
 for ii = 1:person.N
-  person.color{ii} = hsv2rgb( [(ii-1)/person.N , 0.5 , 0.8] );
-  person.opacity{ii} = [0.2 0.1]; % face, edge
-  person.offset{ii} = [0;0;0];
+  person.segment(ii).colour = hsv2rgb( [(ii-1)/person.N , 0.5 , 0.8] );
+  person.segment(ii).opacity = [0.2 0.1]; % face, edge
+  person.segment(ii).offset = [0;0;0];
 end
 
 end
@@ -200,16 +200,16 @@ end
 %
 % Pretty sure I can do better than this!
 
-person.segment(1).Nmeas = 10;
-person.segment(1).Ncalc = 10;
-person.segment(4).Nmeas = 10;
-person.segment(4).Ncalc = 10;
-person.segment(8).Nmeas = 10;
-person.segment(8).Ncalc = 10;
-person.segment(5).Nmeas = 10;
-person.segment(5).Ncalc = 10;
-person.segment(9).Nmeas = 10;
-person.segment(9).Ncalc = 10;
+person.segment( 1).Nmeas = 10;
+person.segment( 1).Ncalc = 10;
+person.segment( 4).Nmeas = 10;
+person.segment( 4).Ncalc = 10;
+person.segment( 8).Nmeas = 10;
+person.segment( 8).Ncalc = 10;
+person.segment( 5).Nmeas = 10;
+person.segment( 5).Ncalc = 10;
+person.segment( 9).Nmeas = 10;
+person.segment( 9).Ncalc = 10;
 person.segment(11).Nmeas = 10;
 person.segment(11).Ncalc = 10;
 person.segment(12).Nmeas = 10;
@@ -226,20 +226,20 @@ person.segment(16).Ncalc = 10;
 person.meas{1}.widths = [person.meas{1}.all(1) NaN NaN NaN person.meas{1}.all(2:7)];
 person.meas{1}.depths = person.meas{1}.all(9:18);
 
-person.meas{4}.diam   = person.meas{4}.all(1:10); 
-person.meas{4}.perim  = person.meas{4}.all(11:20); 
+person.meas{4}.diam   = person.meas{4}.all(1:10);
+person.meas{4}.perim  = person.meas{4}.all(11:20);
 person.meas{4}.length = person.meas{4}.all(21);
 
-person.meas{8}.diam   = person.meas{8}.all(1:10); 
-person.meas{8}.perim  = person.meas{8}.all(11:20); 
+person.meas{8}.diam   = person.meas{8}.all(1:10);
+person.meas{8}.perim  = person.meas{8}.all(11:20);
 person.meas{8}.length = person.meas{8}.all(21);
 
-person.meas{5}.diam   = person.meas{5}.all(1:10); 
-person.meas{5}.perim  = person.meas{5}.all(11:20); 
+person.meas{5}.diam   = person.meas{5}.all(1:10);
+person.meas{5}.perim  = person.meas{5}.all(11:20);
 person.meas{5}.length = person.meas{5}.all(21);
 
-person.meas{9}.diam   = person.meas{9}.all(1:10); 
-person.meas{9}.perim  = person.meas{9}.all(11:20); 
+person.meas{9}.diam   = person.meas{9}.all(1:10);
+person.meas{9}.perim  = person.meas{9}.all(11:20);
 person.meas{9}.length = person.meas{9}.all(21);
 
 person.meas{11}.diam   = person.meas{11}.all(1:10);
@@ -283,7 +283,7 @@ person.density.shoulder_medial  = @(i_m) 1030+20*i_m;
 person.density.shoulder_cutout  = @(i_m) 1030+20*i_m;
 
 person.density.penis      = 1000;
-person.density.thigh_head = @(i_m,nu) 1020 + 20*i_m + 30/((1+2*nu)^2); 
+person.density.thigh_head = @(i_m,nu) 1020 + 20*i_m + 30/((1+2*nu)^2);
 person.density.lower_back = @(i_m) 1090 + 30*i_m;
 person.density.posterior  = @(i_m) 1020 + 30*i_m;
 person.density.stomach    = @(i_m) 1000 + 40*i_m;

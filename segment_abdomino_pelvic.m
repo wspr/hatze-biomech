@@ -1,8 +1,8 @@
 function person = segment_abdomino_pelvic(person,S)
 
-O1 = person.origin{1} + person.offset{S};
+O1 = person.segment(1).origin + person.segment(S).offset;
 R = person.segment(S).Rglobal;
-person.origin{S} = O1;
+person.segment(S).origin = O1;
 i_m = person.sex;
 nu  = person.nu;
 
@@ -40,7 +40,7 @@ h = l/Nt; % height of each plate
 %% Densities
 
 gamma_o  = person.density.penis;
-gamma_ot = person.density.thigh_head(i_m,nu); 
+gamma_ot = person.density.thigh_head(i_m,nu);
 gamma_1  = person.density.lower_back(i_m);
 gamma_2  = person.density.posterior(i_m);
 gamma_3  = person.density.stomach(i_m);
@@ -49,18 +49,18 @@ gamma_5  = person.density.buttocks(i_m,nu);
 
 %% Thighs
 
-atl = person.meas{12}.diam/2; 
-utl = person.meas{12}.perim; 
+atl = person.meas{12}.diam/2;
+utl = person.meas{12}.perim;
 btl = sqrt(((utl/pi).^2)/2-atl.^2);
-atr = person.meas{15}.diam/2; 
-utr = person.meas{15}.perim; 
+atr = person.meas{15}.diam/2;
+utr = person.meas{15}.perim;
 btr = sqrt(((utr/pi).^2)/2-atr.^2);
 
 O12 = O1 + person.segment(S).Rglobal*[-btl(1); 0; -l + h_hoof];
 O15 = O1 + person.segment(S).Rglobal*[+btr(1); 0; -l + h_hoof];
 
-person.origin{12} = O12;
-person.origin{15} = O15;
+person.segment(12).origin = O12;
+person.segment(15).origin = O15;
 
 %% Geometry
 
@@ -104,14 +104,14 @@ end
 % m_l = gamma_4*0.3*l*(2*a_8*r-(2-pi/2)*a_1t*b_1t); % three special shape plates on the anterior side;
 % m_otl = gamma_ot*2*pi*a*b*h/3; % the removed superior parts of left thigh;
 % m_otr = gamma_ot*2*pi*a*b*h/3; % the removed superior parts of right thigh;
-% 
+%
 % m_o = 0.007*i_m; % when A is no lager than 12;
 % m_o = gamma_o*i_m*2*pi*(0.005*A-0.045)^3/3; % when A is between 12 and 19;
 % m_o = 0.26*i_m; % when A is lager than 19;
-% 
+%
 % nu = m_p*2/gamma_5 + sum(m_ei1)/gamma_1 + sum(m_ti)/gamma_2 + sum(m_ei)/gamma_3 + m_l*3/gamma_4 + m_o - m_otl - m_otr;
 % m = m_p*2 + sum(m_ei1) + sum(m_ti) + sum(m_ei) + m_l*3 + m_o - m_otl - m_otr;
-% 
+%
 % % Mass centroid:
 % xc = O11(0);
 % y_p = -B/3-g;
@@ -126,8 +126,8 @@ end
 % z_ot = -0.7*l-0.6*(l_t-l_lt);
 % yc = (2*m_p*y_p+y_1*sum(m_ei)+y_2i*sum(m_ti) + y_3i*sum(m_ei) + y_4*m_l*3 + m_o*(r+0.02) - m_otl*z_ot - m_otr*z_ot)/m;
 % zc = (m_p*2*z_p + sum(m_ei1)*z_li + sum(m_ti)*z_li + sum(m_ei)*z_li + m_l*3*z_li + m_o - m_otl*z_ot - m_otr*z_ot)/m;
-% 
-% 
+%
+%
 % disp('-------------------------')
 % disp('Abdomino pelvic section')
 % disp('-------------------------')
@@ -141,32 +141,32 @@ person.segment(S).theta = 10; % needs to be calculated
 %% Plot
 
 if person.plot || person.segment(S).plot
-  
-  opt = {'colour',person.color{S},'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2)};
-  
+
+  opt = {'colour',person.segment(S).colour,'opacity',person.segment(S).opacity(1),'edgeopacity',person.segment(S).opacity(2)};
+
   % buttocks left and right
-  
+
   plot_elliptic_paraboloid(O1+R*[-c*a_h;-g;-l+h_hoof-0.037*l],0.437*l,B,'rotate',R*rotation_matrix_zyx([90 0 0]),'N',[20 7],opt{:})
   plot_elliptic_paraboloid(O1+R*[+c*a_h;-g;-l+h_hoof-0.037*l],0.437*l,B,'rotate',R*rotation_matrix_zyx([90 0 0]),'N',[20 7],opt{:})
-  
+
   % posterior: 3 semi-elliptical plates
   for ii = ind_pe
     plot_elliptic_plate(O1+R*[0;0;-ii*h],[a(ii) g],h,'segment',[0.5 1],'rotate',R,opt{:})
   end
-  
+
   % posterior: 7 trapezoidal plates
   for ii = ind_pt
     plot_trapzoidal_plate_xy(O1+R*[0;-g/2;-ii*h],2*a(ii),2*f_1(ii),g,h,'rotate',R,opt{:})
   end
-  
+
   % anterior: 7 semi-elliptical plates
   for ii = ind_ae
     plot_elliptic_plate(O1+R*[0;0;-ii*h],[a(ii) b(ii)],h,'segment',[0 0.5],opt{:},'rotate',R)
   end
-  
+
   % anterior: 3 "special shape" plates
   for ii = ind_as
     plot_special_plate(O1+R*[0;0;-ii*h],2*a(8),r,atl(1),btl(1),h,'rotate',R,opt{:})
   end
-  
+
 end

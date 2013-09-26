@@ -1,6 +1,6 @@
 function person = segment_foot(person,S)
 
-P = person.origin{S} + person.offset{S};
+P = person.segment(S).origin + person.segment(S).offset;
 R = person.segment(S).Rglobal;
 i_m = person.sex;
 
@@ -9,7 +9,7 @@ i_m = person.sex;
 N = 100; % number of disks
 ind = 1:N;
 gamma = person.density.foot(ind);
- 
+
 %% Measurements
 
 a  = person.meas{S}.all(1);
@@ -36,7 +36,7 @@ m_11=990*v_11;
 m_12=990*v_12;
 m_13=1100*v_13;
 mass = m_11+m_12+m_13+sum(m);
- 
+
 % Mass centroid:
 xc = 0;
 yc = ((m_11+m_12)*(-h2-3*h1/4)...
@@ -52,7 +52,7 @@ zc = (m_11*l*(-2/3+(7*b+2*c)/(9*(5*b+c)))...
 %Iz_i=m_i.*(b_i.^2+c_1.^2)/24;
 %Iy_i=Ix_i+Iz_i;
 
-% % principal moments of inertia; 
+% % principal moments of inertia;
 % Ip_x = m_11*((l/3)^2*(b^2+4*b*(2*b+c)/3+((2*b+c)/3)^2)/(18*(b+(2*b+c)/3)^2)+(h2+3*h1/4+yc)^2+(2*l/3-l*(7*b+2*c)/(9*(5*b+c))+zc)^2)...
 %     +m_12*((l/3)^2*((b/3+2*c/3)^2+4*c*(b/3+2*c/3)+c^2)/(18*(b/3+5*c/3)^2)+(h2+3*h1/4+yc)^2+(l*(b+8*c)/(9*(b+5*c))-zc)^2)...
 %     +m_13*(l^2*(b^2+4*b*c+c^2)/(18*(b+c)^2)+(h2+h1/4+yc)^2+(2*l/3-l*(b+c)+zc)^2)...
@@ -69,7 +69,7 @@ zc = (m_11*l*(-2/3+(7*b+2*c)/(9*(5*b+c)))...
 %     +m_12*(-h2-3*h1/4-yz)*(l*(b+8*c)/(9*(b+5*c))-zc)...
 %     +m_13*(-h2-h1/4-c)*(-2*l/3+l*(b+2*c)/(3*(b+c))-zc)...
 %     +sum(m_i.*(-indf.*h2/N-yc)*(-a/2-(2*l/3-a/2)*indf./N+l_i.*(b_i+2*c_i)/(3*(b_i+c_i)-zc)));
-% 
+%
 % Ip_y = (Iy1+Iz1)/2+((Iy1-Iz1)^2/4+Iy1z1^2)^0.5;
 % Ip_z = (Iy1+Iz1)/2-((Iy1-Iz1)^2/4+Iy1z1^2)^0.5;
 
@@ -83,20 +83,20 @@ person.segment(S).theta = 30; % needs to be calculated
 %% Plot
 
 if person.plot || person.segment(S).plot
-  
-  opt1  = {'opacity',person.opacity{S}(1),'edgeopacity',0,'colour',person.color{S}};
-  opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
-  
+
+  opt1  = {'opacity',person.segment(S).opacity(1),'edgeopacity',0,'colour',person.segment(S).colour};
+  opt  = {'opacity',person.segment(S).opacity(1),'edgeopacity',person.segment(S).opacity(2),'colour',person.segment(S).colour};
+
   for ii = ind
     ph = -ii*h2/100; % plate height
     s = -a/2-ii/100*(2/3*l-a/2);
     plot_trapzoidal_plate(P+R*[0;ph;s+l_i(ii)/2],c_i(ii),b_i(ii),l_i(ii),h2/100,opt1{:},'rotate',R)
   end
-  
+
   plot_trapzoidal_plate(P+R*[0;-h2;-l/6],c,b,l,-h1/2,opt{:},'rotate',R)
   plot_trapzoidal_plate(P+R*[0;-h2-h1;l/6],c,c+1/3*(b-c),l/3,h1/2,opt{:},'rotate',R)
   plot_trapzoidal_plate(P+R*[0;-h2-h1;-l/2],b+1/3*(c-b),b,l/3,h1/2,opt{:},'rotate',R)
-  
+
 end
 
 end

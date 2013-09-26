@@ -47,9 +47,9 @@ person.plot = true; % all segments
 %person.segment(8).plot = true;
 person = person_generate(person);
 
-person.plot_points([person.origin{3:4}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{7:8}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{[1,3,2]}], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment(3:4).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment(7:8).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment([1,3,2]).origin], 'k.-', 'markersize', 20,'linewidth',2)
 
 axis equal
 view([140 20])
@@ -57,15 +57,15 @@ pbaspect([1 1 1])
 
 %%
 
-person.plot_points([person.origin{3:6}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{7:10}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{11:14}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{[11,15:17]}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{[1,3,2]}], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment(3:6).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment(7:10).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment(11:14).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment([11,15:17]).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment([1,3,2]).origin], 'k.-', 'markersize', 20,'linewidth',2)
 
 ind = 1:person.N;
 for ii = ind
-  plot_coord(person.origin{ii},'index',[num2str(ii),''''],'rotate',person.segment(ii).Rglobal,'length',0.07);
+  plot_coord(person.segment(ii).origin,'index',[num2str(ii),''''],'rotate',person.segment(ii).Rglobal,'length',0.07);
 end
 
 axis equal

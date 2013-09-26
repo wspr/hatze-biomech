@@ -1,6 +1,6 @@
 function person = segment_shoulder(person,S)
 
-P = person.origin{2}+person.offset{S};
+P = person.segment(2).origin+person.segment(S).offset;
 R = person.segment(S).Rglobal;
 i_m = person.sex;
 
@@ -50,8 +50,8 @@ B1 = @(z) c3 - c4*z;
 
 Oshoulder = P + person.segment(1).Rglobal*[0;0;-z_h-d_z-1.5*b1];
 Oarm = Oshoulder + R*[ 0 ; 0; at1+d_x ];
-person.origin{S} = Oshoulder;
-person.origin{S+1} = Oarm;
+person.segment(S).origin = Oshoulder;
+person.segment(S+1).origin = Oarm;
 
 a10 = A1(d_x);
 b10 = B1(d_x);
@@ -59,7 +59,7 @@ a1h = A1(h1);
 b1h = B1(h1);
 
 if person.plot || person.segment(S).plot
-  
+
   if S == 7
     rcorr = [0 180 0];
     lr_sign = 1;
@@ -67,22 +67,22 @@ if person.plot || person.segment(S).plot
     rcorr = [0 0 0];
     lr_sign = -1;
   end
-  
+
   plot_parabolic_wedge(...
     Oarm,...
     [a10 b10],[a1h b1h],lr_sign*h_x,'skew',-h_z,'drop',-b1,...
     'rotate',R*rotation_matrix_zyx(rcorr),...
-    'colour',person.color{S},...
+    'colour',person.segment(S).colour,...
     'face',[true false],...
-    'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2))
-  
+    'opacity',person.segment(S).opacity(1),'edgeopacity',person.segment(S).opacity(2))
+
   plot_parabolic_wedge(...
     Oarm+R*[0;0;-h_x],...
     [a1h b1h],0.001*[a1h b1h],lr_sign*h1,'skew',j1,'drop',-b1-h_z,...
     'face',[false true],...
-    'rotate',R*rotation_matrix_zyx(rcorr),'colour',person.color{S},...
-    'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2))
-  
+    'rotate',R*rotation_matrix_zyx(rcorr),'colour',person.segment(S).colour,...
+    'opacity',person.segment(S).opacity(1),'edgeopacity',person.segment(S).opacity(2))
+
 end
 
 end

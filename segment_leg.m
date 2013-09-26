@@ -1,6 +1,6 @@
 function person = segment_leg(person,S)
 
-P = person.origin{S} + person.offset{S};
+P = person.segment(S).origin + person.segment(S).offset;
 R = person.segment(S).Rglobal;
 N = person.segment(S).Ncalc;
 ind = 1:N;
@@ -10,7 +10,7 @@ ind = 1:N;
 nu = person.nu; % subcutaneous fat indicator;
 
 l = person.meas{S}.length;
-a = person.resample(person,S,person.meas{S}.diam)/2; 
+a = person.resample(person,S,person.meas{S}.diam)/2;
 u = person.resample(person,S,person.meas{S}.perim);
 b = person.solve_ellipse(a,u);
 
@@ -43,7 +43,7 @@ I_xi = m.*(3*b.^2+(l/N)^2)/12;
 I_yi = m.*(3*a.^2+(l/N)^2)/12;
 I_zi = m.*(a.^2+b.^2)/4;
 
-% principal moments of inertia; 
+% principal moments of inertia;
 Ip_x = 2*m_b*(0.33*r^2+(l+zc).^2)+sum(I_xi+m.*(l*(ind-1/2)/N+zc).^2);
 Ip_y = 2*m_b*(0.1859*r^2+(l+zc).^2+(a(end)+0.196*r^2)) + sum(I_yi+m.*(l*(ind-1/2)/N+zc).^2);
 Ip_z = 2*m_b*(0.1859*r^2+(a(end)+0.196*r)^2)+ sum(I_zi);
@@ -54,35 +54,35 @@ person.segment(S).centroid = [xc; yc; zc];
 person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
 Q = P+person.segment(S).Rglobal*[0;0;-l];
-person.origin{S+1} = Q;
+person.segment(S+1).origin = Q;
 
 %% Plot
 
 if person.plot || person.segment(S).plot
-  
-  opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
-  
+
+  opt  = {'opacity',person.segment(S).opacity(1),'edgeopacity',person.segment(S).opacity(2),'colour',person.segment(S).colour};
+
   for ii = ind
     ph = -ii*l/N; % plate height
     plot_elliptic_plate(P+R*[0;0;ph],[a(ii) b(ii)],l/N,opt{:},'rotate',R)
   end
-  
+
   %% sideways paraboloids
-  
+
   a = r;
   b = r;
   n = 10;
-  
+
   nu = linspace(0,2*pi,n); % row
   u = linspace(0,r_a,n)';    % column
-  
+
   x = a*sqrt(u/r_a)*cos(nu);
   y = b*sqrt(u/r_a)*sin(nu);
   z = u*ones(1,n);
-  
-  surf(Q(1)+z-a-r_a,Q(2)+y,Q(3)+x,'facealpha',person.opacity{S}(1),'edgealpha',person.opacity{S}(2),'facecolor',person.color{S})
-  surf(Q(1)-z+a+r_a,Q(2)+y,Q(3)+x,'facealpha',person.opacity{S}(1),'edgealpha',person.opacity{S}(2),'facecolor',person.color{S})
-  
+
+  surf(Q(1)+z-a-r_a,Q(2)+y,Q(3)+x,'facealpha',person.segment(S).opacity(1),'edgealpha',person.segment(S).opacity(2),'facecolor',person.segment(S).colour)
+  surf(Q(1)-z+a+r_a,Q(2)+y,Q(3)+x,'facealpha',person.segment(S).opacity(1),'edgealpha',person.segment(S).opacity(2),'facecolor',person.segment(S).colour)
+
 end
 
 end

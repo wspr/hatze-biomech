@@ -29,16 +29,16 @@ axis off
 zoom(2)
 
 person = person_generate(person,'plot',true);
-  
-person.plot_points([person.origin{3:6}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{7:10}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{11:14}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{[11,15:17]}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{[1,3,2]}], 'k.-', 'markersize', 20,'linewidth',2)
+
+person.plot_points([person.segment(3:6).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment(7:10).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment(11:14).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment([11,15:17]).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment([1,3,2]).origin], 'k.-', 'markersize', 20,'linewidth',2)
 
 for ii = 1:person.N
   if ~isempty(person.segment(ii).centroid)
-    person.plot_points(person.origin{ii}+person.segment(ii).centroid, 'r.', 'markersize', 30)
+    person.plot_points(person.segment(ii).origin+person.segment(ii).centroid, 'r.', 'markersize', 30)
   end
 end
 
@@ -57,47 +57,47 @@ view(153,23)
 axis off
 pbaspect([2 1 4])
 zoom(2)
-  
-person.plot_points([person.origin{3:6}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{7:10}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{11:14}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{[11,15:17]}], 'k.-', 'markersize', 20,'linewidth',2)
-person.plot_points([person.origin{[1,3,2]}], 'k.-', 'markersize', 20,'linewidth',2)
+
+person.plot_points([person.segment(3:6).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment(7:10).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment(11:14).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment([11,15:17]).origin], 'k.-', 'markersize', 20,'linewidth',2)
+person.plot_points([person.segment([1,3,2]).origin], 'k.-', 'markersize', 20,'linewidth',2)
 
 for ii = 1:person.N
   if ~isempty(person.segment(ii).centroid)
-    person.plot_points(person.origin{ii}+person.segment(ii).centroid, 'r.', 'markersize', 30)
+    person.plot_points(person.segment(ii).origin+person.segment(ii).centroid, 'r.', 'markersize', 30)
   end
 end
 
 ind = 1:person.N;
 ind([3 7]) = []; % repeated
 for ii = ind
-  plot_coord(person.origin{ii},'index',[num2str(ii),'''']);
+  plot_coord(person.segment(ii).origin,'index',[num2str(ii),'''']);
 end
 
 %% Plot FRONT and SIDE views
 
 % offsets for visualisations below
 
-person.offset{1} =  [0; 0;  0];
-person.offset{2} =  [0; 0; 50]/1000;
-person.offset{3} =  [-100; 250; 100]/1000; % left shoulder
-person.offset{4} =  [-50; 0; -140]/1000;
-person.offset{5} =  [0; 0; -50]/1000;
-person.offset{6} =  [0; 60; -50]/1000;
-person.offset{7} =  [ 100; -250; 100]/1000; % right shoulder
-person.offset{8} =  [50; 0; -140]/1000;
-person.offset{9} =  [0; 0; -50]/1000;
-person.offset{10} = [0; -60; -50]/1000;
+person.segment(1).offset =  [0; 0;  0];
+person.segment(2).offset =  [0; 0; 50]/1000;
+person.segment(3).offset =  [-100; 250; 100]/1000; % left shoulder
+person.segment(4).offset =  [-50; 0; -140]/1000;
+person.segment(5).offset =  [0; 0; -50]/1000;
+person.segment(6).offset =  [0; 60; -50]/1000;
+person.segment(7).offset =  [ 100; -250; 100]/1000; % right shoulder
+person.segment(8).offset =  [50; 0; -140]/1000;
+person.segment(9).offset =  [0; 0; -50]/1000;
+person.segment(10).offset = [0; -60; -50]/1000;
 
-person.offset{11} = [0; 0; -50]/1000; % pelvis
-person.offset{12} = [0; 120; -140]/1000;
-person.offset{13} = [0; 0; -50]/1000;
-person.offset{14} = [0; 0; -50]/1000;
-person.offset{15} = [0; -120; -140]/1000;
-person.offset{16} = [0; 0; -50]/1000;
-person.offset{17} = [0; 0; -50]/1000;
+person.segment(11).offset = [0; 0; -50]/1000; % pelvis
+person.segment(12).offset = [0; 120; -140]/1000;
+person.segment(13).offset = [0; 0; -50]/1000;
+person.segment(14).offset = [0; 0; -50]/1000;
+person.segment(15).offset = [0; -120; -140]/1000;
+person.segment(16).offset = [0; 0; -50]/1000;
+person.segment(17).offset = [0; 0; -50]/1000;
 
 figure(2); clf; hold on
 set(gcf,'color','white')

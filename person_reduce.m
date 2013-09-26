@@ -34,30 +34,30 @@ person.segment(forearm_right).plot = true;
 
 x = 250;
 
-col = person.color{forearm_right};
+col = person.segment(forearm_right).colour;
 
-person.offset{forearm_right} = [0; 0; 0]./1000;
+person.segment(forearm_right).offset = [0; 0; 0]./1000;
 person.segment(forearm_right).Nmeas = 10; % SAME
 person.segment(forearm_right).Ncalc = 10;
-person.color{forearm_right} = [1 0 0];
+person.segment(forearm_right).colour = [1 0 0];
 person_generate(person)
 
-person.offset{forearm_right} = [2*x; 0; 0]./1000;
+person.segment(forearm_right).offset = [2*x; 0; 0]./1000;
 person.segment(forearm_right).Nmeas = 10; % SAME
 person.segment(forearm_right).Ncalc = 40;
-person.color{forearm_right} = col;
+person.segment(forearm_right).colour = col;
 person_generate(person)
 
-person.offset{forearm_right} = [x; 0; 0]./1000;
+person.segment(forearm_right).offset = [x; 0; 0]./1000;
 person.segment(forearm_right).Nmeas = 5;
 person.segment(forearm_right).Ncalc = 5;
-person.color{forearm_right} = [1 0 0];
+person.segment(forearm_right).colour = [1 0 0];
 person_generate(person)
 
-person.offset{forearm_right} = [3*x; 0; 0]./1000;
+person.segment(forearm_right).offset = [3*x; 0; 0]./1000;
 person.segment(forearm_right).Nmeas = 5;
 person.segment(forearm_right).Ncalc = 40;
-person.color{forearm_right} = col;
+person.segment(forearm_right).colour = col;
 person_generate(person)
 
 text(-0.19,0,0.1,'10 measurements','HorizontalAlignment','center')
@@ -92,17 +92,17 @@ person = person_generate(person);
 forearm_R_standard = pdata(person,forearm_right);
 
 for cc = 1:length(calcs)
-  
+
   person.segment(forearm_right).Nmeas = calcs(cc);
   person.segment(forearm_right).Ncalc = calcs(cc);
   person = person_generate(person);
-  
+
   forearm_R_normal(cc,:)  = abs(100*(pdata(person,forearm_right)-forearm_R_standard)./forearm_R_standard);
 
   person.segment(forearm_right).Nmeas = calcs(cc);
   person.segment(forearm_right).Ncalc = 10;
   person = person_generate(person);
-  
+
   forearm_R_interp(cc,:)  = abs(100*(pdata(person,forearm_right)-forearm_R_standard)./forearm_R_standard);
 
 end

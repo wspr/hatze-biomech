@@ -1,8 +1,8 @@
 function person = segment_abdomino_thoracic(person,S)
 %% abdomino-thoracic
 
-person.origin{S} = person.q(1:3);
-O1 = person.origin{S} + person.offset{S};
+person.segment(S).origin = person.q(1:3);
+O1 = person.segment(S).origin + person.segment(S).offset;
 i_m = person.sex;
 
 N  = 10; % number of disks
@@ -55,7 +55,7 @@ person.meas{S}.length = l;
 
 RR = person.segment(S).Rglobal;
 
-person.origin{S+1} = O1+person.segment(S).Rlocal*[0;0;l];
+person.segment(S+1).origin = O1+person.segment(S).Rlocal*[0;0;l];
 
 g = (1+0.3*i_m)*d_11;
 jj = round(h/(l/N));
@@ -124,7 +124,7 @@ Ip_x = sum(I_x) ...
        ) ...
        + m_f*(0.2594*r^2+(l-h-zc)^2+(b(jj)+3*r/8-yc)^2);
 I2_x = Ip_x;
-     
+
 I_y = m_e.*(a(indt).^2+s) ...
       - m_p.*(0.06857*a2.^2+s+(c.*a(indt)+0.4*a2).^2) ...
       + (m_e-m_p).*(l*(21-2*indt)/20-zc).^2;
@@ -132,7 +132,7 @@ I_y = m_e.*(a(indt).^2+s) ...
 I2_y = sum(I_y) + sum( ...
          (m_1+m_2).*((a(inda).^2)/4+s+(l*(21-2*inda)./20-zc).^2) ...
        ) + m_f*(0.4*r^2+(l-h+zc)^2+(d/2)^2);
-    
+
 I_z = m_e.*(a(indt).^2+b(indt).^2/4) ...
       - m_p.*(0.06857*a2.^2+(b2.^2)/5+(c.*a(indt)+0.4*a2).^2) ...
       + (m_e-m_p)*yc^2;
@@ -164,32 +164,32 @@ person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 %% Plot
 
 if person.plot || person.segment(S).plot
-  
-  opt  = {'opacity',person.opacity{S}(1),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
-  optl = {'opacity',min(1,2*person.opacity{S}(1)),'edgeopacity',person.opacity{S}(2),'colour',person.color{S}};
-  
+
+  opt  = {'opacity',person.segment(S).opacity(1),'edgeopacity',person.segment(S).opacity(2),'colour',person.segment(S).colour};
+  optl = {'opacity',min(1,2*person.segment(S).opacity(1)),'edgeopacity',person.segment(S).opacity(2),'colour',person.segment(S).colour};
+
   % thorax:
   for ii = indt
     ph = l-ii*l/N; % plate height
-    
+
     plot_elliptic_plate(O1+RR*[0;0;ph],[a(ii) w(ii)],l/N,opt{:},'rotate',RR);
-    
+
     % lungs:
     plot_parabolic_plate(O1+RR*[ c(ii)*a(ii);0;ph],[ a2(ii) b2(ii)],l/N,optl{:});
     plot_parabolic_plate(O1+RR*[-c(ii)*a(ii);0;ph],[-a2(ii) b2(ii)],l/N,optl{:});
   end
-  
+
   % abdomen:
   for ii = inda
     ph = l-ii*l/N; % plate height
     plot_elliptic_plate(O1+RR*[0;0;ph],[a(ii) -w(ii)],l/N,'segment',[0 0.5],opt{:},'rotate',RR)
     plot_elliptic_plate(O1+RR*[0;0;ph],[a(ii)  b(ii)],l/N,'segment',[0 0.5],opt{:},'rotate',RR)
   end
-  
+
   % breasts:
   if i_m == 0 % female
     plot_sphere(O1+RR*[+d/2; b(jj); l-h],r,'latrange',[-1 1],'N',[20 10],opt{:})
     plot_sphere(O1+RR*[-d/2; b(jj); l-h],r,'latrange',[-1 1],'N',[20 10],opt{:})
   end
-  
+
 end
