@@ -44,11 +44,6 @@ x1 = r*cos(phi)*cos(theta);
 y1 = r*cos(phi)*sin(theta);
 z1 = r*sin(phi)*ones(1,N(1));
 
-[f,v,c] = surf2patch(x1,y1,z1);
+surf_rotate(x1,y1,z1,O,R,...
+  'FaceColor',col,'edgealpha',eopac,'facealpha',opac)
 
-rv = repmat(O,[1 N(1)*N(2)]) + R*transpose(v);
-
-%% Plot
-
-patch(struct('Faces',f,'Vertices',transpose(rv),'FaceColor',col),...
-  'edgealpha',eopac,'facealpha',opac);

@@ -3,6 +3,7 @@ function person = segment_head_neck(person,S)
 %% Head_neck
 
 P = person.segment(S).origin+person.segment(S).offset;
+R = person.segment(S).Rglobal;
 
 i_m = person.sex;
 
@@ -67,8 +68,10 @@ person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
 if person.plot || person.segment(S).plot
 
-  plot_elliptic_plate(P,[a_1 b_1],h,'colour',person.segment(S).colour,...
-    'opacity',person.segment(S).opacity(1),'edgeopacity',person.segment(S).opacity(2));
+  plot_elliptic_plate(P,[a_1 b_1],h,'rotate',R,...
+    'colour',person.segment(S).colour,...
+    'opacity',person.segment(S).opacity(1),...
+    'edgeopacity',person.segment(S).opacity(2));
 
   zf = @(x,y) c*sqrt(1-(y/b).^2).*(1-(x./a).^8);
 
@@ -88,13 +91,14 @@ if person.plot || person.segment(S).plot
     'facealpha',person.segment(S).opacity(1),...
     'edgealpha',person.segment(S).opacity(2)};
 
-  surf(P(1)+x,P(2)+y,P(3)+ho+z,opt{:})
-  surf(P(1)+x,P(2)+y,P(3) + ho-z,opt{:})
+  
+  surf_rotate(x,y,ho+z,P,R,opt{:})
+  surf_rotate(x,y,ho-z,P,R,opt{:})
 
   x = a*sin(t);
   y = b*cos(t);
   z = zf(x,y);
-  surf(P(1)+[x;x],P(2)+[y;y],P(3)+ho+[z;-z],opt{:})
+  surf_rotate([x;x],[y;y],ho+[z;-z],P,R,opt{:})
 
 end
 
