@@ -53,6 +53,8 @@ Oarm = Oshoulder + R*[ 0 ; 0; at1+d_x ];
 person.segment(S).origin = Oshoulder;
 person.segment(S+1).origin = Oarm;
 
+person.segment(S).centroid = [0;0;0];
+
 a10 = A1(d_x);
 b10 = B1(d_x);
 a1h = A1(h1);

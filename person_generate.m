@@ -38,7 +38,10 @@ for ii = 1:person.N
   person = person.segment(ii).setup_fn(person,ii);
 end
 
-% person = calculate_centroids(person);
+for ii = 1:person.N
+  person.segment(ii).Gcentroid = ...
+    person.segment(ii).origin + person.segment(ii).Rglobal*person.segment(ii).centroid;
+end
 
 if nargout > 0
   result = person;
@@ -393,3 +396,4 @@ meas = interp1(orig_pos,orig_meas,meas_pos,'cubic');
 calc = interp1(meas_pos,meas,calc_pos,'cubic');
 
 end
+

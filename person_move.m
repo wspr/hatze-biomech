@@ -7,7 +7,7 @@ person = person_generate('data','hatze_meas.txt');
 
 person.q = [ ...
   0; 0; 0;   ...  1,  2,  3 : global *position*; rest are angles:
-  0; 0; 0;   ...  4,  5,  6 : abdomen-thorax
+  20; 0; 0;   ...  4,  5,  6 : abdomen-thorax
   45; 0; 0;   ...  7,  8,  9 : head-neck
   45; -135;    ... 10, 11     : left shoulder
   0;  -90; 90; ... 12, 13, 14 : left arm
@@ -66,6 +66,9 @@ person.plot_points([person.segment([1,3,2]).origin], 'k.-', 'markersize', 20,'li
 ind = 1:person.N;
 for ii = ind
   plot_coord(person.segment(ii).origin,'index',[num2str(ii),''''],'rotate',person.segment(ii).Rglobal,'length',0.07);
+end
+
+for ii = 1:person.N  person.plot_points(person.segment(ii).Gcentroid, 'r.', 'markersize', 30)
 end
 
 axis equal

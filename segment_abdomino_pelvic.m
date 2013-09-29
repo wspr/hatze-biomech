@@ -138,6 +138,7 @@ end
 % fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
 
 person.segment(S).theta = 10; % needs to be calculated
+person.segment(S).centroid = [0;0;0];
 
 %% Plot
 
