@@ -9,8 +9,8 @@ person.q = [ ...
   0; 0; 0;   ...  1,  2,  3 : global *position*; rest are angles:
   0; 0; 0;   ...  4,  5,  6 : abdomen-thorax
   45; 0; 0;   ...  7,  8,  9 : head-neck
-  45; -70;    ... 10, 11     : left shoulder
-  0;  90; 90; ... 12, 13, 14 : left arm
+  45; -135;    ... 10, 11     : left shoulder
+  0;  -90; 90; ... 12, 13, 14 : left arm
   90;  0;    ... 15, 16     : left forearm
   0; 0;      ... 17, 18     : left hand
   0;  55;    ... 19, 20     : right shoulder

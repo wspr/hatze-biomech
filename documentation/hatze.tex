@@ -10,9 +10,18 @@
 
 \section{Introduction}
 
-Herbert Hatze (1937-2002) had a major on the field of biomechanics.\footnote{\url{http://biomch-l.isbweb.org/threads/12847-Obituary-Professor-Herbert-Hatze}}
+Herbert Hatze (1937-2002) had a major impact on the field of biomechanics,\footnote{\url{http://biomch-l.isbweb.org/threads/12847-Obituary-Professor-Herbert-Hatze}}
+which he defined as `\dots the study of the structure and function of biological systems by means of the methods of mechanics' \parencite{hatze1974-biomech}.
+(Indeed, Hatze proposed the term \emph{bionetics} in that article as the cross-disciplinary conglomeration of kinetics, bionics, biomechanics, and cybernetics~--- and it is the broader area of bionetics that Hatze pioneered.)
 While certain aspects of his work have now become out-dated, there is much to his work that is still as fresh today as when it was first published in the 1970s--1980s.
 This document serves to outline Hatze's contributions.
+
+The aim of this work is to reproduce and continue Hatze's aim stated in 1979 in his letter \citetitle{hatze1979-biomech-letter} \parencite{hatze1979-biomech-letter}:
+\begin{quote}
+Hence, what should the future really hold for research in sport biomechanics? In my opinion, a change to a systems description of the total human neuro-musculoskeletal control system, with all the inherent possibilities of performance optimization and hypothesis testing. In such an approach, experimental methods are, of course, fully utilized, but now in a supporting capacity (parameter estimation and model verification) rather than for their own sake; biomechanics computer program libraries are established, containing a wide variety of algorithms for data reduction and parameter estimation, as well as the actual system model and associated optimization algorithms; and extensive cooperation between scientists of various disciplines, but with a common interest in biomechanical problems, is established.
+\end{quote}
+
+\section{Body segment parameter modelling}
 
 The first aspect of his work that is covered in this document is Hatze's work on body segment parameter modelling.
 Hatze's own model \parencite{hatze1979-techreport} is still the most detailed geometric model of an entire humanoid figure; as Hatze himself wrote\footnote{\url{http://biomch-l.isbweb.org/threads/12059-DISCUSSION-FORUM-ON-CONTEMPORARY-ISSUES-IN-BIOMECHANICS}} in late 2001:
@@ -24,6 +33,58 @@ Comparatively little
 effort has been devoted to this extremly important field of
 biomechanical research despite its obvious practical relevance.
 \end{quote}
+Sadly, Hatze passed away before his improved model could be published \parencite{hatze2005-ties-bsm}.
+
+\subsection{Seventeen?}
+
+For certain activities, Hatze did indeed admit that his model was not necessarily detailed enough:
+\begin{quote}
+Here, the modeller is in a real predictament: He can either attempt tocreate a complex and fairly realistic thorax model comprising some 340 interconnected hard- and soft-tissue subsegments and face the gigantic task of combining these with the remaining segments to form the complete skeletal subsystem, or he can consider the abdomino-thoracic complex as a single (rigid) segment, assuming that all rotational degrees of freedom of this pseudo-segment reside in a (pseudo-)ball-and-socket joint located in the abdomino-pelvic region. For simulating gross body motions not involving internal thorax motions, the single- segment thorax model will suffice for most purposes, while for detailed investigations into the responses of the spine to stresses during lifting tasks, the complex thorax model would be appropriate.
+\parencite{hatze1998-bio-sports}
+\end{quote}
+
+\subsection{Improvements}
+
+Although none have proposed a whole-body model as complex as Hatze's (good time to cite \textcite{kwon1996-jab}), there are a number of specific models that have been produced since that add details neglected by Hatze.
+\begin{itemize}
+  \item Forearm: \textcite{reich2000-biomech}
+  \item Foot: \textcite{dillon2001-thesis}
+\end{itemize}
+
+\section{Data processing}
+
+Smoothing/filtering data; even 20 years on, we're still asking the same questions\footnote{http://biomch-l.isbweb.org/threads/5844-RE-INVENTING-THE-WHEEL-IN-BIOMECHANICAL-DATA-SMOOTHING}
+
+\section{Bionetics}
+
+\begin{quote}
+Finally, I should like to voice my concern about the way contemporary muscle modelling is conducted.
+With a few notable exceptions, most of the so-called `new' macroscopic models of skeletal muscle appearing in the literature constitute incompetently truncated replicas of existing models, frequently without the original sources being cited.
+In most cases, the respective authors indulge in long speculations why their (predictably inadequate) models are incapable of correctly reproducing experimentally observed muscle behaviour.
+In my opinion, there still exists an intolerable lack of understanding of the complexities and intricacies inherent in the excitation, contraction and recruitment dynamics of (mammalian) skeletal muscle among many biomechanists engaged in muscle modelling.
+It is a fallacy to believe that simple, non-hereditary models containing a few constants will be capable of adequately predicting the many facets of skeletal muscle behaviour.
+Unless this fact is fully appreciated, there exists the danger that readers of such articles may be reminded of M. A. Arbib’s (1964) words about interdisciplinary modelling:
+`At its best, it allows a scientist the pleasure of working simultaneously in several fields-such as engineering, psychology, mathematics and physiology. At its worst, it allows a not-very-good engineer to find refuge from his own problems by doing incompetent theoretical biology---his pride being saved because he knows too little biology to realize what a fool he is making of himself.'
+\parencite{hatze1988-biomech-letter}
+\end{quote}
+Indeed, Hatze spent some effort emphasising the difficulty with reconciling the mind and the body:
+\begin{quote}
+Finally, no mention has been made of the well-known ill-posedness of the neuromusculoskeletal optimal control problem, i.e., of the fact that large (stochastic or deterministic) perturbations in the neural control inputs may produce virtually unperturbed skeletomechanical motions.
+\parencite{hatze1988-biomech-letter}
+\end{quote}
+
+\section{Motion optimisation}
+
+In 1983, Hatze wrote:
+\begin{quote}
+\dots it is expected that within a few years computerized optimization of sports motions can be performed routinely.
+\parencite{hatze1983-jss}
+\end{quote}
+Hatze did use his own model prolifically over the years and his software allowed far more detailed models for areas such as gait analysis than had been used previously \parencite{hatze1987-jmb}.
+
+It is certainly true that there are a number of well-accepted biomechanics software packages available, even if many of these are commercial and/or closed source.
+Each software package uses a unique combination of kinematic measurement techniques and models for body segment parameters, muscle properties and geometry, optimisation objectives and so on, and analyses comparing these models indicate that they do not necessarily produce consistent results between them \parencite{wagner2013-abe}.
+
 
 \printbibliography
 \end{document}

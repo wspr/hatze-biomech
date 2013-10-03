@@ -73,7 +73,7 @@ end
 ind = 1:person.N;
 ind([3 7]) = []; % repeated
 for ii = ind
-  plot_coord(person.segment(ii).origin,'index',[num2str(ii),'''']);
+  plot_coord(person.origin{ii},'index',[num2str(ii),''''],'rotate',person.segment(ii).Rglobal,'length',0.07);
 end
 
 %% Plot FRONT and SIDE views
@@ -134,3 +134,16 @@ pbaspect([1 4 4])
 %matlabfrag('fig/hatze-side','renderer','opengl')
 
 
+
+%%
+
+close all
+figure(1); clf; hold on
+
+person = person_generate('data','hatze_meas.txt');
+person.segment(3).plot = true;
+person_generate(person)
+
+axis equal
+view([20 70])
+pbaspect([1 1 1])

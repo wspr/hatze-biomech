@@ -3,9 +3,7 @@
 clear all
 clc
 
-person_setup
-person = person_data(person,'hatze_meas.txt');
-person = person_generate(person);
+person = person_generate('data','hatze_meas.txt');
 
 %% Hatze's results to verify
 
@@ -80,6 +78,9 @@ for s = 1:person.N
     end
     if ~isempty(person.segment(s).Minertia_hatze)
       fprintf('                   ([ %2.3f , %2.3f , %2.3f ])\n',1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(3))
+    end
+    if ~isempty(person.segment(s).theta)
+      fprintf('Theta: %2.3f °\n',person.segment(s).theta)
     end
     
   end

@@ -14,9 +14,10 @@ parse(ip,person,varargin{:})
 
 %% Main body
 %
-% Not much here right now.
-% First translate input pose into a form we can process.
-% Then run each calculation function in a convenient loop.
+% * Initialise, if necessary (no person structure input)
+% * Load data, if specified (otherwise assume it has already happened)
+% * Translate input pose into a form we can process.
+% * Then run each calculation function in a convenient loop.
 
 
 if isempty(fieldnames(ip.Results.person))
@@ -37,11 +38,14 @@ for ii = 1:person.N
   person = person.segment(ii).setup_fn(person,ii);
 end
 
+% person = calculate_centroids(person);
+
 if nargout > 0
   result = person;
 end
 
 end
+
 
 
 
@@ -180,9 +184,10 @@ fclose(fileID);
 meas = transpose(C{1}); % rows are easier
 
 person.sex = double(meas(1));
-person.scale = double(meas(2));
+person.age = double(meas(2));
+person.scale = double(meas(3));
 
-meas([1 2]) = [];
+meas([1 2 3]) = [];
 meas = double(meas)/person.scale;
 
 % order of segments in the measurement file:
@@ -268,7 +273,7 @@ person.meas{16}.ankle  = person.meas{16}.all(22);
 
 %% Densities
 
-person.nu = 0.1;
+person.nu = 0.2;
 
 person.density.thoracic_wall = @(i_m) 1080+60*i_m;
 person.density.abdomen       = @(i_m) 1000+30*i_m;
@@ -369,8 +374,13 @@ end
 
 end
 
+function person = calculate_centroids(person)
 
+for S = 1:person.N
+  person.segment(S).CoM = person.origin{S} + person.segment(S).Rglobal*person.segment(S).centroid;
+end
 
+end
 
 
 function calc = measurement_resample(orig_meas,l,Norig,Nmeas,Ncalc)

@@ -56,6 +56,7 @@ atr = person.meas{15}.diam/2;
 utr = person.meas{15}.perim;
 btr = sqrt(((utr/pi).^2)/2-atr.^2);
 
+%% THESE NEED TO BE FIXED: offset should be 0.5*(pelvis_width-thigh_width)
 O12 = O1 + person.segment(S).Rglobal*[-btl(1); 0; -l + h_hoof];
 O15 = O1 + person.segment(S).Rglobal*[+btr(1); 0; -l + h_hoof];
 

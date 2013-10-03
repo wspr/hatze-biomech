@@ -4,6 +4,9 @@
 # 1        # male
 0        # female
 
+# Age
+19 # only strictly necessary for a male subject
+
 # Scale
 1000     # mm
 # 100      # cm

@@ -4,7 +4,6 @@ P = person.segment(S).origin + person.segment(S).offset;
 R = person.segment(S).Rglobal;
 N = person.segment(S).Ncalc;
 
-i_m = person.sex;
 ind = 1:N;
 
 l_1 = person.meas{S}.length;
@@ -13,7 +12,7 @@ u = person.resample(person,S,person.meas{S}.perim);
 b = person.solve_ellipse(a,u);
 
 gamma = person.resample(person,S,cellfun( @(x) x(person.sex,person.nu), person.density.thigh ));
-gamma_0 = person.density.thigh_head(i_m,person.nu);
+gamma_0 = person.density.thigh_head(person.sex,person.nu); 
 
 % the height of the hoof is calculated per-thigh; for the pelvic region,
 % however, it is set to a fixed height! Therefore, the hoof does not
