@@ -153,7 +153,7 @@ I2_yz = sum(I_yz) + sum( ...
 Ip_y = (I2_y+I2_z)/2+sqrt(((I2_y-I2_z)^2)/4+I2_yz^2);
 Ip_z = (I2_y+I2_z)/2-sqrt(((I2_y-I2_z)^2)/4+I2_yz^2);
 
-theta = atand(I2_yz/(I2_y-Ip_z));
+theta = atan(I2_yz/(I2_y-Ip_z));
 
 person.segment(S).mass = mass;
 person.segment(S).volume = volume;
