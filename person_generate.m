@@ -332,8 +332,11 @@ end
 for ii = 8:10
   person.density.leg{ii} = @(i_m) 1060+43.33*(ii-7);
 end
+
 person.density.ankle = 1200;
 person.density.foot = @(n) 1480*(1-(0.0001)*(n.^2)*(1-1100/1480));
+person.density.heel = 990;
+person.density.sole = 1100;
 
 end
 

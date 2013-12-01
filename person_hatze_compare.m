@@ -7,17 +7,38 @@ person = person_generate('data','hatze_meas.txt');
 
 %% Hatze's results to verify
 
+% thorax
+person.segment(1).volume_hatze = 14.537;
+person.segment(1).mass_hatze = 12.950;
+person.segment(1).centroid_hatze = [0; 0.003; 0.194];
+person.segment(1).Minertia_hatze = [0.206372 0.231513 0.082898];
+person.segment(1).theta_hatze = -0.001;
+
+% head-neck
+person.segment(2).volume_hatze = 3.595;
+person.segment(2).mass_hatze   = 3.993;
+person.segment(2).centroid_hatze = [0; 0; 0.132];
+person.segment(2).Minertia_hatze = [0.020953 0.017553 0.01216];
+
+% left shoulder
+person.segment(3).volume_hatze = 1.11;
+person.segment(3).mass_hatze   = 1.144;
+person.segment(3).centroid_hatze = [0; 0; 0.140];
+person.segment(3).Minertia_hatze = [0.002725 0.002172 NaN];
+person.segment(3).resting_angle_hatze = 0.199;
+
+% right shoulder
+person.segment(7).volume_hatze = 1.146;
+person.segment(7).mass_hatze   = 1.180;
+person.segment(7).centroid_hatze = [0; 0; 0.141];
+person.segment(7).Minertia_hatze = [0.002922 0.002289 NaN];
+person.segment(7).resting_angle_hatze = -0.182;
+
 % left arm
 person.segment(4).mass_hatze = 1.616;
 person.segment(4).volume_hatze = 1.713;
 person.segment(4).centroid_hatze = [0; 0; -0.131];
 person.segment(4).Minertia_hatze = [0.013677 0.013435 0.001528];
-
-% left forearm
-person.segment(5).mass_hatze = 0.835;
-person.segment(5).volume_hatze = 0.896;
-person.segment(5).centroid_hatze = [0; 0; -0.108];
-person.segment(5).Minertia_hatze = [0.004596 0.004712 0.000523];
 
 % right arm
 person.segment(8).mass_hatze = 1.505;
@@ -25,11 +46,36 @@ person.segment(8).volume_hatze = 1.595;
 person.segment(8).centroid_hatze = [0; 0; -0.129];
 person.segment(8).Minertia_hatze = [0.011917 0.011937 0.001325];
 
+% left forearm
+person.segment(5).mass_hatze = 0.835;
+person.segment(5).volume_hatze = 0.896;
+person.segment(5).centroid_hatze = [0; 0; -0.108];
+person.segment(5).Minertia_hatze = [0.004596 0.004712 0.000523];
+
 % right forearm
 person.segment(9).mass_hatze = 0.809;
 person.segment(9).volume_hatze = 0.869;
 person.segment(9).centroid_hatze = [0; 0; -0.112];
 person.segment(9).Minertia_hatze = [0.004765 0.004855 0.000472];
+
+% left hand
+person.segment(6).mass_hatze = 0.285;
+person.segment(6).volume_hatze = 0.317;
+person.segment(6).centroid_hatze = [-0.049; 0.003; -0.010];
+person.segment(6).Minertia_hatze = [0.000231 0.000448 0.000521];
+
+% right hand
+person.segment(10).mass_hatze = 0.288;
+person.segment(10).volume_hatze = 0.319;
+person.segment(10).centroid_hatze = [-0.051; 0.003; -0.009];
+person.segment(10).Minertia_hatze = [0.000240 0.000491 0.000551];
+
+% pelvis
+person.segment(10).mass_hatze = 11.208;
+person.segment(10).volume_hatze = 11.304;
+person.segment(10).centroid_hatze = [0; 0.092; -0.050];
+person.segment(10).Minertia_hatze = [0.068933 0.123422 0.08784];
+person.segment(10).theta_hatze = -1.1;
 
 % left thigh
 person.segment(12).mass_hatze = 9.166;
@@ -37,17 +83,17 @@ person.segment(12).volume_hatze = 9.593;
 person.segment(12).centroid_hatze = [0; 0; -0.194];
 person.segment(12).Minertia_hatze = [0.156305 0.152523 0.035853];
 
-% left leg
-person.segment(13).mass_hatze = 3.310;
-person.segment(13).volume_hatze = 3.602;
-person.segment(13).centroid_hatze = [0; 0; -0.174];
-person.segment(13).Minertia_hatze = [0.045315 0.044973 0.005106];
-
 % right thigh
 person.segment(15).mass_hatze = 8.955;
 person.segment(15).volume_hatze = 9.375;
 person.segment(15).centroid_hatze = [0; 0; -0.194];
 person.segment(15).Minertia_hatze = [0.149153 0.146883 0.034605];
+
+% left leg
+person.segment(13).mass_hatze = 3.310;
+person.segment(13).volume_hatze = 3.602;
+person.segment(13).centroid_hatze = [0; 0; -0.174];
+person.segment(13).Minertia_hatze = [0.045315 0.044973 0.005106];
 
 % right leg
 person.segment(16).mass_hatze = 3.487;
@@ -55,10 +101,28 @@ person.segment(16).volume_hatze = 3.794;
 person.segment(16).centroid_hatze = [0; 0; -0.183];
 person.segment(16).Minertia_hatze = [0.050537 0.050114 0.005438];
 
+% left foot
+person.segment(14).volume_hatze = 0.842;
+person.segment(14).mass_hatze = 0.961;
+person.segment(14).centroid_hatze = [0; -0.034; -0.040];
+person.segment(14).Minertia_hatze = [0.003610 0.003781 0.000763];
+person.segment(14).theta_hatze = -0.08;
+person.segment(14).contact_heel_hatze = [0; -0.76; 0.047];
+person.segment(14).contact_toe_hatze = [0; -0.06; -0.155];
+
+% right foot
+person.segment(17).volume_hatze = 0.887;
+person.segment(17).mass_hatze = 1.02;
+person.segment(17).centroid_hatze = [0; -0.037; -0.036];
+person.segment(17).Minertia_hatze = [0.003706 0.003847 0.000859];
+person.segment(17).theta_hatze = -0.086;
+person.segment(17).contact_heel_hatze = [0; -0.81; 0.046];
+person.segment(17).contact_toe_hatze = [0; -0.065; -0.145];
+
 %% Print results
 
 for s = 1:person.N
-  
+
   if ~isempty(person.segment(s).volume)
     disp('-------------------------')
     disp(person.segment(s).name)
@@ -74,15 +138,18 @@ for s = 1:person.N
       fprintf('         ([ %2.0f , %2.0f , %2.0f ])\n',1000*person.segment(s).centroid_hatze(1),1000*person.segment(s).centroid_hatze(2),1000*person.segment(s).centroid_hatze(3))
     end
     if ~isempty(person.segment(s).Minertia)
-      fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] g.m^2\n',1000*person.segment(s).Minertia(1),1000*person.segment(s).Minertia(1),1000*person.segment(s).Minertia(3))
+      fprintf('Moments of inertia: [ %3.3f , %3.3f , %3.3f ] g.m^2\n',1000*person.segment(s).Minertia(1),1000*person.segment(s).Minertia(2),1000*person.segment(s).Minertia(3))
     end
     if ~isempty(person.segment(s).Minertia_hatze)
-      fprintf('                   ([ %2.3f , %2.3f , %2.3f ])\n',1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(3))
+      fprintf('                   ([ %3.3f , %3.3f , %3.3f ])\n',1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(2),1000*person.segment(s).Minertia_hatze(3))
     end
     if ~isempty(person.segment(s).theta)
-      fprintf('Theta: %2.3f °\n',person.segment(s).theta)
+      fprintf('Theta: %2.3f°\n',person.segment(s).theta*180/pi)
     end
-    
+    if ~isempty(person.segment(s).theta_hatze)
+      fprintf('      (%2.3f°)\n',person.segment(s).theta_hatze*180/pi)
+    end
+
   end
 
 end
