@@ -16,6 +16,7 @@ neck_height = person.meas{2}.all(4);
 
 gamma_e = person.density.head(i_m);
 gamma_c = person.density.neck(i_m);
+gamma_p = person.density.neck(i_m);
 
 %% Measurements
 
@@ -32,14 +33,14 @@ k = 0.30*c;
 % Volume
 v_e = 4.66493*a*b*c;
 v_c = pi*a_1*b_1*h;
-v_p = 4.5708*b*c*a_1*(1.5708-b_1*(c-k)/(c*b)-asin((c-k)/c));
-volume = v_e + v_c + v_p;
+v_p = 1.5708*b*c*a_1*(1.5708-b_1*(c-k)/(c*b)-asin((c-k)/c));
+volume = v_e + v_c - v_p;
 
 % Mass
 m_e = gamma_e*v_e;
 m_c = gamma_c*v_c;
-m_p = gamma_e*v_p;
-mass = m_e + m_c + m_p;
+m_p = gamma_p*v_p;
+mass = m_e + m_c - m_p;
 
 % Mass centroid:
 xc = 0;
