@@ -40,16 +40,16 @@ yc = 0;
 zc = -(m_0*0.4*h+sum(h+l_1*(ind-1/2)/N))/mass;
 
 % Moments of inertia:
-I_x0 = m_0*(b(1)^2/4+0.0686*h^2);
+I_x0 = m_0*(1/4*b(1)^2+0.0686*h^2);
 I_y0 = m_0*(0.15*a(1)^2+0.0686*h^2);
-I_z0 = m_0*(0.15*a(1)^2+b(1)^2/4);
+I_z0 = m_0*(0.15*a(1)^2+1/4*b(1)^2);
 I_xi = m.*(3*b.^2+(l_1/N)^2)/12;
 I_yi = m.*(3*a.^2+(l_1/N)^2)/12;
 I_zi = m.*(a.^2+b.^2)/4;
 
 % principal moments of inertia;
-Ip_x = I_x0+m_0*(-0.4*h-zc).^2+sum(I_xi+m.*(h+l_1*(ind-1/2)/N+zc).^2);
-Ip_y = I_y0+m_0*(-0.4*h-zc).^2+sum(I_yi+m.*(h+l_1*(ind-1/2)/N+zc).^2);
+Ip_x = I_x0+m_0*(-0.4*h-zc).^2+sum((I_xi+m.*h+l_1*(ind-1/2)/N+zc).^2);
+Ip_y = I_y0+m_0*(-0.4*h-zc).^2+sum((I_yi+m.*h+l_1*(ind-1/2)/N+zc).^2);
 Ip_z = I_z0+sum(I_zi);
 
 Q = P+person.segment(S).Rglobal*[0;0;-l_1-h];

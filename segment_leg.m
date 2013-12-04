@@ -7,8 +7,6 @@ ind = 1:N;
 
 %% Measurements
 
-nu = person.nu; % subcutaneous fat indicator;
-
 l = person.meas{S}.length;
 a = person.resample(person,S,person.meas{S}.diam)/2;
 u = person.resample(person,S,person.meas{S}.perim);
@@ -25,7 +23,7 @@ gamma_b = person.density.ankle;
 
 % Volume
 v      = pi*a.*b*l/N;
-v_b    = pi*r_a/2*r^2;
+v_b    = pi/2*r_a*r^2; % 0.59*r*pi/2 = 0.92*r as per Hatze
 volume = sum(v) + 2*v_b;
 
 % Mass

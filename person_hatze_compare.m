@@ -154,3 +154,50 @@ for s = 1:person.N
 
 end
 
+
+%% Print results
+
+
+clc
+
+thresh = 0.1;
+
+fprintf('\n\n===============================\n')
+fprintf('=== ERRORS OF MORE THAN %i%% ===\n',round(100*thresh))
+fprintf('===============================\n\n\n')
+
+
+for s = 1:person.N
+
+  if ~isempty(person.segment(s).volume)
+    if abs(1000*person.segment(s).volume-person.segment(s).volume_hatze)/person.segment(s).volume_hatze > thresh      
+      disp(['--- ',person.segment(s).name,' ---'])
+      fprintf('Volume:   %1.4f L\n',1000*person.segment(s).volume)
+      fprintf('         (%1.4f)\n',person.segment(s).volume_hatze)
+    end
+    if abs(person.segment(s).mass-person.segment(s).mass_hatze)/person.segment(s).mass_hatze > thresh      
+      disp(['--- ',person.segment(s).name,' ---'])
+      fprintf('Mass:     %2.3f kg\n',person.segment(s).mass)
+      fprintf('         (%2.3f)\n',person.segment(s).mass_hatze)
+    end
+    if any(abs(person.segment(s).centroid-person.segment(s).centroid_hatze)./person.segment(s).centroid_hatze > thresh)
+      disp(['--- ',person.segment(s).name,' ---'])
+      fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*person.segment(s).centroid(1),1000*person.segment(s).centroid(2),1000*person.segment(s).centroid(3))
+      fprintf('         ([ %2.0f , %2.0f , %2.0f ])\n',1000*person.segment(s).centroid_hatze(1),1000*person.segment(s).centroid_hatze(2),1000*person.segment(s).centroid_hatze(3))
+    end
+    if any(abs(person.segment(s).Minertia-person.segment(s).Minertia_hatze)./person.segment(s).Minertia_hatze > thresh)
+      disp(['--- ',person.segment(s).name,' ---'])
+      fprintf('Moments of inertia: [ %3.3f , %3.3f , %3.3f ] g.m^2\n',1000*person.segment(s).Minertia(1),1000*person.segment(s).Minertia(2),1000*person.segment(s).Minertia(3))
+      fprintf('                   ([ %3.3f , %3.3f , %3.3f ])\n',1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(2),1000*person.segment(s).Minertia_hatze(3))
+    end
+    if ~isempty(person.segment(s).theta)
+      if abs( (person.segment(s).theta-person.segment(s).theta_hatze )/person.segment(s).theta_hatze) > thresh
+        disp(['--- ',person.segment(s).name,' ---'])
+        fprintf('Theta: %2.3f°\n',person.segment(s).theta*180/pi)
+        fprintf('      (%2.3f°)\n',person.segment(s).theta_hatze*180/pi)
+      end
+    end
+  end
+
+end
+
