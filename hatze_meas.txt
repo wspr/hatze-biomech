@@ -7,7 +7,7 @@
 # Age
 19 # only strictly necessary for a male subject
 
-# Scale
+# Scale for all the measurements in this file
 1000     # mm
 # 100      # cm
 # 1        # metres
@@ -21,10 +21,19 @@
 213 # 21  ??
 
 # Head/neck
-139 184 214 055
+
+139 # width
+184 # depth
+214 # height
+055 # neck height
 
 # Shoulders
-140 176 090 025
+
+140 # shoulder depth
+176 # neck-to-arm distance
+090 # ??
+025 # between top of shoulder and bottom of neck
+
 145 182 086 025
 
 # Arms
@@ -47,26 +56,30 @@
 231 229 225 221 211 195 184 174 164 161 # perimeters
 257 # length
 
-# 6 & 10: hands
+# Hands
+
 43 77
 45 76
 
 # Pelvis
 
-287 301 318 331 341 344 359 382 326 240 #
-767 797 844 887 940 954 975 #
-097 081 228 053 #
+287 301 318 331 341 344 359 382 326 240 # widths
+767 797 844 887 940 954 975 # perim
+097 # ??
+081 # ??
+228 # height
+053 # B or d_11 ?
 
 # Thighs
 
 191 191 190 180 162 146 132 126 119 119 # diam
 629 604 590 565 536 500 453 418 386 373 # perim
-439 # ???
+439 # "long" length
 364 # length
 
 186 187 189 182 171 176 143 136 130 126 # diam
 620 602 592 563 528 495 461 417 388 377 # perim
-445 # ???
+445 # "long" length
 353 # length
 
 # Legs

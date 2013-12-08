@@ -5,12 +5,14 @@ R = person.segment(S).Rglobal;
 person.segment(S).origin = O1;
 i_m = person.sex;
 nu  = person.nu;
+age = person.age;
 
 %% Abdominal pelvic region
 
 Nt = 10;
 Na = 7;
 Np = 3;
+ind = 1:Nt;
 ind_ae = 1:Na;
 ind_pe = 1:Np;
 ind_p = 4:7;
@@ -29,7 +31,7 @@ u = person.meas{S}.perim;  % perimeters
 a_h  = a(10);  % ? half hip width (trochanter major bones)
 B    = person.meas{S}.all(17+4);  % ? bum depth
 d_11 = person.meas{S}.all(17+4);  % ? NB also used in ab-thor
-e_11 = person.meas{S}.all(17+3);  % ?
+e_11 = person.meas{S}.all(17+3);  % ? certainly not
 
 h_hoof = Np/Nt*person.meas{11}.length;
 
@@ -55,6 +57,10 @@ btl = sqrt(((utl/pi).^2)/2-atl.^2);
 atr = person.meas{15}.diam/2;
 utr = person.meas{15}.perim;
 btr = sqrt(((utr/pi).^2)/2-atr.^2);
+
+a_1t = 0.5*( atl(1) + atr(1) );
+b_1t = 0.5*( btl(1) + btr(1) );
+
 
 %% THESE NEED TO BE FIXED: offset should be 0.5*(pelvis_width-thigh_width)
 O12 = O1 + person.segment(S).Rglobal*[-btl(1); 0; -l + h_hoof];
@@ -98,47 +104,112 @@ end
 
 %% Mass
 
-% m_p = gamma_5*pi/2*B*c*a_h*0.473*l; % two elliptic paraboloids;
-% m_ei1 = gamma_1*pi/2*g*a_i*l/10; % i=1,2,3; three semi-elliptical plates;
-% m_ti = gamma_2*g*l/10*(a_i+f_1); % i=4,5,6,7,8,9,10; seven trapezoidal plates on the posterior side of the segment;
-% m_ei = gamma_3*pi/2*a_i*b_i*l/10; % i=1,2,3,4,5,6,7; seven semi-elliptical plates;
-% m_l = gamma_4*0.3*l*(2*a_8*r-(2-pi/2)*a_1t*b_1t); % three special shape plates on the anterior side;
-% m_otl = gamma_ot*2*pi*a*b*h/3; % the removed superior parts of left thigh;
-% m_otr = gamma_ot*2*pi*a*b*h/3; % the removed superior parts of right thigh;
-%
-% m_o = 0.007*i_m; % when A is no lager than 12;
-% m_o = gamma_o*i_m*2*pi*(0.005*A-0.045)^3/3; % when A is between 12 and 19;
-% m_o = 0.26*i_m; % when A is lager than 19;
-%
-% nu = m_p*2/gamma_5 + sum(m_ei1)/gamma_1 + sum(m_ti)/gamma_2 + sum(m_ei)/gamma_3 + m_l*3/gamma_4 + m_o - m_otl - m_otr;
-% m = m_p*2 + sum(m_ei1) + sum(m_ti) + sum(m_ei) + m_l*3 + m_o - m_otl - m_otr;
-%
-% % Mass centroid:
-% xc = O11(0);
-% y_p = -B/3-g;
-% y_1 = -4*g/3/pi;
-% y_2i = -(g/3)*(2*f_l+a_i)/(i_l+a_i);
-% y_3i = 4*b_i/3/pi;
-% y_4 = (2*(a_i(8)-a_lt)*b_lt*(r-b_lt/2)+a_i(8)*(r-b_lt)^2+1.571*a_lt*b_lt*(r-0.576*b_lt))/(2*a_i(8)*r-(2-pi/2)*a_lt*b_lt);
-% y_ot = r-b_lt;
-% z_p = -0.737*l;
-% z_li = -l*(indf/10-0.05);
-% z_4 = -0.85*l;
-% z_ot = -0.7*l-0.6*(l_t-l_lt);
-% yc = (2*m_p*y_p+y_1*sum(m_ei)+y_2i*sum(m_ti) + y_3i*sum(m_ei) + y_4*m_l*3 + m_o*(r+0.02) - m_otl*z_ot - m_otr*z_ot)/m;
-% zc = (m_p*2*z_p + sum(m_ei1)*z_li + sum(m_ti)*z_li + sum(m_ei)*z_li + m_l*3*z_li + m_o - m_otl*z_ot - m_otr*z_ot)/m;
-%
-%
-% disp('-------------------------')
-% disp('Abdomino pelvic section')
-% disp('-------------------------')
-% fprintf('Mass:     %2.3f kg\n',sum(m))
-% fprintf('Volume:   %1.4f m^3\n',sum(nu))
-% fprintf('Centroid: [ %2.0f , %2.0f , %2.0f ] mm\n',1000*xc,1000*yc,1000*zc)
-% fprintf('Moments of inertia: [ %2.3f , %2.3f , %2.3f ] kg.m^2\n',Ip_x,Ip_y,Ip_z)
+v_p = pi/2*B*c*a_h*0.473*l; % two elliptic paraboloids;
+v_ee(ind_pe) = pi/2*g*a(ind_pe)*l/10; % i=1,2,3; three semi-elliptical plates;
+v_t(ind_pt) = g*l/10*(a(ind_pt)+f_1(ind_pt)); % i=4,5,6,7,8,9,10; seven trapezoidal plates on the posterior side of the segment;
+v_e(ind_ae) = pi/2*a(ind_ae).*b*l/10; % i=1,2,3,4,5,6,7; seven semi-elliptical plates;
+v_l = 0.3*l*(2*a(8)*r-(2-pi/2)*a_1t*b_1t); % three special shape plates on the anterior side;
+v_otl = 2*pi*atl(1)*btl(1)*h_hoof/3; % the removed superior parts of left thigh;
+v_otr = 2*pi*atr(1)*btr(1)*h_hoof/3; % the removed superior parts of right thigh;
 
-person.segment(S).theta = 10; % needs to be calculated
-person.segment(S).centroid = [0;0;0];
+m_p = gamma_5*v_p;
+m_ee = gamma_1*v_ee;
+m_t = gamma_2*v_t;
+m_e = gamma_3*v_e;
+m_l = gamma_4*v_l;
+m_otl = gamma_ot*v_otl;
+m_otr = gamma_ot*v_otr;
+
+% NB: ambiguity between h_hoof for pelvis and the separate h terms for each
+% thigh
+
+if age <= 12
+  m_o = 0.007*i_m;
+elseif age <=19
+  m_o = gamma_o*i_m*2*pi*(0.005*age-0.045)^3/3;
+else
+  m_o = 0.26*i_m;
+end
+
+% NB: volume v_o is ambiguous
+
+v = v_p*2 + sum(v_ee) + sum(v_t) + sum(v_e) + v_l*3 + m_o/gamma_o - v_otl - v_otr;
+m = m_p*2 + sum(m_ee) + sum(m_t) + sum(m_e) + m_l*3 + m_o - m_otl - m_otr;
+
+
+% Mass centroid:
+xc = 0;
+y_p = -B/3-g;
+y_1 = -4*g/3/pi;
+y_2i(ind_pt) = -(g/3)*(2*f_1(ind_pt)+a(ind_pt))/(f_1(ind_pt)+a(ind_pt));
+y_3i = 4*b/3/pi;
+y_4 = (2*(a(8)-a_1t)*b_1t*(r-b_1t/2)+a(8)*(r-b_1t)^2+1.571*a_1t*b_1t*(r-0.576*b_1t))/(2*a(8)*r-(2-pi/2)*a_1t*b_1t);
+y_ot = r-b_1t;
+z_p = -0.737*l;
+z_1 = -l*(ind/Nt-0.05); % what is "-0.05" ?
+z_4 = -0.85*l;
+z_ot = -0.7*l-0.6*h;
+
+ycm = 2*m_p*y_p+y_1*sum(m_e)+sum(y_2i.*m_t) + sum(y_3i.*m_e) + y_4*m_l*3  - (m_otl*y_ot - m_otr*y_ot)+ m_o*(r+0.02);
+zcm = 2*m_p*z_p + sum( z_1(ind_pe).*(m_e(ind_pe)+m_ee(ind_pe)) ) + sum(z_1(ind_ae).*m_e(ind_ae)) + sum(z_1(ind_pt).*m_t(ind_pt)) + 3*m_l*z_4 + m_o - (m_otl + m_otr)*z_ot;
+
+% NB: m_e*z_1 seems to be counted TWICE for i=1:3 ?
+
+yc = ycm/m;
+zc = zcm/m;
+
+% Moments of inertia:
+f_Ti(ind_pt) = (g^2/18)*(a(ind_pt).^2+4*a(ind_pt).*f_1(ind_pt)+f_1(ind_pt).^2)/((a(ind_pt)+f_1(ind_pt)).^2);
+g_Ti(ind_pt) = (a(ind_pt).^2+f_1(ind_pt).^2)/6;
+
+Ip_x = ...
+  2*m_p*((3*(0.437*l)^2+B^2)/18+(y_p-yc).^2+(z_p-zc).^2) + ...
+  sum(m_ee(1:3).*(0.07*g^2+l^2/1200+(y_1-yc).^2+(z_1(1:3)-zc).^2)) + ...
+  sum(m_e(1:7).*(0.07*b(1:7).^2+l^2/1200+(y_3i(1:7)-yc).^2+(z_1(1:7)-zc).^2)) + ...
+  sum(m_t(4:10).*(f_Ti(4:10)+(y_2i(4:10)-yc).^2+(z_1(4:10)-zc).^2)) + ...
+  3*m_l*((r^2+(0.3*l)^2)/12+(y_4-yc).^2+(z_4-zc).^2) + ...
+  -(m_otl + m_otr)*(0.25*b_1t^2+0.0686*h^2+(y_ot-yc)^2+(z_ot-zc)^2) + ... % F2.9 the height of the special shape; h=l_t - l_1t;
+  m_o*((r+0.02-yc)^2+(-0.7*l-0.05-zc)^2);
+
+I_y = ...
+  2*m_p*( ((0.437*l)^2+(c*a_h)^2)/6+(c*a_h)^2+(z_p-zc).^2 ) + ...
+  sum(m_ee(1:3).*(0.25*a(1:3).^2+l^2/1200+(z_1(1:3)-zc).^2)) + ...
+  sum(m_e(1:7).*(0.25*a(1:7).^2+l^2/1200+(z_1(1:7)-zc).^2)) + ...
+  sum(m_t(4:10).*(g_Ti(4:10)+(z_1(4:10)-zc).^2)) + ...
+  3*m_l*(((0.3*l)^2+4*a(8)^2)/12+(z_4-zc)^2) + ...
+  -(m_otl+m_otr)*(0.15*a_1t^2+0.0686*h ^2+(a(8)-a_1t)^2+(z_ot-zc)^2) + ...
+  m_o*(-0.7*l-0.05-zc)^2;
+
+I_z = ...
+  2*m_p*((3*(c*a_h)^2+B^2)/18+(y_p-yc).^2+(c*a_h)^2)...
+  +sum(m_ee(1:3).*(0.07*g^2+0.25*a(1:3).^2+(y_1-yc).^2))...
+  +sum(m_e(1:7).*(0.07*b(1:7).^2+0.25*a(1:7).^2+(y_3i(1:7)-yc).^2))...
+  +sum(m_t(4:10).*(f_Ti(4:10)+g_Ti(4:10)+(y_2i(4:10)-yc).^2))...
+  +3*m_l*((r^2+4*a(8)^2)/12+(y_4-yc)^2)...
+  -(m_otl + m_otr)*(0.15*a_1t^2+0.25*b_1t^2+(a(8)-a_1t)^2+(y_ot-yc)^2)...
+  +m_o*(r+0.02-yc)^2;
+
+I_yz = ...
+  2*m_p*(y_p-yc)*(z_p-zc)...
+  +sum(m_ee(1:3).*(y_1-yc).*(z_1(1:3)-zc))...
+  +sum(m_e(1:7).*(y_3i(1:7)-yc).*(z_1(1:7)-zc))...
+  +sum(m_t(4:10).*(y_2i(4:10)-yc).*(z_1(4:10)-zc))...
+  +3*m_l*(y_4-yc)*(z_4-zc)...
+  -(m_otl + m_otr)*(y_ot-yc)*(z_ot-zc)...
+  +m_o*(r+0.02-yc)*(-0.7*l-0.05-zc);
+
+Ip_y =(I_y+I_z)/2+sqrt(1/4*(I_y-I_z)^2+I_yz^2);
+Ip_z =(I_y+I_z)/2-sqrt(1/4*(I_y-I_z)^2+I_yz^2);
+
+theta = atan(I_yz/(I_z-Ip_y));
+
+
+person.segment(S).volume = v;
+person.segment(S).mass = m;
+person.segment(S).centroid = [xc; yc; zc];
+person.segment(S).Minertia = [Ip_x, Ip_y, Ip_z];
+person.segment(S).theta = theta;
+
 
 %% Plot
 

@@ -33,15 +33,14 @@ gamma_b = person.density.thoracic_wall(i_m); % (? see A2.94)
 %
 % Trying to use Hatze's measurements where possible
 
-l = person.meas{S}.all(20);     % length of abdomino-thorasic section; has to be this
-                    % value as it's the largest in the set
+l = person.meas{1}.length;
 
 d_11 = person.meas{11}.all(21); % AP distance between centre of hip joint & Symphysion
                     % maybe abdomino-pelvic measurement #21
 
 z_h = mean([person.meas{3}.all(4), person.meas{7}.all(4)]); % height between shoulder and O1
 
-% invented: (can't figure which they'd be, if any)
+% invented: (can't figure which they'd be)
 d = 0.140;    % nipple-to-nipple distance
 h = 0.55*l;   % height below C5 of nipple
 r = 0.060;    % radius of breast
@@ -73,6 +72,9 @@ a(ii) = a(5)+(0.42*a(5)-a(1))*l.*(4-ii)/N/(0.35*l-z_h)+(2*a(1)-1.42*a(5))*((1/N*
 % interpolate asymmetric belly thicknesses:
 w(inda) = interp1([Nt N],[Y1(Nt)/2 g],inda);
 b(inda) = Y1(inda) - w(inda);
+
+person.segment(S).a = a;
+person.segment(S).b = b;
 
 % Lungs:
 a2 = a(indt).*(c(1)-c);

@@ -43,7 +43,7 @@ I_zi = m.*(a.^2+b.^2)/4;
 
 % principal moments of inertia;
 Ip_x = 2*m_b*(0.33*r^2+(l+zc).^2)+sum(I_xi+m.*(l*(ind-1/2)/N+zc).^2);
-Ip_y = 2*m_b*(0.1859*r^2+(l+zc).^2+(a(end)+0.196*r^2)) + sum(I_yi+m.*(l*(ind-1/2)/N+zc).^2);
+Ip_y = 2*m_b*(0.1859*r^2+(l+zc).^2+(a(end)+0.196*r)^2) + sum(I_yi+m.*(l*(ind-1/2)/N+zc).^2);
 Ip_z = 2*m_b*(0.1859*r^2+(a(end)+0.196*r)^2)+ sum(I_zi);
 
 person.segment(S).mass = mass;

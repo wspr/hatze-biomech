@@ -38,7 +38,7 @@ person.plot_points([person.segment([1,3,2]).origin], 'k.-', 'markersize', 20,'li
 
 for ii = 1:person.N
   if ~isempty(person.segment(ii).centroid)
-    person.plot_points(person.segment(ii).origin+person.segment(ii).centroid, 'r.', 'markersize', 30)
+%    person.plot_points(person.segment(ii).origin+person.segment(ii).centroid, 'r.', 'markersize', 30)
   end
 end
 
