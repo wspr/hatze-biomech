@@ -28,7 +28,7 @@ view(153,23)
 axis off
 zoom(2)
 
-person = person_generate(person,'plot',true);
+person_generate(person,'plot',true);
 
 person.plot_points([person.segment(3:6).origin], 'k.-', 'markersize', 20,'linewidth',2)
 person.plot_points([person.segment(7:10).origin], 'k.-', 'markersize', 20,'linewidth',2)
@@ -135,15 +135,18 @@ pbaspect([1 4 4])
 
 
 
-%%
+%% Plotting a single segment only
 
 close all
 figure(1); clf; hold on
 
 person = person_generate('data','hatze_meas.txt');
 person.segment(3).plot = true;
+person.segment(3).opacity = [1 0];
+person.segment(3).colour = [0 0.7 0.3];
 person_generate(person)
 
 axis equal
 view([20 70])
 pbaspect([1 1 1])
+camlight
