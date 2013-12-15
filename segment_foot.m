@@ -11,12 +11,14 @@ ind = 1:N;
 
 %% Measurements
 
-a  = person.meas{S}.all(1);
-b  = person.meas{S}.all(2)/2;
-c  = person.meas{S}.all(3)/2;
-h1 = person.meas{S}.all(4);
-h2 = person.meas{S}.all(5) - person.meas{S}.all(4);
-L  = person.meas{S}.all(6);
+c  = person.meas{S}.all(1);
+b  = person.meas{S}.all(2);
+h1 = person.meas{S}.all(3);
+h2 = person.meas{S}.all(4) - h1;
+L  = person.meas{S}.all(5);
+d  = person.meas{S}.all(6); % used for ground contact point (only?)
+
+a  = person.meas{S-1}.diam(end); % last leg width measurement
 
 %% Calculations
 

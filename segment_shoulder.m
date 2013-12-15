@@ -14,18 +14,10 @@ at1 = person.segment(1).a(1);
 at4 = person.segment(1).a(4);
 at5 = person.segment(1).a(5);
 
-% measurements:
-% 140 # "neck to arm" distance, d
-% 176 # shoulder depth, 2*b
-% 090 # ??
-% 025 # between top of shoulder and bottom of neck
-
-b = person.meas{S}.all(2)/2;
-d = person.meas{S}.all(1);
-% third ?
+d   = person.meas{S}.all(1);
+b   = person.meas{S}.all(2)/2;
+b1  = person.meas{S}.all(3)/2;
 z_h = person.meas{S}.all(4);
-
-b1 = person.solve_ellipse(person.meas{S+1}.diam(1)/2,person.meas{S+1}.perim(1))/2;
 
 bt1 = person.meas{1}.depths(1)/2;
 bt4 = person.meas{1}.depths(4)/2;

@@ -30,25 +30,19 @@ gamma_l = person.density.lungs(i_m);
 gamma_b = person.density.thoracic_wall(i_m); % (? see A2.94)
 
 %% Measurements
-%
-% Trying to use Hatze's measurements where possible
 
-l = person.meas{1}.length;
+l = person.meas{S}.length;
 
-d_11 = person.meas{11}.all(21); % AP distance between centre of hip joint & Symphysion
-                    % maybe abdomino-pelvic measurement #21
+d_11 = person.meas{11}.all(19); % AP distance between centre of hip joint & Symphysion
+z_h  = mean([person.meas{3}.all(4), person.meas{7}.all(4)]); % height between shoulder and O1
 
-z_h = mean([person.meas{3}.all(4), person.meas{7}.all(4)]); % height between shoulder and O1
-
-% invented: (can't figure which they'd be)
-d = 0.140;    % nipple-to-nipple distance
-h = 0.55*l;   % height below C5 of nipple
-r = 0.060;    % radius of breast
+d = person.meas{S}.all(08);    % nipple-to-nipple distance
+r = person.meas{S}.all(09)/2;  % radius of breast
+h = person.meas{S}.all(21);    % height below C5 of nipple
 
 % thorax ML widths (7) and AP thicknesses (10)
 X1 = person.meas{S}.widths;
 Y1 = person.meas{S}.depths;
-person.meas{S}.length = l;
 
 %% Implicit measurements
 

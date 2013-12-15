@@ -12,7 +12,7 @@ a = person.resample(person,S,person.meas{S}.diam)/2;
 u = person.resample(person,S,person.meas{S}.perim);
 b = person.solve_ellipse(a,u);
 
-r = person.meas{16}.ankle;
+r = person.meas{16}.ankle/2;
 r_a = 0.59*r;
 
 gamma = person.resample(person,S,cellfun( @(x) x(person.sex), person.density.leg ));

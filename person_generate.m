@@ -232,7 +232,7 @@ person.segment(16).Ncalc = 10;
 %% Organising measurements
 
 person.meas{1}.widths = [person.meas{1}.all(1) NaN NaN NaN person.meas{1}.all(2:7)];
-person.meas{1}.depths = person.meas{1}.all(9:18);
+person.meas{1}.depths = person.meas{1}.all(10:19);
 person.meas{1}.length = person.meas{1}.all(20);
 
 person.meas{4}.diam   = person.meas{4}.all(1:10);
@@ -251,9 +251,9 @@ person.meas{9}.diam   = person.meas{9}.all(1:10);
 person.meas{9}.perim  = person.meas{9}.all(11:20);
 person.meas{9}.length = person.meas{9}.all(21);
 
-person.meas{11}.diam   = person.meas{11}.all(1:10);
+person.meas{11}.diam   = person.meas{11}.all([1:8, 8, 8]);
 person.meas{11}.perim  = person.meas{11}.all(11:17);
-person.meas{11}.length = person.meas{11}.all(20);
+person.meas{11}.length = person.meas{11}.all(10);
 
 person.meas{12}.diam        = person.meas{12}.all(1:10);
 person.meas{12}.perim       = person.meas{12}.all(11:20);

@@ -25,17 +25,19 @@ ind_as = (Na+1):Nt;
 %  PERIM  767 797 844 887 940 954 975
 %   MEAS  097 081 228 053
 
-a = person.meas{S}.diam([1:8 8 8])/2; % half-widths. what's with 9 & 10 ??
+a = person.meas{S}.diam/2; % half-widths
 u = person.meas{S}.perim;  % perimeters
+l = person.meas{S}.length; % "length"
 
-a_h  = a(10);  % ? half hip width (trochanter major bones)
-B    = person.meas{S}.all(17+4);  % ? bum depth
-d_11 = person.meas{S}.all(17+4);  % ? NB also used in ab-thor
-e_11 = person.meas{S}.all(17+3);  % ? certainly not
+a_h  = person.meas{S}.all(09)/2;  % half hip width (trochanter major bones)
+c_11 = person.meas{S}.all(18);
+d_11 = person.meas{S}.all(19);  % NB also used in ab-thor
+e_11 = person.meas{S}.all(20);
+f_11 = person.meas{S}.all(21);
+B = f_11;
 
-h_hoof = Np/Nt*person.meas{11}.length;
+h_hoof = Np/Nt*person.meas{S}.length;
 
-l    = person.meas{S}.length;  % "height" of AP section
 c = 0.44; % A2.76
 h = l/Nt; % height of each plate
 

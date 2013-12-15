@@ -7,10 +7,10 @@ R = person.segment(S).Rglobal;
 
 i_m = person.sex;
 
-head_width  = person.meas{2}.all(1);
-head_depth  = person.meas{2}.all(2);
-head_height = person.meas{2}.all(3);
-neck_height = person.meas{2}.all(4);
+head_width  = person.meas{S}.all(1);
+head_depth  = person.meas{S}.all(2);
+head_height = person.meas{S}.all(3);
+neck_height = person.meas{S}.all(4);
 
 %% Densities:
 

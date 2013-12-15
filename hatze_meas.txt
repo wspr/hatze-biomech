@@ -13,25 +13,26 @@
 # 1        # metres
 
 # Thorax
-101 273 275 264 251 245 262 # 1:7 ML widths
-178 # 8   ??
-084 095 117 149 168 192 190 184 174 174 # 9:18 AP depths
-170 # 19  ??
-452 # 20  length
-213 # 21  ??
+101 # 1 - ML width 1
+273 275 264 251 245 262 #  2:7 - ML widths 5-10
+178 # 08 - nipple-to-nipple distance
+084 # 09 - breast diameter
+095 117 149 168 192 190 184 174 174 170 # 10:19 - AP depths
+452 # 20 - length
+213 # 21 - nipple height from top
 
 # Head/neck
 
-139 # width
-184 # depth
+139 # ML width
+184 # AP depth
 214 # height
 055 # neck height
 
 # Shoulders
 
-140 # shoulder depth
-176 # neck-to-arm distance
-090 # ??
+140 # neck-to-arm distance
+176 # AP depth
+090 # arm depth
 025 # between top of shoulder and bottom of neck
 
 145 182 086 025
@@ -58,17 +59,22 @@
 
 # Hands
 
-43 77
-45 76
+43 # radius
+77 # width
+
+45
+76
 
 # Pelvis
 
-287 301 318 331 341 344 359 382 326 240 # widths
-767 797 844 887 940 954 975 # perim
-097 # ??
-081 # ??
-228 # height
-053 # B or d_11 ?
+287 301 318 331 341 344 359 382 # 1:8 - widths 1-8
+326 # 09 - hip width
+240 # 10 - length
+767 797 844 887 940 954 975 # 11:17 - perim 1-7
+097 # 18 - c11
+081 # 19 - d11
+228 # 20 - e11
+053 # 21 - f11
 
 # Thighs
 
@@ -87,12 +93,12 @@
 110 103 109 116 117 105 091 079 065 064 # diam
 353 335 362 375 370 338 293 264 238 238 # perim
 406 # length
-032 # ankle size
+032 # ankle diam
 
 109 103 109 116 117 106 095 079 066 062 # diam
 351 332 353 375 374 351 309 279 245 239 # perim
 419 # length
-034 # ankle size
+034 # ankle diam
 
 # Feet
 
