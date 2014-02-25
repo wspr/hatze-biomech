@@ -144,7 +144,7 @@ person.q = [ ...
 
 %% Inline functions
 
-person.solve_ellipse = @(a,u) sqrt(((u/pi).^2)/2-a.^2);
+person.solve_ellipse = @solve_ellipse;
 person.resample = @(person,S,x) measurement_resample(x,person.meas{S}.length,10,person.segment(S).Nmeas,person.segment(S).Ncalc);
 person.plot_points = @(p,varargin) plot3( p(1,:), p(2,:), p(3,:) , varargin{:} );
 person.cardan_rotation = @(a) ...
@@ -168,7 +168,34 @@ end
 end
 
 
+%% Solve ellipse 
+function b = solve_ellipse(a,u)
+%gives the second semi-axis of an ellipse, b, given the first semi-axis, a, and
+%the perimeter, u. From Biomlib Release 8101 (fortran corrections)
 
+%d=(0.25*u./a);
+%ind_small = d<1;
+%ind_mid = 1 <= d < pi/2;
+%ind_large = d >= pi/2;
+
+%if any(ind_small)
+%    aa=a(ind_small);
+%    b(ind_small)=0.0001.*aa;
+%end
+
+%if any(ind_mid)
+%  aa = a(ind_mid);
+%  uu = u(ind_mid);
+%  b(ind_mid) = aa.*exp((log((uu-4.*aa)/(2*aa*(pi-2))))/1.435);
+%end
+ 
+%if any(ind_large)
+%  aa = a(ind_large);
+%  uu = u(ind_large);
+%  b(ind_large)= sqrt(abs((uu./(pi*sqrt(2))).^2-aa.^2));
+%end
+b=sqrt(abs((u/pi).^2/2-a.^2));
+end
 
 
 %% Subfunction: Read and setup data
@@ -277,12 +304,12 @@ person.meas{16}.ankle  = person.meas{16}.all(22);
 
 %% Densities
 
-person.nu = 0.2;
+person.nu = person.meas{11}.all(8)/person.meas{11}.all(9)-1;
 
 person.density.thoracic_wall = @(i_m) 1080+60*i_m;
 person.density.abdomen       = @(i_m) 1000+30*i_m;
 person.density.lungs         = @(i_m) 300;
-person.density.breasts       = @(i_m) 1200; % (? see A2.94)
+person.density.breasts       = @(i_m) 980; 
 
 person.density.head = @(i_m) 1120;
 person.density.neck = @(i_m) 1040;
@@ -291,12 +318,12 @@ person.density.shoulder_lateral = @(i_m) 1030+20*i_m;
 person.density.shoulder_medial  = @(i_m) 1030+20*i_m;
 person.density.shoulder_cutout  = @(i_m) 1030+20*i_m;
 
-person.density.arm{1} = @(i_m) 1060+40*i_m;
+  person.density.arm{1} = @(i_m) 1060+40*i_m;
 for n = 2:9
   person.density.arm{n} = @(i_m) 1058+20*i_m;
 end
-person.density.arm{10} = @(i_m) 1080+20*i_m;
-person.density.humerous = @(i_m) 1080+20*i_m;
+  person.density.arm{10} = @(i_m) 1080+20*i_m;
+  person.density.humerous = @(i_m) 1080+20*i_m;
 
 for n = 1:2
   person.density.forearm{n} = @(i_m) (1160-60*n)*(1+0.0213*i_m);
@@ -325,22 +352,22 @@ end
 for ii = 4:9
   person.density.thigh{ii} = @(i_m,nu) 1030+10*i_m;
 end
-person.density.thigh{10} = @(i_m,nu) 1490+10*i_m;
+  person.density.thigh{10} = @(i_m,nu) 1490+10*i_m;
 
 for ii = 1:3
-  person.density.leg{ii} = @(i_m) 1060+22.5*(ii-3)^2;
+  person.density.leg{ii} = @(i_m) 1060+90/4*(ii-3)^2;
 end
 for ii = 4:7
   person.density.leg{ii} = @(i_m) 1060;
 end
 for ii = 8:10
-  person.density.leg{ii} = @(i_m) 1060+43.33*(ii-7);
+  person.density.leg{ii} = @(i_m) 1060+130/3*(ii-7);
 end
 
 person.density.ankle = 1200;
 person.density.foot = @(n) 1480*(1-(0.0001)*(n.^2)*(1-1100/1480));
-person.density.heel = 990;
-person.density.sole = 1100;
+person.density.heel = 980;
+person.density.sole = 1000;
 
 end
 

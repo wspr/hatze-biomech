@@ -7,12 +7,14 @@ person = person_generate('data','hatze_meas.txt');
 
 %% Hatze's results to verify
 
+%data for R. Marga 31 year old female (Hatze 79)
+
 % thorax
 person.segment(1).volume_hatze = 14.537;
 person.segment(1).mass_hatze = 12.950;
-person.segment(1).centroid_hatze = [0; 0.003; 0.194];
-person.segment(1).Minertia_hatze = [0.206372 0.231513 0.082898];
-person.segment(1).theta_hatze = -0.001;
+person.segment(1).centroid_hatze = [0; 0.003; 0.194];  
+person.segment(1).Minertia_hatze = [0.206372 0.231513 0.082898];  %with respect to centroid
+person.segment(1).theta_hatze = -0.001;  %angle between principle z-axis and original z-axis of segment
 
 % head-neck
 person.segment(2).volume_hatze = 3.595;
@@ -25,7 +27,7 @@ person.segment(3).volume_hatze = 1.11;
 person.segment(3).mass_hatze   = 1.144;
 person.segment(3).centroid_hatze = [0; 0; 0.140];
 person.segment(3).Minertia_hatze = [0.002725 0.002172 NaN];
-person.segment(3).resting_angle_hatze = 0.199;
+person.segment(3).resting_angle_hatze = 0.199;  %resting inclination angle of segment z-axis to horizontal
 
 % right shoulder
 person.segment(7).volume_hatze = 1.146;
@@ -63,12 +65,14 @@ person.segment(6).volume_hatze = 0.285;
 person.segment(6).mass_hatze = 0.317;
 person.segment(6).centroid_hatze = [-0.049; 0.003; -0.010];
 person.segment(6).Minertia_hatze = [0.000231 0.000448 0.000521];
+person.segment(6).theta_hatze = -1.185;
 
 % right hand
 person.segment(10).volume_hatze = 0.288;
 person.segment(10).mass_hatze = 0.319;
-person.segment(10).centroid_hatze = [-0.051; 0.003; -0.009];
+person.segment(10).centroid_hatze = [0.051; 0.003; -0.009];
 person.segment(10).Minertia_hatze = [0.000240 0.000491 0.000551];
+person.segment(10).theta_hatze = -1.195;
 
 % pelvis
 person.segment(11).volume_hatze = 11.208;

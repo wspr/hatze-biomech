@@ -5,7 +5,7 @@
 0        # female
 
 # Age
-19 # only strictly necessary for a male subject
+31.41 # only strictly necessary for a male subject
 
 # Scale for all the measurements in this file
 1000     # mm
@@ -68,7 +68,7 @@
 # Pelvis
 
 287 301 318 331 341 344 359 382 # 1:8 - widths 1-8
-326 # 09 - hip width
+326 # 09 - hip width excluding subcutaneous tissue
 240 # 10 - length
 767 797 844 887 940 954 975 # 11:17 - perim 1-7
 097 # 18 - c11
@@ -102,16 +102,16 @@
 
 # Feet
 
-053 # ankle length
-158 # toes length
-072 # heel length
-035 # lower height
-099 # upper+lower height
+099 # wide width
+053 # short width
+035 # toe height
+072 # ankle height
 216 # length
+158 # toes length
 
-058 # ankle length
-147 # toes length
-077 # heel length
-035 # lower height
-098 # upper+lower height
+098 # wide width
+058 # short width
+035 # toe height
+077 # ankle height
 212 # length
+147 # toes length

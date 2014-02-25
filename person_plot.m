@@ -73,7 +73,7 @@ end
 ind = 1:person.N;
 ind([3 7]) = []; % repeated
 for ii = ind
-  plot_coord(person.origin{ii},'index',[num2str(ii),''''],'rotate',person.segment(ii).Rglobal,'length',0.07);
+  plot_coord(person.segment(ii).origin,'index',[num2str(ii),''''],'rotate',person.segment(ii).Rglobal,'length',0.07);
 end
 
 %% Plot FRONT and SIDE views

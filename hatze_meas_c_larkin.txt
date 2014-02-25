@@ -1,0 +1,117 @@
+# HATZE MEASUREMENTS  
+
+# Sex
+# 1        # male
+0        # female
+
+# Age
+20 # only strictly necessary for a male subject
+
+# Scale for all the measurements in this file
+1000     # mm
+# 100      # cm
+# 1        # metres
+
+# Thorax
+130 # 1 - ML width 1
+283 269 240 231 250 282 #  2:7 - ML widths 5-10
+180 # 08 - nipple-to-nipple distance
+130 # 09 - breast diameter
+099 130 154 170 177 168 149 152 156 156 # 10:19 - AP depths
+442 # 20 - length
+239 # 21 - nipple height from top
+
+# Head/neck
+
+129 # ML width
+196 # AP depth
+246 # height
+065 # neck height
+
+# Shoulders
+
+158 # neck-to-arm distance
+181 # AP depth
+085 # arm depth
+025 # between top of shoulder and bottom of neck
+
+160 186 081 025
+
+# Arms
+
+088 080 083 081 078 076 073 073 072 076 # diameters
+345 313 296 281 269 264 256 245 236 229 # perimeters
+315 # length
+
+092 089 083 080 076 076 077 078 078 082 # diameters
+368 330 304 288 266 264 257 254 243 234 # perimeters
+317 # length
+
+# Forearms
+
+080 083 076 071 067 062 059 056 053 056 # diameters
+237 235 226 217 206 194 178 167 157 154 # perimeters
+257 # length
+
+082 084 080 076 069 065 062 059 056 056 # diameters
+242 243 234 225 215 197 185 172 163 154 # perimeters
+254 # length
+
+# Hands
+
+42 # radius
+73 # width
+
+45
+75
+
+# Pelvis
+
+293 306 311 319 335 347 352 358 # 1:8 - widths 1-8
+331 # 09 - hip width excluding subcutaneous tissue
+233 # 10 - length
+782 811 834 842 905 944 979 # 11:17 - perim 1-7
+090 # 18 - c11
+080 # 19 - d11
+231 # 20 - e11
+050 # 21 - f11
+
+# Thighs
+
+164 160 149 137 120 120 112 108 104 107 # diam
+550 554 531 511 489 462 430 404 382 377 # perim
+435 # "long" length
+353 # length
+
+166 153 149 136 138 131 122 119 114 116 # diam
+566 552 524 496 481 461 433 400 389 383 # perim
+425 # "long" length
+349 # length
+
+# Legs
+
+109 106 105 109 107 098 088 075 063 060 # diam
+356 331 342 354 348 336 301 268 242 230 # perim
+414 # length
+033 # ankle diam
+
+110 105 104 107 108 098 088 078 066 060 # diam
+361 330 341 349 351 336 307 275 246 225 # perim
+421 # length
+035 # ankle diam
+
+# Feet
+
+090 # wide width
+058 # short width
+025 # toe height
+057 # ankle height
+236 # length
+145 # toes length
+
+091 # wide width
+058 # short width
+025 # toe height
+055 # ankle height
+241 # length
+140 # toes length

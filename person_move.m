@@ -3,8 +3,9 @@
 clear all
 clc
 
-person = person_generate('data','hatze_meas.txt');
+person = person_generate('data','hatze_meas_c_larkin.txt');
 
+if false
 person.q = [ ...
   0; 0; 0;   ...  1,  2,  3 : global *position*; rest are angles:
   20; 0; 0;   ...  4,  5,  6 : abdomen-thorax
@@ -25,8 +26,8 @@ person.q = [ ...
   -90;         ... 40         : right knee
   90; 0;      ... 41, 42     : right foot
 ];
+end
 
-if false
 person.q(4)  =  person.segment( 1).theta;
 person.q(7)  = -person.segment( 1).theta;
 person.q(10) = -person.segment( 1).theta;
@@ -38,7 +39,7 @@ person.q(31) = -person.segment(11).theta;
 person.q(35) =  person.segment(14).theta + 90;
 person.q(37) = -person.segment(11).theta;
 person.q(41) =  person.segment(17).theta + 90;
-end
+
 
 figure(111); clf; hold on
 
@@ -68,7 +69,8 @@ for ii = ind
   plot_coord(person.segment(ii).origin,'index',[num2str(ii),''''],'rotate',person.segment(ii).Rglobal,'length',0.07);
 end
 
-for ii = 1:person.N  person.plot_points(person.segment(ii).Gcentroid, 'r.', 'markersize', 30)
+for ii = 1:person.N  
+    person.plot_points(person.segment(ii).Gcentroid, 'r.', 'markersize', 30)
 end
 
 axis equal
