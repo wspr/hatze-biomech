@@ -214,7 +214,7 @@ fileID = fopen(filename);
 if fileID == -1
   error(['File "',filename,'" not found.'])
 end
-C = textscan(fileID, '%d','CommentStyle','#');
+C = textscan(fileID, '%f','CommentStyle','#');
 fclose(fileID);
 
 meas = transpose(C{1}); % rows are easier

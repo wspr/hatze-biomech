@@ -5,13 +5,13 @@
 # 0        # female
 
 # Age
-19.25 # only strictly necessary for a male subject
+19.25
 
 # Height
 0
 
-# Weight
-0
+# Weight (kg)
+73.1
 
 # Scale for all the measurements in this file
 1000     # mm
