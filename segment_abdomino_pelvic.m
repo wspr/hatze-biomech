@@ -40,8 +40,8 @@ c = 0.44; % A2.76
 h = L/Nt; % height of each plate
 
 %h_hoof = Np*h; %height of special shape
-h_hoof_l = person.meas{12}.length_long -person.meas{12}.length;
-h_hoof_r = person.meas{15}.length_long -person.meas{15}.length;
+h_hoof_l = person.meas{12}.length_long - person.meas{12}.length;
+h_hoof_r = person.meas{15}.length_long - person.meas{15}.length;
 
 dmean = (h_hoof_l + h_hoof_r)/2;
 

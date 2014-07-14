@@ -61,23 +61,23 @@ person.N = 17;
 
 %% Segment names
 
-person.segment( 1).name = 'abdominal-thoracic';
-person.segment( 2).name = 'head-neck';
-person.segment( 3).name = 'left shoulder';
-person.segment( 4).name = 'left arm';
-person.segment( 5).name = 'left forearm';
-person.segment( 6).name = 'left hand';
-person.segment( 7).name = 'right shoulder';
-person.segment( 8).name = 'right arm';
-person.segment( 9).name = 'right forearm';
-person.segment(10).name = 'right hand';
-person.segment(11).name = 'abdominal-pelvic';
-person.segment(12).name = 'left thigh';
-person.segment(13).name = 'left leg';
-person.segment(14).name = 'left foot';
-person.segment(15).name = 'right thigh';
-person.segment(16).name = 'right leg';
-person.segment(17).name = 'right foot';
+person.segment( 1).name = 'Abdominal-thoracic';
+person.segment( 2).name = 'Head-neck';
+person.segment( 3).name = 'Left shoulder';
+person.segment( 4).name = 'Left arm';
+person.segment( 5).name = 'Left forearm';
+person.segment( 6).name = 'Left hand';
+person.segment( 7).name = 'Right shoulder';
+person.segment( 8).name = 'Right arm';
+person.segment( 9).name = 'Right forearm';
+person.segment(10).name = 'Right hand';
+person.segment(11).name = 'Abdominal-pelvic';
+person.segment(12).name = 'Left thigh';
+person.segment(13).name = 'Left leg';
+person.segment(14).name = 'Left foot';
+person.segment(15).name = 'Right thigh';
+person.segment(16).name = 'Right leg';
+person.segment(17).name = 'Right foot';
 
 %% Setup functions
 
