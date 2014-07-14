@@ -324,3 +324,34 @@ end
 
 disp('\bottomrule')
 disp('\end{tabular}')
+
+%% LaTeX print condensed just mass
+%
+% Needs the booktabs and siunitx packages.
+
+disp('\def\colsp{\hspace{0.6em}}')
+disp('\begin{tabular}{@{}lr@{\colsp}r@{\colsp}r @{}}')
+disp('\toprule')
+disp('& \multicolumn{3}{c}{Mass, kg} \\')
+disp('\cmidrule(l){2-4}')
+disp('Segment & Calc & Hatze & Err, \%  \\')
+disp('\midrule')
+
+for s = 1:person.N
+
+  if ~isempty(person.segment(s).volume)
+    fprintf('%s ',person.segment(s).name)
+    fprintf('& \\num{%2.3f} ',roundn(person.segment(s).mass,4))
+    fprintf('& \\num{%2.3f} ',person.segment(s).mass_hatze)
+    fprintf('& \\num{%1.2f} ',100*person.segment(s).mass_err)
+    fprintf('\\\\\n')
+  end
+
+end
+
+disp('\midrule')
+fprintf('Total & \\num{%2.3f} & \\num{%2.3f} \\\\\n',sum([person.segment.mass]),sum([person.segment.mass_hatze]))
+fprintf('Measured & \\multicolumn{2}{c}{\\num{%2.1f}} \\\\\n',person.weight)
+disp('\bottomrule')
+disp('\end{tabular}')
+
