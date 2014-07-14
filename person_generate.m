@@ -10,6 +10,7 @@ ip.StructExpand = false;
 addOptional(ip,'person',struct());
 addParamValue(ip,'data','');
 addParamValue(ip,'plot','');
+addParamValue(ip,'precision','');
 parse(ip,person,varargin{:})
 
 %% Main body
@@ -19,6 +20,11 @@ parse(ip,person,varargin{:})
 % * Translate input pose into a form we can process.
 % * Then run each calculation function in a convenient loop.
 
+if strcmp(ip.Results.precision,'hatze')
+  person.precise = false;
+else
+  person.precise = true;
+end
 
 if isempty(fieldnames(ip.Results.person))
   person = person_initialise();
