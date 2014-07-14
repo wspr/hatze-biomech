@@ -7,6 +7,12 @@
 # Age
 19.25 # only strictly necessary for a male subject
 
+# Height
+0
+
+# Weight
+0
+
 # Scale for all the measurements in this file
 1000     # mm
 # 100      # cm

@@ -213,11 +213,13 @@ fclose(fileID);
 
 meas = transpose(C{1}); % rows are easier
 
-person.sex = double(meas(1));
-person.age = double(meas(2));
-person.scale = double(meas(3));
+person.sex    = double(meas(1));
+person.age    = double(meas(2));
+person.height = double(meas(3));
+person.weight = double(meas(4));
+person.scale  = double(meas(5));
 
-meas([1 2 3]) = [];
+meas([1 2 3 4 5]) = [];
 meas = double(meas)/person.scale;
 
 % order of segments in the measurement file:
