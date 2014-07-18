@@ -10,7 +10,7 @@
 # Height
 0
 
-Weight
+# Weight
 0
 
 # Scale for all the measurements in this file
