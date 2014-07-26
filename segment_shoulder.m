@@ -47,7 +47,7 @@ c14=c2*c3+c1*c4;
 
 c5  = j1-h1/tan(alpha); %0.35*l_t - z_h - h1*cot(alpha);  %c5 = 0 by definition!
 c6  = j1/h1 - d_z/d_x;              % cot(alpha) - tan(beta)
-c8  = bt4 - 0.15*l_t*(bt4-bt1)/j1;
+c8  = bt4 - (j1-j2)*(bt4-bt1)/j1;
 c9  = (bt4-bt1)/j1;
 c10 = (0.42*at4-at1)/j1;
 c11 = (2*at1-1.42*at4)/(j1^2);
@@ -65,7 +65,7 @@ v1 = 4/3*(c1*c3*h_x + (c2*c3 + c1*c4)*((h1+h_x)^2 - h1^2)/2 + ...
 v2 = 8/3*b*(1/3*c5*h1+1/5*c6*h1^2);
 v_s = 2*pi*(b1/2)^3/3;
 
-at = @(e) at4 + c10*(e+0.15*l_t) + c11*(e+0.15*l_t).^2;
+at = @(e) at4 + c10*(e+j1-j2) + c11*(e+j1-j2).^2;
 bt = @(e) c8-c9*e;
 u  = @(e) (at1 + (j2-e)*tan(alpha))/at(e);
 
@@ -80,7 +80,7 @@ m_s = gamma_1*v_s;  %or gamma_s?
 m_T = gamma_T*v_T;
 
 volume = v1 + v2 - v_s - v_T;
-mass = m1 + m2 - m_s - m_T;
+mass   = m1 + m2 - m_s - m_T;
 
 % Mass centroid:
 xc = 0;
@@ -89,7 +89,7 @@ yc = 0;
 zeta2 = gamma_2*8*b*(1/5*c5*h1^2 + 1/7*c6*h1^3)/(3*m2);
 %fun2 = @(e) at(e).*bt(e).*(pi/2-u(e).*sarg(e)-asin(u(e))).*e;
 fun2 = @(e) fun(e).*e;
-e_barm = m2*j2*(1-zeta2/h1) - gamma_T*integral(fun2,-0.15*l_t,j2);
+e_barm = m2*j2*(1-zeta2/h1) - gamma_T*integral(fun2,j2-j1,j2);
 e_bar = e_barm/mass;
 
 fun3 = @(e) at(e).*bt(e).*(at1*(u(e).*sarg(e) + asin(u(e))-pi/2) +...
@@ -127,9 +127,9 @@ fun4 = @(e) 4/15*f1(e).*(f2(e).^3) + 16/175*f1(e).^3.*f2(e) +...
 fun5 = @(e) 16/175*f1(e).^3.*f2(e)+...
     4/3*f1(e).*f2(e).*((zeta_bar-0.4*(at(e)-at1)-0.6*(j2-e)*tan(alpha)).^2+(e-e_bar).^2);
 fun6 = @(e) 4/15*f1(e).*(f2(e).^3) + 4/3*f1(e).*f2(e).*(e-e_bar).^2;
-I_eT = gamma_1*integral (fun4,-0.15*l_t, j2);
-I_nT = gamma_1*integral (fun5,-0.15*l_t, j2);
-I_zT = gamma_1*integral (fun6,-0.15*l_t, j2);
+I_eT = gamma_1*integral (fun4,j2-j1, j2);
+I_nT = gamma_1*integral (fun5,j2-j1, j2);
+I_zT = gamma_1*integral (fun6,j2-j1, j2);
 
 
 Ip_x = 4/15*gamma_1*f3 + ...
@@ -190,6 +190,8 @@ b10 = B1(d_x);
 a1h = A1(h1);
 b1h = B1(h1);
 
+hr = b1/2; % radius of humerous
+
 if person.plot || person.segment(S).plot
 
   if S == 7
@@ -200,21 +202,60 @@ if person.plot || person.segment(S).plot
     lr_sign = -1;
   end
 
+  opts = {...
+    'rotate',R*rotation_matrix_zyx(rcorr),...
+    'colour',person.segment(S).colour,...
+    'opacity',person.segment(S).opacity(1),...
+    'edgeopacity',person.segment(S).opacity(2)};
+  
+  % lateral wedge
   plot_parabolic_wedge(...
     Oarm,...
     [a10 b10],[a1h b1h],lr_sign*h_x,'skew',-h_z,'drop',-b1,...
-    'rotate',R*rotation_matrix_zyx(rcorr),...
-    'colour',person.segment(S).colour,...
     'face',[true false],...
-    'opacity',person.segment(S).opacity(1),'edgeopacity',person.segment(S).opacity(2))
+    'humoffset',b1,...
+    'humradius',hr,...
+    opts{:})
 
+  plot_sphere(Oarm,hr,'longrange',[0 -1],opts{:})
+  
+  % medial wedge
   plot_parabolic_wedge(...
     Oarm+R*[0;0;-h_x],...
     [a1h b1h],0.001*[a1h b1h],lr_sign*h1,'skew',j1,'drop',-b1-h_z,...
     'face',[false true],...
-    'rotate',R*rotation_matrix_zyx(rcorr),'colour',person.segment(S).colour,...
-    'opacity',person.segment(S).opacity(1),'edgeopacity',person.segment(S).opacity(2))
+    opts{:})
 
+  % cutout plates
+  
+  ne = 10;    
+  xyz = [ [0;0;0] , [0;0;at1] , [0;0;at1+h1] , [0;0;at1+h1+h_x] ];
+  
+  zz = linspace(j2-j1,j2,ne);
+  ellipse_points = @(ze,xi) bt(ze).*sqrt(1 - ( xi./at(ze) ).^2);
+  cutout_medial  = @(ze) at1+tan(alpha)*(j2-ze);
+  
+  s2 = [zz,zz;zeros(size([zz,zz]));cutout_medial(zz),at(zz)];
+
+  Rlocal = R*rotation_matrix_zyx(rcorr);
+  XYZ = Rlocal*xyz;
+  S2  = Rlocal*s2;
+
+  x = Oshoulder(1)+XYZ(1,:);
+  y = Oshoulder(2)+XYZ(2,:);
+  z = Oshoulder(3)+XYZ(3,:);
+    
+  plot3(x,y,z,'r.','markersize',30)
+  plot3(S2(1,:)+Oshoulder(1),S2(2,:)+Oshoulder(2),S2(3,:)+Oshoulder(3),'g.','markersize',40)
+  
+  for nn = 1:ne
+    ze  = zz(nn);
+    ml_points = linspace(cutout_medial(ze),at(ze),5*ne);
+    y3 = ellipse_points(ze,ml_points);
+    s3 = [ [ze*ones(size(y3));y3;ml_points], [ze*ones(size(y3));-y3;ml_points] ];
+    S3 = Rlocal*s3;
+    plot3(S3(1,:)+Oshoulder(1),S3(2,:)+Oshoulder(2),S3(3,:)+Oshoulder(3),'b.','markersize',20)
+  end
 end
 
 end
