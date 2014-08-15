@@ -25,9 +25,10 @@ bt4 = person.meas{1}.depths(4)/2;
 
 %% Calculations
 
-h1 = 0.68*at5-at1;
-j1 = 0.35*l_t-z_h;
-j2 = 0.20*l_t-z_h;
+h1 = 0.68*at5 - at1;
+j1 = 0.35*l_t - z_h;
+j2 = 0.20*l_t - z_h;
+j3 = 0.15*l_t;
 d_z = j2 - 1.5*b1;
 
 beta  = asin( d_z/d );
@@ -35,15 +36,20 @@ alpha = atan( h1/j1 );
 
 d_x = d*cos(beta);
 h_x = d_x - h1;
-h_z = j1 - 2.5*b1 - d_z;  %since d_z=-(h1+h_x)*tan(beta)
+h_z = j3 - b1; % after simplication
+
 gamma = atan( h_z/h_x );
+
+% NB that beta is always tiny:
+% disp('[alpha beta gamma]')
+% disp(180/pi*[alpha beta gamma])
 
 c2  = -(tan(beta) + tan(gamma));
 c4  = -(b - 1.42*b1)/h_x;
 c1  = 2.5*b1  - d_x*c2;
 c3  = 1.42*b1 - d_x*c4;
 
-c14=c2*c3+c1*c4;
+c14 = c2*c3 + c1*c4;
 
 c5  = j1-h1/tan(alpha); %0.35*l_t - z_h - h1*cot(alpha);  %c5 = 0 by definition!
 c6  = j1/h1 - d_z/d_x;              % cot(alpha) - tan(beta)
@@ -72,7 +78,7 @@ u  = @(e) (at1 + (j2-e)*tan(alpha))/at(e);
 sarg = @(e) sqrt(1-u(e).^2);
     
 fun = @(e) bt(e).*at(e).*(pi/2-u(e).*sarg(e)-asin(u(e)));
-v_T = integral(fun,j2-j1,j2);
+v_T = integral(fun,-j3,j2);
 
 m1  = gamma_1*v1;
 m2  = gamma_2*v2;
@@ -89,12 +95,12 @@ yc = 0;
 zeta2 = gamma_2*8*b*(1/5*c5*h1^2 + 1/7*c6*h1^3)/(3*m2);
 %fun2 = @(e) at(e).*bt(e).*(pi/2-u(e).*sarg(e)-asin(u(e))).*e;
 fun2 = @(e) fun(e).*e;
-e_barm = m2*j2*(1-zeta2/h1) - gamma_T*integral(fun2,j2-j1,j2);
+e_barm = m2*j2*(1-zeta2/h1) - gamma_T*integral(fun2,-j3,j2);
 e_bar = e_barm/mass;
 
 fun3 = @(e) at(e).*bt(e).*(at1*(u(e).*sarg(e) + asin(u(e))-pi/2) +...
     2/3*at(e).*sarg(e).^3);
-JT = integral(fun3,j2-j1,j2);
+JT = integral(fun3,-j3,j2);
 zeta_barm = 4/3*gamma_1*(c1*c3*((h1+h_x)^2-h1^2)/2+...
     c14*((h1+h_x)^3-h1^3)/3 + c2*c4*((h1+h_x)^4-h1^4)/4)+...
     zeta2*m2-m_s*(d_x-3*b1/16)-JT*gamma_1;      %INCLUDED gamma_1. Mistake? in JT equation p39 Hatze. Included in fortran code equation for zetab
@@ -127,9 +133,9 @@ fun4 = @(e) 4/15*f1(e).*(f2(e).^3) + 16/175*f1(e).^3.*f2(e) +...
 fun5 = @(e) 16/175*f1(e).^3.*f2(e)+...
     4/3*f1(e).*f2(e).*((zeta_bar-0.4*(at(e)-at1)-0.6*(j2-e)*tan(alpha)).^2+(e-e_bar).^2);
 fun6 = @(e) 4/15*f1(e).*(f2(e).^3) + 4/3*f1(e).*f2(e).*(e-e_bar).^2;
-I_eT = gamma_1*integral (fun4,j2-j1, j2);
-I_nT = gamma_1*integral (fun5,j2-j1, j2);
-I_zT = gamma_1*integral (fun6,j2-j1, j2);
+I_eT = gamma_1*integral (fun4,-j3, j2);
+I_nT = gamma_1*integral (fun5,-j3, j2);
+I_zT = gamma_1*integral (fun6,-j3, j2);
 
 
 Ip_x = 4/15*gamma_1*f3 + ...
@@ -185,10 +191,6 @@ person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z];
 
 
 %% Plot
-a10 = A1(d_x);
-b10 = B1(d_x);
-a1h = A1(h1);
-b1h = B1(h1);
 
 hr = b1/2; % radius of humerous
 
@@ -202,6 +204,8 @@ if person.plot || person.segment(S).plot
     lr_sign = -1;
   end
 
+  Rlocal = R*rotation_matrix_zyx(rcorr);
+
   opts = {...
     'rotate',R*rotation_matrix_zyx(rcorr),...
     'colour',person.segment(S).colour,...
@@ -209,6 +213,12 @@ if person.plot || person.segment(S).plot
     'edgeopacity',person.segment(S).opacity(2)};
   
   % lateral wedge
+  
+  a10 = A1(d_x);
+  b10 = B1(d_x);
+  a1h = A1(h1);
+  b1h = B1(h1);
+  
   plot_parabolic_wedge(...
     Oarm,...
     [a10 b10],[a1h b1h],lr_sign*h_x,'skew',-h_z,'drop',-b1,...
@@ -216,46 +226,74 @@ if person.plot || person.segment(S).plot
     'humoffset',b1,...
     'humradius',hr,...
     opts{:})
-
+  
   plot_sphere(Oarm,hr,'longrange',[0 -1],opts{:})
   
   % medial wedge
-  plot_parabolic_wedge(...
-    Oarm+R*[0;0;-h_x],...
-    [a1h b1h],0.001*[a1h b1h],lr_sign*h1,'skew',j1,'drop',-b1-h_z,...
-    'face',[false true],...
-    opts{:})
+  
+  Nw = 2; % broken for larger!!
+  hrange = linspace(h1,0,Nw);
+  
+  for nn = 1:Nw-1
+    
+    a20 = A2(hrange(nn));
+    b20 = B2(hrange(nn));
+  
+    a2h = A2(hrange(nn+1));
+    b2h = B2(hrange(nn+1));
+    
+    if a2h < eps, a2h = 0.00001; end
+    if b2h < eps, b2h = 0.00001; end
+  
+    plot_parabolic_wedge(...
+      Oarm+R*[0;0;-nn*h_x/(Nw-1)],...
+      [a20 b20],[a2h b2h],lr_sign*h1,'skew',nn*j1/(Nw-1),'drop',nn*(-b1-h_z)/(Nw-1),...
+      'face',[false false],...
+      opts{:})
+
+  end
+  % shoulder origins
+ 
+%  xyz = [ [0;0;0] , [0;0;at1] , [0;0;at1+h1] , [0;0;at1+h1+h_x] ];
+%  XYZ = Rlocal*xyz;
+%  plot3(Oshoulder(1)+XYZ(1,:),Oshoulder(2)+XYZ(2,:),Oshoulder(3)+XYZ(3,:),'r.','markersize',30)
 
   % cutout plates
   
-  ne = 10;    
-  xyz = [ [0;0;0] , [0;0;at1] , [0;0;at1+h1] , [0;0;at1+h1+h_x] ];
+  ne = 20;
+  co_x = nan(ne,2*ne);
+  co_y = nan(ne,2*ne);
+  co_z = nan(ne,2*ne); 
   
-  zz = linspace(j2-j1,j2,ne);
+  zz = linspace(-j3,j2,ne);
   ellipse_points = @(ze,xi) bt(ze).*sqrt(1 - ( xi./at(ze) ).^2);
   cutout_medial  = @(ze) at1+tan(alpha)*(j2-ze);
   
-  s2 = [zz,zz;zeros(size([zz,zz]));cutout_medial(zz),at(zz)];
-
-  Rlocal = R*rotation_matrix_zyx(rcorr);
-  XYZ = Rlocal*xyz;
-  S2  = Rlocal*s2;
-
-  x = Oshoulder(1)+XYZ(1,:);
-  y = Oshoulder(2)+XYZ(2,:);
-  z = Oshoulder(3)+XYZ(3,:);
-    
-  plot3(x,y,z,'r.','markersize',30)
-  plot3(S2(1,:)+Oshoulder(1),S2(2,:)+Oshoulder(2),S2(3,:)+Oshoulder(3),'g.','markersize',40)
-  
   for nn = 1:ne
     ze  = zz(nn);
-    ml_points = linspace(cutout_medial(ze),at(ze),5*ne);
-    y3 = ellipse_points(ze,ml_points);
-    s3 = [ [ze*ones(size(y3));y3;ml_points], [ze*ones(size(y3));-y3;ml_points] ];
+    ml_points = linspace(cutout_medial(ze),at(ze),ne);
+    y3  = ellipse_points(ze,ml_points);
+    s3 = [ [ze*ones(size(y3));y3;ml_points], [ze*ones(size(y3));-fliplr(y3);fliplr(ml_points)] ];
     S3 = Rlocal*s3;
-    plot3(S3(1,:)+Oshoulder(1),S3(2,:)+Oshoulder(2),S3(3,:)+Oshoulder(3),'b.','markersize',20)
+    co_x(nn,:) = S3(1,:)+Oshoulder(1); 
+    co_y(nn,:) = S3(2,:)+Oshoulder(2); 
+    co_z(nn,:) = S3(3,:)+Oshoulder(3); 
+%    plot3(co_x(nn,:),co_y(nn,:),co_z(nn,:),'b.','markersize',20)
+  end
+  
+  for nn = 2:ne
+    patch(...
+      [co_x(nn-1,:) co_x(nn,end:-1:1)],...
+      [co_y(nn-1,:) co_y(nn,end:-1:1)],...
+      [co_z(nn-1,:) co_z(nn,end:-1:1)],...
+      [0 0 0],...
+      'facecolor',person.segment(S).colour,...
+      'facealpha',person.segment(S).opacity(1),...
+      'edgealpha',person.segment(S).opacity(2)...
+      )
   end
 end
 
 end
+
+
