@@ -1,3 +1,4 @@
+
 %% HATZE COMPARE
 
 clear all
@@ -159,7 +160,7 @@ end
 
 %% Print results
 
-thresh = 1;
+thresh = 0.01;
 
 fprintf('\n\n===============================\n')
 fprintf('=== ERRORS OF MORE THAN %i%% ===\n',round(100*thresh))

@@ -25,6 +25,8 @@ disp(squeeze(calc))
 
 %% Figure showing interpolation
 
+person = person_generate('data','hatze_meas.txt');
+
 willfig('interp'); clf; hold on
 figuresize(15,8,'centimeters');
 
@@ -71,6 +73,81 @@ axis tight equal off
 %matlabfrag('fig/interp-slice','renderer','opengl')
 
 
+%% new plot showing interpolation figures
+
+willfig('interp1'); clf; hold on
+figuresize(18,14,'centimeters');
+
+forearm_right = 9;
+
+person.segment(forearm_right).plot = true;
+
+x = 100;
+
+col = [1 0.4 0.4];
+
+person.segment(forearm_right).offset = [0; 0; 0]./1000;
+person.segment(forearm_right).Nmeas = 4; % SAME
+person.segment(forearm_right).Ncalc = 4;
+person.segment(forearm_right).colour = col;
+person.segment(forearm_right).opacity = [1 1];
+person_generate(person)
+
+person.segment(forearm_right).offset = [x; 0; 0]./1000;
+person.segment(forearm_right).Nmeas = 7;
+person.segment(forearm_right).Ncalc = 7;
+person.segment(forearm_right).colour = col;
+person.segment(forearm_right).opacity = [1 1];
+person_generate(person)
+
+person.segment(forearm_right).offset = [2*x; 0; 0]./1000;
+person.segment(forearm_right).Nmeas = 10;
+person.segment(forearm_right).Ncalc = 10;
+person.segment(forearm_right).colour = col;
+person.segment(forearm_right).opacity = [1 1];
+person_generate(person)
+
+view(3)
+axis tight equal off
+
+%%
+
+willfig('interp2'); clf; hold on
+figuresize(16,12,'centimeters');
+
+forearm_right = 9;
+
+person.segment(forearm_right).plot = true;
+
+x = 100;
+
+col = [0.3 0.5 0.9];
+
+person.segment(forearm_right).offset = [3*x; 0; 0]./1000;
+person.segment(forearm_right).Nmeas = 4; % SAME
+person.segment(forearm_right).Ncalc = 40;
+person.segment(forearm_right).colour = col;
+person.segment(forearm_right).opacity = [1 1];
+person_generate(person)
+
+person.segment(forearm_right).offset = [4*x; 0; 0]./1000;
+person.segment(forearm_right).Nmeas = 7;
+person.segment(forearm_right).Ncalc = 40;
+person.segment(forearm_right).colour = col;
+person.segment(forearm_right).opacity = [1 1];
+person_generate(person)
+
+person.segment(forearm_right).offset = [5*x; 0; 0]./1000;
+person.segment(forearm_right).Nmeas = 10;
+person.segment(forearm_right).Ncalc = 40;
+person.segment(forearm_right).colour = col;
+person.segment(forearm_right).opacity = [1 1];
+person_generate(person)
+
+view(3)
+axis tight equal off
+
+
 %% interpolation
 
 clear all
@@ -107,7 +184,7 @@ for cc = 1:length(calcs)
 
 end
 
-willfig('interp results','small'); clf; hold on
+figure(1); clf; hold on
 
 plot(1:NC,forearm_R_normal(:,1),'-v')
 plot(1:NC,forearm_R_normal(:,2),'-s')
@@ -122,13 +199,14 @@ ylim([-0.5 4.5])
 set(gca,'xtick',1:NC,'xticklabel',calcs,'ytick',[0:4],'yticklabel',[0:4])
 xlabel('Number of slices')
 ylabel('Percent error')
+box on
 
 hleg = legend('$V$','$M$','$\bar z$','$\bar I_x^P$','$\bar I_y^P$','$\bar I_z^P$','location','northeast');
 set(hleg,'box','off','interpreter','latex','fontsize',12)
 %matlabfrag('fig/err-decimate')
 
 
-willfig('interp2 results','small'); clf; hold on
+figure(2); clf; hold on
 
 plot(1:NC,forearm_R_interp(:,1),'-v')
 plot(1:NC,forearm_R_interp(:,2),'-s')
@@ -143,9 +221,40 @@ ylim([-0.5 4.5])
 set(gca,'xtick',1:NC,'xticklabel',calcs,'ytick',[0:4],'yticklabel',[0:4])
 xlabel('Number of slices before interpolation')
 ylabel('Percent error')
+box on
 
 hleg = legend('$V$','$M$','$\bar z$','$\bar I_x^P$','$\bar I_y^P$','$\bar I_z^P$','location','northeast');
 set(hleg,'box','off','interpreter','latex','fontsize',12)
 %matlabfrag('fig/err-interp')
 
+
+%%
+
+figure(3); clf; hold on
+ha = gca;
+ha.FontName = 'Palatino Sans Com';
+ha.FontSize = 18;
+ha.LineWidth = 3;
+ha.FontWeight = 'bold';
+ha.TickLength = 2*get(gcf,'defaultAxesTickLength');
+set(ha,'defaultLineLineWidth',6);
+
+ind = 2:NC;
+fr_normal_mean = mean(forearm_R_normal,2);
+fr_interp_mean = mean(forearm_R_interp,2);
+p2 = plot( calcs(ind), fr_interp_mean(ind) );
+p1 = plot( calcs(ind), fr_normal_mean(ind) );
+
+p = 3;
+plot( calcs(p), fr_normal_mean(p) , '.', 'markersize',50,'color',p1.Color)
+text( calcs(p), fr_normal_mean(p) , '   Normal' ,'FontName', ha.FontName ,'FontSize', ha.FontSize ,'FontWeight', ha.FontWeight )
+
+p = 4;
+plot( calcs(p), fr_interp_mean(p) , '.', 'markersize',50,'color',p2.Color)
+text( calcs(p), fr_interp_mean(p) , 'Interp.  ' ,'HorizontalAlignment','right', 'FontName', ha.FontName, 'FontSize', ha.FontSize ,'FontWeight', ha.FontWeight )
+
+xlim([3.5 10.5])
+xlabel('Number of segment slices')
+ylabel('Percentage error')
+ha.XTick = 4:10;
 

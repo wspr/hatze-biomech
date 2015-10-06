@@ -161,7 +161,9 @@ end
 
 %% Print results
 
-thresh = 0.05;
+clc
+
+thresh = 0.01;
 
 fprintf('\n\n===============================\n')
 fprintf('=== ERRORS OF MORE THAN %i%% ===\n',round(100*thresh))
@@ -308,6 +310,52 @@ for s = 1:person.N
 
     end
     for ii = 1:3
+        fprintf('& \\num{%3.3f} ',roundn(1000*person.segment(s).Minertia(ii),4))
+        if isnan(person.segment(s).Minertia_hatze(ii))
+          fprintf('& --- ')
+        else
+          fprintf('& \\num{%3.3f} ',roundn(1000*person.segment(s).Minertia_hatze(ii),4))
+        end
+        fprintf('& \\num{%1.2f} ',100*person.segment(s).Minertia_err(ii))
+    end
+    fprintf('\\\\\n')
+
+  end
+
+end
+
+disp('\bottomrule')
+disp('\end{tabular}')
+
+
+%% LaTeX print condensed
+%
+% Needs the booktabs and siunitx packages.
+
+clc
+
+disp('\def\colsp{\hspace{0.6em}}')
+disp('\begin{tabular}{@{}lr@{\colsp}r@{\colsp}r r@{\colsp}r@{\colsp}r r@{\colsp}r@{\colsp}r @{}}')
+disp('\toprule')
+disp('& \multicolumn{3}{c}{$M$, kg} & \multicolumn{3}{c}{$\bar z$, mm} & \multicolumn{3}{c}{$I_{x}$, \si{g.m^2}} \\')
+disp('\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}')
+disp('Segment & Calc & Hatze & Err, \% &  Calc & Hatze & Err, \% &  Calc & Hatze & Err, \%  \\')
+disp('\midrule')
+
+for s = 1:person.N
+
+  if ~isempty(person.segment(s).volume)
+    fprintf('%s ',person.segment(s).name)
+    fprintf('& \\num{%2.3f} ',roundn(person.segment(s).mass,4))
+    fprintf('& \\num{%2.3f} ',person.segment(s).mass_hatze)
+    fprintf('& \\num{%1.2f} ',100*person.segment(s).mass_err)
+    for ii = 3
+        fprintf('& \\num{%3.0f} ',1000*roundn(person.segment(s).centroid(ii),4))
+        fprintf('& \\num{%3.0f} ',1000*roundn(person.segment(s).centroid_hatze(ii),4))
+        fprintf('& \\num{%1.2f} ',100*person.segment(s).centroid_err(ii))
+
+    end
+    for ii = 1
         fprintf('& \\num{%3.3f} ',roundn(1000*person.segment(s).Minertia(ii),4))
         if isnan(person.segment(s).Minertia_hatze(ii))
           fprintf('& --- ')
