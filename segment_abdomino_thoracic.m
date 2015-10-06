@@ -4,6 +4,7 @@ function person = segment_abdomino_thoracic(person,S)
 person.segment(S).origin = person.q(1:3);
 O1 = person.segment(S).origin + person.segment(S).offset;
 i_m = person.sex;
+PI = person.const.pi;
 
 N  = 10; % number of disks
 Nt =  7; % number of disks for thoracic region
@@ -85,7 +86,7 @@ b2 = (b(indt)-a(indt)/6).*sqrt(1-(c(indt)./c(1)).^2);
 
 %% Calculations
 
-v_e = pi*a(indt).*b(indt)*l/N; % volume of each thoracic disk
+v_e = PI*a(indt).*b(indt)*l/N; % volume of each thoracic disk
 v_p = 8/3*a2.*b2*l/N; % volume of lungs in each disk
 
 m_e = gamma_t*v_e; % mass of thorax as if it were solid
@@ -94,12 +95,12 @@ m_t = (v_e-v_p)*gamma_t; % mass of thoracic volume without lungs
 m_g = v_p*gamma_l; % mass of lungs only
 %m_t+m_g=m_e-m_p
 
-v_1 = pi*a(inda).*w(inda)*l/2/N;    
-v_2 = pi*a(inda).*b(inda)*l/2/N;    
+v_1 = PI*a(inda).*w(inda)*l/2/N;    
+v_2 = PI*a(inda).*b(inda)*l/2/N;    
 m_1 = gamma_a*v_1;
 m_2 = gamma_a*v_2;
 
-v_f = (1-i_m)*4/3*pi*r^3; % breasts (2 hemispheres)
+v_f = (1-i_m)*4/3*PI*r^3; % breasts (2 hemispheres)
 m_f = gamma_b*v_f;
 
 volume = sum(v_e)+sum(v_1+v_2)+v_f;
@@ -109,7 +110,7 @@ mass = sum(m_t+m_g)+sum(m_1+m_2)+m_f;
 xc = 0;
 
 yc = ( ...
-  sum( ((m_1+m_2).*0.424.*(b(inda).^2-w(inda).^2))./(b(inda)+w(inda)))...  %= sum(a(inda).*(b(inda).^2-w(inda).^2).*gamma_a*l/N*pi*0.212 ... 
+  sum( ((m_1+m_2).*0.424.*(b(inda).^2-w(inda).^2))./(b(inda)+w(inda)))...  %= sum(a(inda).*(b(inda).^2-w(inda).^2).*gamma_a*l/N*PI*0.212 ... 
   + m_f*(b_j+3/8*r) ...
   )/mass;
 

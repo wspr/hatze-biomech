@@ -3,6 +3,8 @@ function person = segment_arm(person,S)
 P = person.segment(S).origin + person.segment(S).offset(:);
 R = person.segment(S).Rglobal;
 N = person.segment(S).Ncalc;
+PI = person.const.pi;
+
 ind = 1:N;
 
 L = person.meas{S}.length;
@@ -23,8 +25,8 @@ person.segment(S+1).origin = Q;
 %% Calculations
 
 % volume
-v      = pi*a.*b*L/N;
-v_0    = 2/3*pi*((b1/2)^3);     %b1 or b(1)?  hatze '79 says b(1), fortran code says b1
+v      = PI*a.*b*L/N;
+v_0    = 2/3*PI*((b1/2)^3);     %b1 or b(1)?  hatze '79 says b(1), fortran code says b1
 volume = sum(v) + v_0;
 
 % mass

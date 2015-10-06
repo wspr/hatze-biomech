@@ -5,6 +5,8 @@ R = person.segment(S).Rglobal;
 N = person.segment(S).Ncalc;
 ind = 1:N;
 
+PI = person.const.pi;
+
 %% Measurements
 
 L = person.meas{S}.length;
@@ -22,8 +24,8 @@ gamma_b = person.density.ankle;
 %% Calculations
 
 % Volume
-v      = pi*a.*b*L/N;
-v_b    = 0.59*r^3*pi/2; % 0.59*r*pi/2 = 0.9268*r =~ 0.92*r as per Hatze and fortran code 
+v      = PI*a.*b*L/N;
+v_b    = 0.59*r^3*PI/2; % 0.59*r*PI/2 = 0.9268*r =~ 0.92*r as per Hatze and fortran code 
 volume = sum(v) + 2*v_b;
 
 % Mass
@@ -40,8 +42,8 @@ zc = (-2*m_b*L - sum(m.*(2*ind-1)*L/20))./mass;
 I_xi = m.*(3*b.^2+(L/N)^2)/12;
 I_yi = m.*(3*a.^2+(L/N)^2)/12;
 I_zi = m.*(a.^2+b.^2)/(4);  %fortran code has subroutine "ELZIN" which does:
-% ... sum(gamma*a.*b.*u.^2)*L/251.3274 = m*u^2/(8*pi^2) = I_z/(2*pi) ...
-%IF u^2/(2*pi^2)=a^2+b^2
+% ... sum(gamma*a.*b.*u.^2)*L/251.3274 = m*u^2/(8*PI^2) = I_z/(2*PI) ...
+%IF u^2/(2*PI^2)=a^2+b^2
 
 % principal moments of inertia;
 Ip_x = 2*m_b*(0.33*r^2+(L+zc)^2) + sum(I_xi + m.*(L*(2*ind-1)/20+zc).^2);
@@ -84,7 +86,7 @@ if person.plot || person.segment(S).plot
   b = r;
   n = 10;
 
-  nu = linspace(0,2*pi,n); % row
+  nu = linspace(0,2*PI,n); % row
   u = linspace(0,r_a,n)';    % column
 
   x = a*sqrt(u/r_a)*cos(nu);

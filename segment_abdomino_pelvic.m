@@ -7,6 +7,8 @@ i_m = person.sex;
 nu  = person.nu;
 age = person.age;
 
+PI = person.const.pi;
+
 %% Abdominal pelvic region
 
 Nt = 10;
@@ -68,11 +70,11 @@ gamma_5  = person.density.buttocks(i_m,nu);
 
 atl = person.meas{12}.diam/2;
 utl = person.meas{12}.perim;
-btl = sqrt(((utl/pi).^2)/2-atl.^2); %needed for comparing to check for errors. Should not be used afterwards
+btl = sqrt(((utl/PI).^2)/2-atl.^2); %needed for comparing to check for errors. Should not be used afterwards
 %btl = person.solve_ellipse(atl,utl);
 atr = person.meas{15}.diam/2;
 utr = person.meas{15}.perim;
-btr = sqrt(((utr/pi).^2)/2-atr.^2); %needed for comparing to check for errors. Should not be used afterwards
+btr = sqrt(((utr/PI).^2)/2-atr.^2); %needed for comparing to check for errors. Should not be used afterwards
 %btr = person.solve_ellipse(atr,utr);
 
 a_1t = 0.5*( atl(1) + atr(1) );
@@ -95,7 +97,7 @@ r = sqrt(e_11^2-(0.037*L)^2)-B-g;
 person.segment(S).r = r;
 
 % anterior depth of stomach above the buttocks:
-b(ind_pe) = sqrt( 2*(u(ind_pe)/pi-sqrt(0.5*(a(ind_pe).^2+g^2))).^2 - a(ind_pe).^2 );
+b(ind_pe) = sqrt( 2*(u(ind_pe)/PI-sqrt(0.5*(a(ind_pe).^2+g^2))).^2 - a(ind_pe).^2 );
 
 vv = 1-(0.88558-0.22883*(ind_p-4)).^2;
 aa(ind_p) = c*a_h*sqrt(vv);
@@ -139,14 +141,14 @@ end
 
 %% Mass
 
-%v_p = pi/2*B*c*a_h*0.473*L; % two elliptic paraboloids;
+%v_p = PI/2*B*c*a_h*0.473*L; % two elliptic paraboloids;
 v_p = 1.3729*c*a_h*B*L; %from fortran code, what is 1.3729????
-v_ee(ind_pe) = pi/2*g*a(ind_pe)*h; % i=1,2,3; three semi-elliptical plates;
+v_ee(ind_pe) = PI/2*g*a(ind_pe)*h; % i=1,2,3; three semi-elliptical plates;
 v_t(ind_pt) = g*h*(a(ind_pt)+f_1(ind_pt)); % i=4,5,6,7,8,9,10; seven trapezoidal plates on the posterior side of the segment;
-v_e(ind_ae) = pi/2*a(ind_ae).*b(ind_ae).*h; % i=1,2,3,4,5,6,7; seven semi-elliptical plates;
-v_l = 0.3*L*(2*a(8)*r-(2-pi/2)*a_1t*b_1t); % three special shape plates on the anterior side;
-v_otl = 2*pi*atl(1)*btl(1)*h_hoof_l/3; % the removed superior parts of left thigh;
-v_otr = 2*pi*atr(1)*btr(1)*h_hoof_r/3; % the removed superior parts of right thigh;
+v_e(ind_ae) = PI/2*a(ind_ae).*b(ind_ae).*h; % i=1,2,3,4,5,6,7; seven semi-elliptical plates;
+v_l = 0.3*L*(2*a(8)*r-(2-PI/2)*a_1t*b_1t); % three special shape plates on the anterior side;
+v_otl = 2*PI*atl(1)*btl(1)*h_hoof_l/3; % the removed superior parts of left thigh;
+v_otr = 2*PI*atr(1)*btr(1)*h_hoof_r/3; % the removed superior parts of right thigh;
 
 m_p = gamma_5*v_p;
 m_ee = gamma_1*v_ee;
@@ -162,7 +164,7 @@ m_otr = gamma_ot*v_otr;
 if age <= 12
   m_o = 0.007*i_m;
 elseif age <=19
-  m_o = gamma_o*i_m*2*pi*(0.005*age-0.045)^3/3;
+  m_o = gamma_o*i_m*2*PI*(0.005*age-0.045)^3/3;
   else
   m_o = 0.26*i_m;
 end
@@ -177,10 +179,10 @@ m = m_p + m_l + sum(m_ee) + sum(m_t) + sum(m_e) + m_o - m_otl - m_otr;
 % Mass centroid:
 xc = 0;
 y_p = -B/3-g;
-y_1 = -4*g/(3*pi);
+y_1 = -4*g/(3*PI);
 y_2i(ind_pt) = -(g/3)*(2*f_1(ind_pt)+a(ind_pt))/(f_1(ind_pt)+a(ind_pt));
-y_3i(ind_ae) = 4.*b(ind_ae)/(3*pi);
-y_4 = (2*(a(8)-a_1t)*b_1t*(r-b_1t/2)+a(8)*(r-b_1t)^2+(pi/2)*a_1t*b_1t*(r-0.576*b_1t))/(2*a(8)*r-(2-pi/2)*a_1t*b_1t); %%fortran code says multiply but then the dimensions arent right...
+y_3i(ind_ae) = 4.*b(ind_ae)/(3*PI);
+y_4 = (2*(a(8)-a_1t)*b_1t*(r-b_1t/2)+a(8)*(r-b_1t)^2+(PI/2)*a_1t*b_1t*(r-0.576*b_1t))/(2*a(8)*r-(2-PI/2)*a_1t*b_1t); %%fortran code says multiply but then the dimensions arent right...
 y_ot = r-b_1t;
 z_p = -0.737*L;
 z_1 = -L*(ind/Nt-0.05); % what is "-0.05" ?

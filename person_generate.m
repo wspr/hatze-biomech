@@ -11,6 +11,7 @@ addOptional(ip,'person',struct());
 addParamValue(ip,'data','');
 addParamValue(ip,'plot','');
 addParamValue(ip,'precision','');
+addParamValue(ip,'ellipseSolve','');
 parse(ip,person,varargin{:})
 
 %% Main body
@@ -20,14 +21,16 @@ parse(ip,person,varargin{:})
 % * Translate input pose into a form we can process.
 % * Then run each calculation function in a convenient loop.
 
-if strcmp(ip.Results.precision,'hatze')
-  person.precise = false;
-else
-  person.precise = true;
-end
-
 if isempty(fieldnames(ip.Results.person))
   person = person_initialise();
+end
+
+if strcmp(ip.Results.precision,'hatze')
+  person.precise = false;
+  person.const.pi = 3.14159;
+else
+  person.precise = true;
+  person.const.pi = pi;
 end
 
 if ~isempty(ip.Results.data)
@@ -200,7 +203,7 @@ function b = solve_ellipse(a,u)
 %  uu = u(ind_large);
 %  b(ind_large)= sqrt(abs((uu./(pi*sqrt(2))).^2-aa.^2));
 %end
-b=sqrt(abs((u/pi).^2/2-a.^2));
+b=sqrt(abs(0.5*(u/pi).^2-a.^2));
 end
 
 

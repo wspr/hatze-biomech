@@ -13,6 +13,7 @@ head_height = person.meas{S}.all(3);
 neck_height = person.meas{S}.all(4);
 
 l = person.meas{S-1}.length;
+PI = person.const.pi;
 
 %% Densities:
 
@@ -40,8 +41,8 @@ end
 
 % Volume
 v_e = 4.66493*a*b*c;
-v_c = pi*a_1*b_1*h;
-v_p = pi/2*b*c*a_1*(pi/2-b_1*(1-k/c)/b-asin(1-k/c));
+v_c = PI*a_1*b_1*h;
+v_p = PI/2*b*c*a_1*(PI/2-b_1*(1-k/c)/b-asin(1-k/c));
 volume = v_e + v_c - v_p;
 
 % Mass
@@ -96,7 +97,7 @@ if person.plot || person.segment(S).plot
   zf = @(x,y) c*sqrt(1-(y/b).^2).*(1-(x./a).^8);
 
   N = 21;
-  t = linspace(-pi,pi,N);
+  t = linspace(-PI,PI,N);
   d = linspace(0,1,N);
 
   [tt,dd] = meshgrid(t,d);

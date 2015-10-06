@@ -9,6 +9,8 @@ end
 P = person.segment(S).origin + person.segment(S).offset;
 R = person.segment(S).Rglobal;
 
+PI = person.const.pi;
+
 r = person.meas{S}.all(1);
 h = person.meas{S}.all(2);
 
@@ -23,7 +25,7 @@ density = person.density.hand;
 % Volume and mass
 
 v_p = b10*hh*(2.172*a10+1.172*h);
-%v_c = pi*h^2*(2*r-h/4)/8;  % Hatze 79
+%v_c = PI*h^2*(2*r-h/4)/8;  % Hatze 79
 v_c = h^2*(0.7854*r-0.098*h);   %fortran code (decimal values of the above equation)
 v_T = (h^3)/16;
 
@@ -70,7 +72,7 @@ I_z = I_x1+I_y2+m_p*(xc^2+yc^2)+Ig_xc+...
     m_T*((abs(xc)+r-h/4)^2+(3*h/8-yc)^2);
 I_zx = lr*density*h*((r^4-(r-h/4)^4)*(sin(h/(r-h/8)))^2/32-((r^3-(r-h/4)^3)/3)*...
     ((xc/4)*sin(h/(r-h/8))+(zc+r+hh)*(2.25-0.25*cos(h/(r-h/8))))+...
-    0.5*(r^2-(r-h/4)^2)*xc*(zc+r+hh)*(pi+0.25*h/(r-h/8)))+lr*m_p*(-xc)*(-zc-zp1);
+    0.5*(r^2-(r-h/4)^2)*xc*(zc+r+hh)*(PI+0.25*h/(r-h/8)))+lr*m_p*(-xc)*(-zc-zp1);
 
 % principal moments of inertia;
 Ip_y = I_y2+Ip+m_p*(xc^2+(zp1+zc)^2)+Ig_yc+m_c*((xc1-abs(xc))^2+(r+hh+zc)^2)+m_T*((abs(xc)+r-h/4)^2+(r/3+hh+zc)^2); %Note xc^2
@@ -114,7 +116,7 @@ if person.plot || person.segment(S).plot
   end
 
   plot_cylinder_hollow(P+R*[0;s-h/2;-hh-r],r-h/4,r,h,[0 180],'N',10,'rotate',RR,opt{:})
-  plot_cylinder_hollow(P+R*[0;s+t-h/2;-hh-r],r-h/4,r,h/4,[0 -180/pi*h/r],'N',10,'rotate',RR,opt{:})
+  plot_cylinder_hollow(P+R*[0;s+t-h/2;-hh-r],r-h/4,r,h/4,[0 -180/PI*h/r],'N',10,'rotate',RR,opt{:})
 
 end
 

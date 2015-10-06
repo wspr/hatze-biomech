@@ -3,6 +3,7 @@ function person = segment_forearm(person,S)
 P = person.segment(S).origin + person.segment(S).offset(:);
 R = person.segment(S).Rglobal;
 N = person.segment(S).Ncalc;
+PI = person.const.pi;
 ind = 1:N;
 
 L = person.meas{S}.length;
@@ -18,10 +19,11 @@ person.meas{S}.b = b;
 Q = P+person.segment(S).Rglobal*[0;0;-L];
 person.segment(S+1).origin = Q;
 
-%% Calculations 
+%% Calculations
+
 % Mass
-v = pi.*a.*b*L/N; 
-m = gamma.*v; 
+v = PI.*a.*b*L/N; 
+m = gamma.*v;
 
 volume = sum(v);
 mass = sum(m);

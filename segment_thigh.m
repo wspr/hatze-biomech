@@ -3,6 +3,7 @@ function person = segment_thigh(person,S)
 P = person.segment(S).origin + person.segment(S).offset;
 R = person.segment(S).Rglobal;
 N = person.segment(S).Ncalc;
+PI = person.const.pi;
 
 ind = 1:N;
 
@@ -48,9 +49,9 @@ end
 %% Calculations
 
 % Mass
-v = pi*a.*b*L/N;
+v = PI*a.*b*L/N;
 m = gamma.*v;
-v_0 = 2*pi*a(1)*b(1)*h/3; 
+v_0 = 2*PI*a(1)*b(1)*h/3; 
 m_0 = gamma_0*v_0;
 
 volume = sum(v)+v_0;

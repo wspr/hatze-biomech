@@ -3,6 +3,7 @@ function person = segment_shoulder(person,S)
 P = person.segment(2).origin+person.segment(S).offset;
 R = person.segment(S).Rglobal;
 i_m = person.sex;
+PI = person.const.pi;
 
 gamma_1 = person.density.shoulder_lateral(i_m);
 gamma_2 = person.density.shoulder_medial(i_m);
@@ -42,7 +43,7 @@ gamma = atan( h_z/h_x );
 
 % NB that beta is always tiny:
 % disp('[alpha beta gamma]')
-% disp(180/pi*[alpha beta gamma])
+% disp(180/PI*[alpha beta gamma])
 
 c2  = -(tan(beta) + tan(gamma));
 c4  = -(b - 1.42*b1)/h_x;
@@ -69,7 +70,7 @@ B2 = @(z) b*sqrt(z/h1);
 v1 = 4/3*(c1*c3*h_x + (c2*c3 + c1*c4)*((h1+h_x)^2 - h1^2)/2 + ...
     c2*c4*((h1+h_x)^3 - h1^3)/3);
 v2 = 8/3*b*(1/3*c5*h1+1/5*c6*h1^2);
-v_s = 2*pi*(b1/2)^3/3;
+v_s = 2*PI*(b1/2)^3/3;
 
 at = @(e) at4 + c10*(e+j1-j2) + c11*(e+j1-j2).^2;
 bt = @(e) c8-c9*e;
@@ -77,7 +78,7 @@ u  = @(e) (at1 + (j2-e)*tan(alpha))/at(e);
 
 sarg = @(e) sqrt(1-u(e).^2);
     
-fun = @(e) bt(e).*at(e).*(pi/2-u(e).*sarg(e)-asin(u(e)));
+fun = @(e) bt(e).*at(e).*(PI/2-u(e).*sarg(e)-asin(u(e)));
 v_T = integral(fun,-j3,j2);
 
 m1  = gamma_1*v1;
@@ -93,12 +94,12 @@ xc = 0;
 yc = 0;
 
 zeta2 = gamma_2*8*b*(1/5*c5*h1^2 + 1/7*c6*h1^3)/(3*m2);
-%fun2 = @(e) at(e).*bt(e).*(pi/2-u(e).*sarg(e)-asin(u(e))).*e;
+%fun2 = @(e) at(e).*bt(e).*(PI/2-u(e).*sarg(e)-asin(u(e))).*e;
 fun2 = @(e) fun(e).*e;
 e_barm = m2*j2*(1-zeta2/h1) - gamma_T*integral(fun2,-j3,j2);
 e_bar = e_barm/mass;
 
-fun3 = @(e) at(e).*bt(e).*(at1*(u(e).*sarg(e) + asin(u(e))-pi/2) +...
+fun3 = @(e) at(e).*bt(e).*(at1*(u(e).*sarg(e) + asin(u(e))-PI/2) +...
     2/3*at(e).*sarg(e).^3);
 JT = integral(fun3,-j3,j2);
 zeta_barm = 4/3*gamma_1*(c1*c3*((h1+h_x)^2-h1^2)/2+...
