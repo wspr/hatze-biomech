@@ -119,7 +119,6 @@ zeta_barm = 4/3*gamma_1*(c1*c3*((h1+h_x)^2-h1^2)/2+...
 zeta_bar = zeta_barm/mass;
 
 theta7 = atan(e_bar/(d_x-zeta_bar));
-
 theta7 = lr*theta7;
 
 R7 = [cos(theta7), 0, -sin(theta7); 0, 1, 0; sin(theta7), 0, cos(theta7)];
