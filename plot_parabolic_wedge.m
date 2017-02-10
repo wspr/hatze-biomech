@@ -33,7 +33,7 @@ y1 = linspace(-ab1(2),ab1(2),n);
 y2 = linspace(-ab2(2),ab2(2),n);
 
 x1 = d+(-ab1(1)/ab1(2)^2 * y1.^2 + ab1(1));
-x2 = d+t+(-ab2(1)/ab2(2)^2 * y2.^2 + ab2(1));
+x2 = t+(-ab2(1)/ab2(2)^2 * y2.^2 + ab2(1));
 z1 = zeros(1,n);
 z2 = h*ones(1,n);
 

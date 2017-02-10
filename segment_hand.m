@@ -96,7 +96,7 @@ person.segment(S).mass = mass;
 person.segment(S).volume = volume;
 person.segment(S).centroid = [xc; yc; zc]; 
 person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z]; 
-person.segment(S).theta = theta;  
+person.segment(S).theta = -lr*theta;  
 
 %%
 if person.plot || person.segment(S).plot

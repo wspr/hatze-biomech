@@ -37,7 +37,7 @@
 # Shoulders
 
 140 # neck-to-arm distance
-176 # AP depth
+178 # AP depth
 090 # arm depth
 025 # between top of shoulder and bottom of neck
 
@@ -56,7 +56,7 @@
 # Forearms
 
 085 084 083 082 075 070 065 062 058 055 # diameters
-235 239 239 233 219 201 183 171 162 160 # perimeters
+235 239 239 233 219 201 185 171 162 160 # perimeters
 252 # length
 
 079 083 078 076 069 066 066 061 061 056 # diameters

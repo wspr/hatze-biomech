@@ -1,6 +1,13 @@
 function person = segment_shoulder(person,S)
 
+if S == 3
+	lr = 1;
+else
+	lr = -1;
+end
+
 P = person.segment(2).origin+person.segment(S).offset;
+B = person.segment(1).origin+person.segment(S).offset;
 R = person.segment(S).Rglobal;
 i_m = person.sex;
 PI = person.const.pi;
@@ -22,6 +29,10 @@ z_h = person.meas{S}.all(4);
 
 bt1 = person.meas{1}.depths(1)/2;   
 bt4 = person.meas{1}.depths(4)/2;   
+
+if b < bt4
+	fprintf ('warning depth of shoulder (%f) is smaller than depth of fourth thoraic segment (%f)', 2*b, 2*bt4);
+end
 
 
 %% Calculations
@@ -72,9 +83,9 @@ v1 = 4/3*(c1*c3*h_x + (c2*c3 + c1*c4)*((h1+h_x)^2 - h1^2)/2 + ...
 v2 = 8/3*b*(1/3*c5*h1+1/5*c6*h1^2);
 v_s = 2*PI*(b1/2)^3/3;
 
-at = @(e) at4 + c10*(e+j1-j2) + c11*(e+j1-j2).^2;
-bt = @(e) c8-c9*e;
-u  = @(e) (at1 + (j2-e)*tan(alpha))/at(e);
+at = @(e) at4 + c10.*(e+j1-j2) + c11.*(e+j1-j2).^2;
+bt = @(e) c8-c9.*e;
+u  = @(e) (at1 + (j2-e).*tan(alpha))./at(e);
 
 sarg = @(e) sqrt(1-u(e).^2);
     
@@ -99,8 +110,8 @@ fun2 = @(e) fun(e).*e;
 e_barm = m2*j2*(1-zeta2/h1) - gamma_T*integral(fun2,-j3,j2);
 e_bar = e_barm/mass;
 
-fun3 = @(e) at(e).*bt(e).*(at1*(u(e).*sarg(e) + asin(u(e))-PI/2) +...
-    2/3*at(e).*sarg(e).^3);
+fun3 = @(e) at(e).*bt(e).*(at1.*(u(e).*sarg(e) + asin(u(e))-PI/2) +...
+    2/3.*at(e).*sarg(e).^3);
 JT = integral(fun3,-j3,j2);
 zeta_barm = 4/3*gamma_1*(c1*c3*((h1+h_x)^2-h1^2)/2+...
     c14*((h1+h_x)^3-h1^3)/3 + c2*c4*((h1+h_x)^4-h1^4)/4)+...
@@ -108,6 +119,10 @@ zeta_barm = 4/3*gamma_1*(c1*c3*((h1+h_x)^2-h1^2)/2+...
 zeta_bar = zeta_barm/mass;
 
 theta7 = atan(e_bar/(d_x-zeta_bar));
+
+theta7 = lr*theta7;
+
+R7 = [cos(theta7), 0, -sin(theta7); 0, 1, 0; sin(theta7), 0, cos(theta7)];
 
 zc = (at1+zeta_bar)/(cos(theta7));
 
@@ -179,8 +194,14 @@ OZ=(0.8*l_t+(e_bar/(d_x-zeta_bar))*(d_x+at1))*cos(person.segment(1).theta);
 O1O7 = 0.8*l_t+e_bar*(d_x+at1)/(d_x-zeta_bar);
 O7O8 = (d_x+at1)/cos(theta7);
 
-Oshoulder = P + person.segment(1).Rglobal*[0;0;-z_h-d_z-1.5*b1];
-Oarm = Oshoulder + R*[ 0 ; 0; (at1+d_x)/cos(theta7) ];  %??
+person.segment(S).Rglobal = R*R7;
+person.segment(S).Rlocal = person.segment(S).Rlocal*R7;
+
+person.segment(S).theta = theta7;
+
+Oshoulder = B + person.segment(1).Rglobal*[0;0;O1O7];
+Oarm = Oshoulder + R*R7*[ 0 ; 0; (at1+d_x)/cos(theta7) ];  %??
+Ocutout = P + person.segment(1).Rglobal*[0;0;-z_h-d_z-1.5*b1];
 person.segment(S).origin = Oshoulder;
 person.segment(S+1).origin = Oarm;
 person.segment(S+1).origin1 = O7O8;
@@ -199,13 +220,16 @@ if person.plot || person.segment(S).plot
 
   if S == 7
     rcorr = [0 180 0];
+    rcorr_plates = [0 0 180];
     lr_sign = 1;
   else
     rcorr = [0 0 0];
+    rcorr_plates = [0 0 0];
     lr_sign = -1;
   end
 
   Rlocal = R*rotation_matrix_zyx(rcorr);
+  Rlocal_plates = R*rotation_matrix_zyx(rcorr_plates);
 
   opts = {...
     'rotate',R*rotation_matrix_zyx(rcorr),...
@@ -222,17 +246,18 @@ if person.plot || person.segment(S).plot
   
   plot_parabolic_wedge(...
     Oarm,...
-    [a10 b10],[a1h b1h],lr_sign*h_x,'skew',-h_z,'drop',-b1,...
+	[a10 b10],[a1h b1h],lr_sign*h_x,'skew', j2 - tan(beta)*h1 - a1h,...
+	'drop',-b1,...
     'face',[true false],...
     'humoffset',b1,...
     'humradius',hr,...
     opts{:})
   
-  plot_sphere(Oarm,hr,'longrange',[0 -1],opts{:})
+  plot_sphere(Oarm,hr,'longrange',[0 lr_sign],opts{:})
   
   % medial wedge
   
-  Nw = 2; % broken for larger!!
+  Nw = 10;
   hrange = linspace(h1,0,Nw);
   
   for nn = 1:Nw-1
@@ -246,11 +271,13 @@ if person.plot || person.segment(S).plot
     if a2h < eps, a2h = 0.00001; end
     if b2h < eps, b2h = 0.00001; end
   
-    plot_parabolic_wedge(...
-      Oarm+R*[0;0;-nn*h_x/(Nw-1)],...
-      [a20 b20],[a2h b2h],lr_sign*h1,'skew',nn*j1/(Nw-1),'drop',nn*(-b1-h_z)/(Nw-1),...
-      'face',[false false],...
-      opts{:})
+	plot_parabolic_wedge(...
+		Oarm+R*[0;0;-h_x-(nn-1)*h1/(Nw-1)],...
+		[a20 b20],[a2h b2h],lr_sign*h1*1/(Nw-1), ...
+		'skew', j2 - tan(beta)*hrange(nn+1) - a2h , ...
+		'drop', j2 - tan(beta)*hrange(nn)   - a20,...
+		'face',[false false],...
+		opts{:})
 
   end
   % shoulder origins
@@ -275,10 +302,12 @@ if person.plot || person.segment(S).plot
     ml_points = linspace(cutout_medial(ze),at(ze),ne);
     y3  = ellipse_points(ze,ml_points);
     s3 = [ [ze*ones(size(y3));y3;ml_points], [ze*ones(size(y3));-fliplr(y3);fliplr(ml_points)] ];
-    S3 = Rlocal*s3;
-    co_x(nn,:) = S3(1,:)+Oshoulder(1); 
-    co_y(nn,:) = S3(2,:)+Oshoulder(2); 
-    co_z(nn,:) = S3(3,:)+Oshoulder(3); 
+    
+    S3 = Rlocal_plates*s3;  
+    
+    co_x(nn,:) = S3(1,:)+Ocutout(1); 
+    co_y(nn,:) = S3(2,:)+Ocutout(2); 
+    co_z(nn,:) = S3(3,:)+Ocutout(3);
 %    plot3(co_x(nn,:),co_y(nn,:),co_z(nn,:),'b.','markersize',20)
   end
   
