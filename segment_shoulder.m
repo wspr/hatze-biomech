@@ -124,8 +124,8 @@ theta7 = lr*theta7;
 zc = (at1+zeta_bar)/(cos(theta7));
 
 % principal moments of inertia; 
-f1 = @(e)at(e)-at1-(j2-e)*tan(alpha);
-f2 = @(e)bt(e).*sqrt(1-(((j2-e)*tan(alpha)+at1)/at(e)).^2);     %f2=bt(e)*sqrt(1-f_2^2) where f_2 is from Hatze 79 
+f1 = @(e)at(e)-at1-(j2-e).*tan(alpha);
+f2 = @(e)bt(e).*sqrt(1-(((j2-e).*tan(alpha)+at1)./at(e)).^2);     %f2=bt(e)*sqrt(1-f_2^2) where f_2 is from Hatze 79 
 f3 = c1*c3^3*h_x + (c2*c3^3 + 3*c1*c3^2*c4)*((h1+h_x)^2-h1^2)/2+...
     3*(c1*c3*c4^2+c2*c3^2*c4)*((h1+h_x)^3-h1^3)/3+...
     (c1*c4^3+3*c2*c3*c4^2)*((h1+h_x)^4-h1^4)/4+...
