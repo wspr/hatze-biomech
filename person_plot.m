@@ -71,7 +71,7 @@ for ii = 1:person.N
 end
 
 ind = 1:person.N;
-ind([3 7]) = []; % repeated
+%ind([3 7]) = []; % repeated
 for ii = ind
   plot_coord(person.segment(ii).origin,'index',[num2str(ii),''''],'rotate',person.segment(ii).Rglobal,'length',0.07);
 end

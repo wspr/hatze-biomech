@@ -121,8 +121,6 @@ zeta_bar = zeta_barm/mass;
 theta7 = atan(e_bar/(d_x-zeta_bar));
 theta7 = lr*theta7;
 
-R7 = [cos(theta7), 0, -sin(theta7); 0, 1, 0; sin(theta7), 0, cos(theta7)];
-
 zc = (at1+zeta_bar)/(cos(theta7));
 
 % principal moments of inertia; 
@@ -193,13 +191,16 @@ OZ=(0.8*l_t+(e_bar/(d_x-zeta_bar))*(d_x+at1))*cos(person.segment(1).theta);
 O1O7 = 0.8*l_t+e_bar*(d_x+at1)/(d_x-zeta_bar);
 O7O8 = (d_x+at1)/cos(theta7);
 
-person.segment(S).Rglobal = R*R7;
-person.segment(S).Rlocal = person.segment(S).Rlocal*R7;
+
+R7 = [cos(theta7), 0, sin(theta7); 0, 1, 0; -sin(theta7), 0, cos(theta7)];
+
+person.segment(S).Rglobal = R7'*R;
+person.segment(S).Rlocal = R7'*person.segment(S).Rlocal;
 
 person.segment(S).theta = theta7;
 
 Oshoulder = B + person.segment(1).Rglobal*[0;0;O1O7];
-Oarm = Oshoulder + R*R7*[ 0 ; 0; (at1+d_x)/cos(theta7) ];  %??
+Oarm = Oshoulder + person.segment(S).Rglobal*[ 0 ; 0; (at1+d_x)/cos(theta7) ];
 Ocutout = P + person.segment(1).Rglobal*[0;0;-z_h-d_z-1.5*b1];
 person.segment(S).origin = Oshoulder;
 person.segment(S+1).origin = Oarm;
