@@ -36,11 +36,11 @@ person.plot_points([person.segment(11:14).origin], 'k.-', 'markersize', 20,'line
 person.plot_points([person.segment([11,15:17]).origin], 'k.-', 'markersize', 20,'linewidth',2)
 person.plot_points([person.segment([1,3,2]).origin], 'k.-', 'markersize', 20,'linewidth',2)
 
-for ii = 1:person.N
-  if ~isempty(person.segment(ii).centroid)
-%    person.plot_points(person.segment(ii).origin+person.segment(ii).centroid, 'r.', 'markersize', 30)
-  end
-end
+%for ii = 1:person.N
+  %if ~isempty(person.segment(ii).centroid)
+    %person.plot_points(person.segment(ii).Gcentroid, 'r.', 'markersize', 30)
+  %end
+%end
 
 pbaspect([2 1 4])
 
@@ -66,12 +66,12 @@ person.plot_points([person.segment([1,3,2]).origin], 'k.-', 'markersize', 20,'li
 
 for ii = 1:person.N
   if ~isempty(person.segment(ii).centroid)
-    person.plot_points(person.segment(ii).origin+person.segment(ii).centroid, 'r.', 'markersize', 30)
+	person.plot_points(person.segment(ii).Gcentroid, 'r.', 'markersize', 30)
   end
 end
 
 ind = 1:person.N;
-ind([3 7]) = []; % repeated
+%ind([3 7]) = []; % repeated
 for ii = ind
   plot_coord(person.segment(ii).origin,'index',[num2str(ii),''''],'rotate',person.segment(ii).Rglobal,'length',0.07);
 end

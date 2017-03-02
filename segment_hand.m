@@ -61,7 +61,7 @@ I_x1=1.333*density*b10*((a10^3*hh)+(3*a10^2*c2+c1*a10^3)*(hh^2)/2+...
 I_y2=1.333*density*b10^3*(a10*hh+(3*a10*c1+c2)*(hh)^2/2+...
     3*(a10*c1^2*+c1*c2)*(hh)^3/3+...
     (a10*c1^3+3*c2*c1^2)*(hh)^4/4+...
-    (c1^3*c2*(0.378*h)^5)/5);
+    (c1^3*c2*(hh^5)/5));
 Ip=density*b10*(hh^3)*(0.385*a10+0.6040*h)-m_p*zp1^2;
 
 I_x = I_x1+Ip+m_p*(yc^2+(zp1+zc)^2)+Ig_xc+...
@@ -70,12 +70,15 @@ I_x = I_x1+Ip+m_p*(yc^2+(zp1+zc)^2)+Ig_xc+...
 I_z = I_x1+I_y2+m_p*(xc^2+yc^2)+Ig_xc+...
     m_c*(yc^2+(xc1-abs(xc))^2-xc1^2)+...
     m_T*((abs(xc)+r-h/4)^2+(3*h/8-yc)^2);
-I_zx = lr*density*h*((r^4-(r-h/4)^4)*(sin(h/(r-h/8)))^2/32-((r^3-(r-h/4)^3)/3)*...
-    ((xc/4)*sin(h/(r-h/8))+(zc+r+hh)*(2.25-0.25*cos(h/(r-h/8))))+...
-    0.5*(r^2-(r-h/4)^2)*xc*(zc+r+hh)*(PI+0.25*h/(r-h/8)))+lr*m_p*(-xc)*(-zc-zp1);
+
+%error in Hatze (1979) A2.75: the absolute value should be used for all xc (xbar) 
+I_zx = lr*(density*h*((r^4-(r-h/4)^4)*(sin(h/(h/8-r)))^2/32-((r^3-(r-h/4)^3)/3)*...
+    ((abs(xc)/4)*sin(h/(h/8-r))+(zc+r+hh)*(2.25-0.25*cos(h/(h/8-r))))+...
+    0.5*(r^2-(r-h/4)^2)*abs(xc)*(zc+r+hh)*(PI+0.25*h/(h/8-r)))+ m_p*(-abs(xc))*(-zc-zp1));
 
 % principal moments of inertia;
-Ip_y = I_y2+Ip+m_p*(xc^2+(zp1+zc)^2)+Ig_yc+m_c*((xc1-abs(xc))^2+(r+hh+zc)^2)+m_T*((abs(xc)+r-h/4)^2+(r/3+hh+zc)^2); %Note xc^2
+Ip_y = I_y2+Ip+m_p*(xc^2+(zp1+zc)^2)+Ig_yc+m_c*((xc1-abs(xc))^2+(r+hh+zc)^2) + ...
+	m_T*((abs(xc)+r-h/4)^2+(r/3+hh+zc)^2); %Note xc^2
 Ip_x =(I_z+I_x)/2-sqrt(1/4*(I_z-I_x)^2+I_zx^2);
 Ip_z =(I_z+I_x)/2+sqrt(1/4*(I_z-I_x)^2+I_zx^2);
 
@@ -96,14 +99,14 @@ person.segment(S).mass = mass;
 person.segment(S).volume = volume;
 person.segment(S).centroid = [xc; yc; zc]; 
 person.segment(S).Minertia = [Ip_x,Ip_y,Ip_z]; 
-person.segment(S).theta = theta;  
+person.segment(S).theta = -lr*theta;  
 
 %%
 if person.plot || person.segment(S).plot
 
   opt = {'colour',person.segment(S).colour,'opacity',person.segment(S).opacity(1),'edgeopacity',person.segment(S).opacity(2)};
 
-  plot_rect_prism(P,[2*a10 2*b10],[h 2.52*b10],-hh,'rotate',R,opt{:});
+  plot_rect_prism(P,[2*b10 2*a10],[2.52*b10 h],-hh,'rotate',R,opt{:});
 
   if S == 6 % left
     s = h;

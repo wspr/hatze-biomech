@@ -27,14 +27,14 @@ person.segment(3).volume_hatze = 1.11;
 person.segment(3).mass_hatze   = 1.144;
 person.segment(3).centroid_hatze = [0; 0; 0.140];
 person.segment(3).Minertia_hatze = [0.002725 0.002172 NaN];
-person.segment(3).resting_angle_hatze = 0.199;  %resting inclination angle of segment z-axis to horizontal
+person.segment(3).theta_hatze = 0.199;  %resting inclination angle of segment z-axis to horizontal
 
 % right shoulder
 person.segment(7).volume_hatze = 1.146;
 person.segment(7).mass_hatze   = 1.180;
 person.segment(7).centroid_hatze = [0; 0; 0.141];
 person.segment(7).Minertia_hatze = [0.002922 0.002289 NaN];
-person.segment(7).resting_angle_hatze = -0.182;
+person.segment(7).theta_hatze = -0.182;
 
 % left arm
 person.segment(4).volume_hatze = 1.616;
@@ -63,14 +63,14 @@ person.segment(9).Minertia_hatze = [0.004765 0.004855 0.000472];
 % left hand
 person.segment(6).volume_hatze = 0.285;
 person.segment(6).mass_hatze = 0.317;
-person.segment(6).centroid_hatze = [-0.049; 0.003; -0.010];
+person.segment(6).centroid_hatze = [-0.01; 0.003; -0.049];
 person.segment(6).Minertia_hatze = [0.000231 0.000448 0.000521];
 person.segment(6).theta_hatze = -1.185;
 
 % right hand
 person.segment(10).volume_hatze = 0.288;
 person.segment(10).mass_hatze = 0.319;
-person.segment(10).centroid_hatze = [0.051; 0.003; -0.009];
+person.segment(10).centroid_hatze = [0.01; 0.003; -0.51];
 person.segment(10).Minertia_hatze = [0.000240 0.000491 0.000551];
 person.segment(10).theta_hatze = -1.195;
 
@@ -148,10 +148,10 @@ for s = 1:person.N
       fprintf('                   ([ %3.3f , %3.3f , %3.3f ])\n',1000*person.segment(s).Minertia_hatze(1),1000*person.segment(s).Minertia_hatze(2),1000*person.segment(s).Minertia_hatze(3))
     end
     if ~isempty(person.segment(s).theta)
-      fprintf('Theta: %2.3f°\n',person.segment(s).theta*180/pi)
+      fprintf('Theta: %2.3f rad\n',person.segment(s).theta) %*180/pi)
     end
     if ~isempty(person.segment(s).theta_hatze)
-      fprintf('      (%2.3f°)\n',person.segment(s).theta_hatze*180/pi)
+      fprintf('      (%2.3f rad)\n',person.segment(s).theta_hatze) %*180/pi)
     end
 
   end
@@ -194,8 +194,8 @@ for s = 1:person.N
     if ~isempty(person.segment(s).theta)
       if abs( (person.segment(s).theta-person.segment(s).theta_hatze )/person.segment(s).theta_hatze) > thresh
         disp(['--- ',person.segment(s).name,' ---'])
-        fprintf('Theta: %2.3f°\n',person.segment(s).theta*180/pi)
-        fprintf('      (%2.3f°)\n',person.segment(s).theta_hatze*180/pi)
+        fprintf('Theta: %2.3f rad\n',person.segment(s).theta) %*180/pi)
+        fprintf('      (%2.3f rad)\n',person.segment(s).theta_hatze) %*180/pi)
       end
     end
   end

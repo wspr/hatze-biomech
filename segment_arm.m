@@ -62,6 +62,8 @@ OY= 0;
 %OZ=(at1+d_x)/cos(theta7); where at1, d_x and theta7 are calculations from
 %the shoulder
 
+person.segment(S).Rlocal   = person.segment(person.segment(S).prior).Rlocal';
+person.segment(S).Rglobal  = (person.segment(S).Rlocal*person.segment(person.segment(S).prior).Rglobal);
 person.segment(S).mass = mass;
 person.segment(S).volume = volume;
 person.segment(S).centroid = [xc; yc; zc];
